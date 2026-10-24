@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 10 — School Bus</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 10 — "School Bus"
+  The ride to school: school-bus yellow and black, the menu as a bus
+  route with the bus parked at the current stop, the day's periods as
+  stops on the route, a stop sign for alerts and eRPH as a boarding pass.
+-->
+<style>
+  :root {
+    --yellow: #ffc72c;
+    --yellow-2: #ffd75e;
+    --yellow-soft: #fff6d6;
+    --black: #1d1d1f;
+    --road: #34373d;
+    --sky: #eaf6fc;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6b6f78;
+    --line: #ecebe6;
+    --red: #d62828;
+    --green: #2a9d6f;
+    --blue: #2f6fd6;
+    --amber: #c98a00;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Nunito Sans", sans-serif; font-size: 15px; color: var(--text); background: linear-gradient(var(--sky), #f8fbfd 420px); min-height: 100vh; }
+  h1, h2, h3 { font-family: "Fredoka", sans-serif; font-weight: 600; margin: 0; }
+
+  /* ---------- header: bus body + route ---------- */
+  .bus-top { background: var(--yellow); position: relative; }
+  .bus-top::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 10px; border-top: 3px solid var(--black); border-bottom: 3px solid var(--black); }
+  .bus-top__in { max-width: 1240px; margin: 0 auto; padding: 14px 28px 30px; display: flex; align-items: center; gap: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand i { width: 46px; height: 46px; border-radius: 14px; background: var(--black); color: var(--yellow); display: grid; place-items: center; font-size: 26px; }
+  .brand b { font: 700 24px "Fredoka", sans-serif; display: block; line-height: 1; }
+  .brand small { font-weight: 700; font-size: 12px; }
+  .bus-top .grow { flex: 1; }
+  .ico { width: 42px; height: 42px; border-radius: 12px; background: rgba(255, 255, 255, .55); border: 2px solid var(--black); display: grid; place-items: center; font-size: 20px; position: relative; flex: none; }
+  .ico b { position: absolute; top: -7px; right: -7px; background: var(--red); color: #fff; font-size: 11px; border-radius: 9px; padding: 0 6px; border: 2px solid var(--yellow); }
+  .av { width: 42px; height: 42px; border-radius: 50%; background: var(--black); color: var(--yellow); display: grid; place-items: center; font: 600 15px "Fredoka", sans-serif; flex: none; }
+
+  .route { background: var(--road); position: relative; }
+  .route::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 3px dashed var(--yellow-2); opacity: .7; }
+  .route__in { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: flex; gap: 6px; height: 64px; align-items: center; position: relative; }
+  .route a { position: relative; display: flex; align-items: center; gap: 8px; padding: 6px 16px 6px 8px; background: var(--road); color: #d9dbe0; font: 600 15px "Fredoka", sans-serif; cursor: pointer; border-radius: 30px; }
+  .route a .stop { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #fff; background: var(--road); display: grid; place-items: center; font-size: 15px; }
+  .route a.on { background: var(--yellow); color: var(--black); }
+  .route a.on .stop { background: var(--black); color: var(--yellow); border-color: var(--black); }
+  .route a .bus-ico { display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 28px; color: var(--black); line-height: 1; }
+  .route a.on .bus-ico { display: block; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 30px 28px 56px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .muted { color: var(--muted); }
+  .card { background: var(--card); border-radius: 18px; border: 2px solid var(--black); box-shadow: 0 6px 0 var(--black); overflow: hidden; }
+  .card__head { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 2px solid var(--line); }
+  .card__head h2 { font-size: 19px; }
+  .card__head .more { margin-left: auto; font-weight: 800; cursor: pointer; font-size: 14px; background: var(--yellow); padding: 3px 12px; border-radius: 20px; border: 2px solid var(--black); }
+  .card__head i.mdi { font-size: 22px; }
+  .card__body { padding: 16px 20px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 14px; border: 2px solid var(--black); background: #fff; color: var(--black); font: 600 15px "Fredoka", sans-serif; cursor: pointer; box-shadow: 0 3px 0 var(--black); }
+  .btn--yellow { background: var(--yellow); }
+  .btn--black { background: var(--black); color: var(--yellow); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; white-space: nowrap; border: 2px solid currentColor; }
+  .c-ok { color: var(--green); background: #e6f6ee; }
+  .c-wait { color: var(--amber); background: #fff5dc; }
+  .c-sent { color: var(--blue); background: #e8f0fd; }
+  .c-back { color: var(--red); background: #fde8e8; }
+  .page-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 34px; }
+  .page-head p { margin: 4px 0 0; color: var(--muted); font-weight: 600; }
+  .page-head .grow { flex: 1; }
+
+  /* ---------- dashboard ---------- */
+  .greet { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 26px; flex-wrap: wrap; }
+  .greet h1 { font-size: 38px; line-height: 1.1; }
+  .greet p { margin: 6px 0 0; color: var(--muted); font-weight: 600; }
+  .greet .grow { flex: 1; }
+  /* the bus: KPIs in the windows */
+  .bus { position: relative; background: var(--yellow); border: 3px solid var(--black); border-radius: 26px 60px 26px 26px; padding: 22px 26px 46px; margin-bottom: 44px; box-shadow: inset 0 -16px 0 var(--yellow-2); }
+  .bus::before { content: ""; position: absolute; left: 0; right: 0; bottom: 40px; border-top: 3px solid var(--black); }
+  .bus__windows { display: grid; grid-template-columns: repeat(4, 1fr) 92px; gap: 14px; }
+  .window { background: var(--sky); border: 3px solid var(--black); border-radius: 14px; padding: 12px 16px; }
+  .window b { font: 700 40px/1 "Fredoka", sans-serif; display: block; }
+  .window span { font-weight: 700; font-size: 13px; }
+  .door { border: 3px solid var(--black); border-radius: 12px; background: linear-gradient(90deg, var(--sky) 48%, var(--black) 48% 52%, var(--sky) 52%); }
+  .wheel { position: absolute; bottom: -30px; width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle, #d9dbe0 0 26%, var(--black) 27%); border: 3px solid var(--black); }
+  .wheel--a { left: 70px; }
+  .wheel--b { right: 120px; }
+  .bus__sign { position: absolute; right: 26px; top: -16px; background: var(--black); color: var(--yellow); font: 700 13px "Fredoka", sans-serif; letter-spacing: .14em; padding: 4px 14px; border-radius: 8px; }
+  .dash { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
+  .dash > * { min-width: 0; }
+  .stack { display: grid; gap: 24px; }
+  .stops { list-style: none; margin: 0; padding: 10px 20px 14px; position: relative; }
+  .stops::before { content: ""; position: absolute; left: 92px; top: 26px; bottom: 30px; width: 8px; background: var(--road); border-radius: 4px; }
+  .stops li { display: grid; grid-template-columns: 56px 32px 1fr auto; gap: 14px; align-items: center; padding: 10px 0; position: relative; }
+  .stops .when { font: 600 16px "Fredoka", sans-serif; }
+  .stops .dot { width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 4px solid var(--black); position: relative; z-index: 1; justify-self: center; }
+  .stops b { display: block; }
+  .stops small { color: var(--muted); }
+  .stops li.done .dot { background: var(--green); }
+  .stops li.now .dot { width: 40px; height: 40px; background: var(--yellow); display: grid; place-items: center; font-size: 22px; border-width: 3px; }
+  .stops li.now { background: var(--yellow-soft); border-radius: 14px; margin: 0 -10px; padding: 10px; }
+  .stops li.brk .dot { border-style: dashed; }
+  .stops li.brk { color: var(--muted); }
+  .stopsign { display: flex; gap: 16px; align-items: center; padding: 18px 20px; }
+  .octagon { width: 74px; height: 74px; background: var(--red); clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); display: grid; place-items: center; color: #fff; font: 700 16px "Fredoka", sans-serif; letter-spacing: .06em; flex: none; box-shadow: inset 0 0 0 4px #fff; }
+  .octagon span { border: 2px solid #fff; padding: 0; }
+  .trip { padding: 4px 20px 16px; }
+  .trip__row { padding: 8px 0; }
+  .trip__row div:first-child { display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+  .road { position: relative; height: 16px; border-radius: 8px; background: var(--road); }
+  .road::before { content: ""; position: absolute; left: 8px; right: 8px; top: 7px; border-top: 2px dashed #8a8f98; }
+  .road span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--yellow); border-radius: 8px; border: 2px solid var(--black); }
+  .road i { position: absolute; top: -18px; font-size: 22px; transform: translateX(-60%); }
+  .tickets { list-style: none; margin: 0; padding: 12px 20px 16px; display: grid; gap: 10px; }
+  .tickets li { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border: 2px dashed var(--black); border-radius: 12px; background: #fffdf5; }
+  .tickets i { font-size: 22px; }
+  .tickets small { display: block; color: var(--muted); }
+
+  /* ---------- timetable ---------- */
+  .tt { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .tt th { background: var(--black); color: #fff; font: 600 15px "Fredoka", sans-serif; padding: 12px; text-align: left; }
+  .tt th.today { background: var(--yellow); color: var(--black); }
+  .tt td { padding: 8px; border-bottom: 2px solid var(--line); border-right: 2px solid var(--line); height: 74px; vertical-align: top; }
+  .tt td.time { font: 600 15px "Fredoka", sans-serif; width: 80px; background: #fafaf7; }
+  .seat { border-radius: 12px; padding: 8px 10px; height: 100%; font-size: 13px; background: var(--c); border: 2px solid var(--black); }
+  .seat b { display: block; font-size: 14px; }
+  .k-tam { --c: #d6ecfb; }
+  .k-mat { --c: #ffe1d6; }
+  .k-sci { --c: #dff3d2; }
+  .k-bm { --c: #fff0c2; }
+  .k-eng { --c: #ece0f5; }
+  .tt td.now .seat { background: var(--yellow); box-shadow: 0 4px 0 var(--black); }
+  .tt tr.brk td { height: auto; padding: 0; }
+  .tt tr.brk td div { background: var(--road); color: var(--yellow-2); text-align: center; font: 600 13px "Fredoka", sans-serif; letter-spacing: .3em; padding: 6px; background-image: linear-gradient(90deg, transparent 0 46%, transparent 54%); }
+  .tt-day { display: none; }
+  .day-tabs { display: flex; gap: 6px; padding: 14px 14px 4px; }
+  .day-tabs a { flex: 1; text-align: center; padding: 8px 0; border-radius: 12px; border: 2px solid var(--black); font: 600 15px "Fredoka", sans-serif; background: #fff; }
+  .day-tabs a.on { background: var(--yellow); }
+
+  /* ---------- eRPH (boarding pass) ---------- */
+  .erph { display: grid; grid-template-columns: 310px 1fr; gap: 24px; align-items: start; }
+  .erph > * { min-width: 0; }
+  .plans { list-style: none; margin: 0; padding: 8px; }
+  .plans li { padding: 12px 14px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .plans li.on { background: var(--yellow-soft); box-shadow: inset 0 0 0 2px var(--black); }
+  .pass { display: grid; grid-template-columns: 1fr 210px; background: #fff; border: 3px solid var(--black); border-radius: 22px; box-shadow: 0 6px 0 var(--black); overflow: hidden; }
+  .pass__main { padding: 0 0 18px; }
+  .pass__band { background: var(--yellow); border-bottom: 3px solid var(--black); padding: 12px 24px; display: flex; align-items: center; gap: 10px; font: 600 15px "Fredoka", sans-serif; letter-spacing: .1em; }
+  .pass__band i { font-size: 22px; }
+  .pass__route { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; padding: 18px 24px 8px; }
+  .pass__route small { display: block; color: var(--muted); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
+  .pass__route b { font: 600 26px "Fredoka", sans-serif; display: block; line-height: 1.1; }
+  .pass__route .arrow { text-align: center; font-size: 28px; }
+  .pass__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 6px 24px 10px; }
+  .pass__grid div { padding: 8px 0; font-weight: 800; }
+  .pass__grid small { display: block; color: var(--muted); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
+  .pass__body { padding: 4px 24px; }
+  .pass__body .row { display: grid; grid-template-columns: 140px 1fr; gap: 14px; padding: 10px 0; border-top: 2px dashed var(--line); }
+  .pass__body .row > span { font: 600 14px "Fredoka", sans-serif; }
+  .pass__body p { margin: 0; }
+  .blank { font: 700 17px "Fredoka", sans-serif; border-bottom: 3px solid var(--yellow); padding: 0 6px; }
+  .pass__stub { border-left: 3px dashed var(--black); padding: 20px 18px; background: #fffdf5; display: flex; flex-direction: column; gap: 14px; position: relative; text-align: center; }
+  .pass__stub::before, .pass__stub::after { content: ""; position: absolute; left: -16px; width: 28px; height: 28px; border-radius: 50%; background: #f8fbfd; border: 3px solid var(--black); }
+  .pass__stub::before { top: -16px; }
+  .pass__stub::after { bottom: -16px; }
+  .pass__stub small { color: var(--muted); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; display: block; }
+  .pass__stub b { font: 600 22px "Fredoka", sans-serif; }
+  .barcode { height: 56px; background: repeating-linear-gradient(90deg, var(--black) 0 2px, transparent 2px 4px, var(--black) 4px 7px, transparent 7px 9px, var(--black) 9px 10px, transparent 10px 13px); border-radius: 4px; }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
+
+  /* ---------- messages ---------- */
+  .inbox { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+  .inbox > * { min-width: 0; }
+  .msg { display: flex; gap: 12px; padding: 12px; margin: 0 8px; border-radius: 12px; cursor: pointer; align-items: center; }
+  .msg.on { background: var(--yellow-soft); box-shadow: inset 0 0 0 2px var(--black); }
+  .msg div { flex: 1; min-width: 0; }
+  .msg p { margin: 2px 0 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-av { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--black); display: grid; place-items: center; font: 600 15px "Fredoka", sans-serif; flex: none; background: var(--c); }
+  .thread__back { display: none; }
+  .thread__head { padding: 18px 22px; border-bottom: 2px solid var(--line); background: var(--yellow-soft); }
+  .thread__head h2 { font-size: 22px; }
+  .thread__body { padding: 18px 22px; line-height: 1.7; }
+  .reply { display: flex; gap: 10px; padding: 14px 22px; border-top: 2px solid var(--line); }
+  .reply input { flex: 1; border: 2px solid var(--black); border-radius: 12px; padding: 10px 14px; font: inherit; }
+
+  .bottom-nav { display: none; }
+
+  @media (max-width: 1000px) {
+    .dash, .erph, .inbox { grid-template-columns: 1fr; }
+    .bus__windows { grid-template-columns: repeat(2, 1fr); }
+    .door { display: none; }
+    .pass { grid-template-columns: 1fr; }
+    .pass__stub { border-left: 0; border-top: 3px dashed var(--black); flex-direction: row; align-items: center; justify-content: space-between; text-align: left; }
+    .pass__stub::before, .pass__stub::after { display: none; }
+    .barcode { width: 120px; }
+  }
+  @media (max-width: 760px) {
+    .bus-top__in { padding: 12px 16px 28px; gap: 10px; }
+    .brand { margin-right: auto; }
+    .ico:not(.keep) { display: none; }
+    .route { display: none; }
+    .wrap { padding: 22px 16px 110px; }
+    .greet h1 { font-size: 28px; }
+    .bus { padding: 18px 16px 44px; border-radius: 22px 40px 22px 22px; }
+    .window b { font-size: 30px; }
+    .wheel { width: 50px; height: 50px; bottom: -24px; }
+    .wheel--a { left: 36px; }
+    .wheel--b { right: 46px; }
+    .stops::before { left: 82px; }
+    .stops li { grid-template-columns: 50px 30px 1fr; }
+    .stops li .chip { grid-column: 3; justify-self: start; }
+    .page-head h1 { font-size: 28px; }
+    .tt-wrap { display: none; }
+    .tt-day { display: block; }
+    .pass__band .long { display: none; }
+    .pass__route { grid-template-columns: 1fr; gap: 4px; }
+    .pass__route .arrow { transform: rotate(90deg); width: 30px; }
+    .pass__grid { grid-template-columns: 1fr 1fr; }
+    .pass__body .row { grid-template-columns: 1fr; gap: 2px; }
+    .inbox .thread { display: none; }
+    .inbox.reading .list { display: none; }
+    .inbox.reading .thread { display: block; }
+    .thread__back { display: inline-flex; margin: 16px 22px; }
+    .bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: var(--road); border-top: 4px solid var(--yellow); justify-content: space-around; padding: 8px 4px 12px; z-index: 10; }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #c9ccd3; font: 600 12px "Fredoka", sans-serif; cursor: pointer; padding: 4px 8px; border-radius: 12px; }
+    .bottom-nav a i { font-size: 22px; }
+    .bottom-nav a.on { background: var(--yellow); color: var(--black); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="bus-top">
+    <div class="bus-top__in">
+      <div class="brand"><i class="mdi mdi-bus-school"></i><div><b>EduNex</b><small>SJK(T) Ladang Bukit Indah</small></div></div>
+      <span class="grow"></span>
+      <span class="ico"><i class="mdi mdi-magnify"></i></span>
+      <span class="ico keep"><i class="mdi mdi-bell-outline"></i><b>3</b></span>
+      <span class="av">KR</span>
+    </div>
+  </div>
+  <nav class="route"><div class="route__in">
+    <a data-view="dashboard" class="on"><i class="mdi mdi-bus-school bus-ico"></i><span class="stop mdi mdi-home-variant"></span>Home</a>
+    <a data-view="timetable"><i class="mdi mdi-bus-school bus-ico"></i><span class="stop mdi mdi-clock-outline"></span>Timetable</a>
+    <a data-view="erph"><i class="mdi mdi-bus-school bus-ico"></i><span class="stop mdi mdi-ticket-outline"></span>eRPH</a>
+    <a data-view="messages"><i class="mdi mdi-bus-school bus-ico"></i><span class="stop mdi mdi-message-text-outline"></span>Messages</a>
+    <a><i class="mdi mdi-bus-school bus-ico"></i><span class="stop mdi mdi-book-open-variant"></span>Syllabus</a>
+  </div></nav>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="greet">
+      <div><h1>Good morning, Cikgu Kavitha! 🚌</h1><p>Thursday, 22 October 2026 · 6 stops on today's route</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--yellow" data-go="erph"><i class="mdi mdi-pencil"></i> Write reflections</button>
+    </div>
+    <div class="bus">
+      <span class="bus__sign">TODAY</span>
+      <div class="bus__windows">
+        <div class="window"><b>6</b><span>Classes today</span></div>
+        <div class="window"><b>12</b><span>Awaiting approval</span></div>
+        <div class="window"><b style="color:var(--red)">3</b><span>Referred back</span></div>
+        <div class="window"><b>68%</b><span>Syllabus taught</span></div>
+        <div class="door"></div>
+      </div>
+      <span class="wheel wheel--a"></span><span class="wheel wheel--b"></span>
+    </div>
+    <div class="dash">
+      <div class="card">
+        <div class="card__head"><i class="mdi mdi-map-marker-path"></i><h2>Today's route</h2><span class="more" data-go="timetable">Full week</span></div>
+        <ul class="stops">
+          <li class="done"><span class="when">7:40</span><span class="dot"></span><div><b>Bahasa Tamil · 5 Melati</b><small>செய்யுள் — திருக்குறள் · Bilik 12</small></div><span class="chip c-ok">Approved</span></li>
+          <li class="now"><span class="when">9:40</span><span class="dot mdi mdi-bus-school"></span><div><b>Matematik · 4 Mawar</b><small>Pecahan wajar · you are here</small></div><span class="chip c-sent">Submitted</span></li>
+          <li class="brk"><span class="when">10:40</span><span class="dot"></span><div><b>Recess</b></div><span></span></li>
+          <li><span class="when">11:00</span><span class="dot"></span><div><b>Sains · 4 Mawar</b><small>Sistem rangka manusia · Makmal</small></div><span class="chip c-wait">Pending</span></li>
+          <li><span class="when">12:00</span><span class="dot"></span><div><b>Bahasa Tamil · 6 Kenanga</b><small>கட்டுரை எழுதுதல் · Bilik 15</small></div><span class="chip c-back">Referred</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="card stopsign">
+          <span class="octagon">STOP</span>
+          <div><h2 style="font-size:18px">1 plan needs your attention</h2><p class="muted" style="margin:4px 0 10px">6 Kenanga Bahasa Tamil was referred back: "Add the remedial count."</p><button class="btn btn--black" data-go="erph">Fix it now</button></div>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-road-variant"></i><h2>Syllabus journey</h2></div>
+          <div class="trip">
+            <div class="trip__row"><div><span>Bahasa Tamil</span><span>78%</span></div><div class="road"><span style="width:78%"></span><i class="mdi mdi-bus-side" style="left:78%"></i></div></div>
+            <div class="trip__row"><div><span>Matematik</span><span>64%</span></div><div class="road"><span style="width:64%"></span><i class="mdi mdi-bus-side" style="left:64%"></i></div></div>
+            <div class="trip__row"><div><span>Sains</span><span style="color:var(--red)">52%</span></div><div class="road"><span style="width:52%;background:#ffb4a2"></span><i class="mdi mdi-bus-side" style="left:52%"></i></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-ticket-confirmation-outline"></i><h2>Notices</h2></div>
+          <ul class="tickets">
+            <li><i class="mdi mdi-check-decagram" style="color:var(--green)"></i><div><b>5 Melati plan approved</b><small>Pn. Saraswathy · 8 min ago</small></div></li>
+            <li><i class="mdi mdi-bullhorn-outline"></i><div><b>Staff meeting moved to Friday 2:30 pm</b><small>Head master · yesterday</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><h1>Timetable</h1><p>Week 42 · 19 – 23 October 2026</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+      <button class="btn btn--yellow"><i class="mdi mdi-plus"></i> Add slot</button>
+    </div>
+    <div class="card tt-wrap">
+      <table class="tt">
+        <thead><tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th class="today">🚌 Thursday</th><th>Friday</th></tr></thead>
+        <tbody>
+          <tr><td class="time">7:40</td><td><div class="seat k-tam"><b>B. Tamil</b>5 Melati</div></td><td><div class="seat k-mat"><b>Matematik</b>4 Mawar</div></td><td></td><td><div class="seat k-tam"><b>B. Tamil</b>5 Melati</div></td><td><div class="seat k-sci"><b>Sains</b>4 Mawar</div></td></tr>
+          <tr><td class="time">8:40</td><td><div class="seat k-mat"><b>Matematik</b>4 Mawar</div></td><td></td><td><div class="seat k-tam"><b>B. Tamil</b>6 Kenanga</div></td><td></td><td><div class="seat k-bm"><b>B. Melayu</b>3 Teratai</div></td></tr>
+          <tr><td class="time">9:40</td><td></td><td><div class="seat k-sci"><b>Sains</b>4 Mawar</div></td><td><div class="seat k-mat"><b>Matematik</b>4 Mawar</div></td><td class="now"><div class="seat k-mat"><b><i class="mdi mdi-bus-school"></i> Matematik</b>4 Mawar · now</div></td><td><div class="seat k-tam"><b>B. Tamil</b>5 Melati</div></td></tr>
+          <tr class="brk"><td colspan="6"><div>— — RECESS · 10:40 — —</div></td></tr>
+          <tr><td class="time">11:00</td><td><div class="seat k-eng"><b>English</b>6 Kenanga</div></td><td><div class="seat k-tam"><b>B. Tamil</b>5 Melati</div></td><td></td><td><div class="seat k-sci"><b>Sains</b>4 Mawar</div></td><td></td></tr>
+          <tr><td class="time">12:00</td><td></td><td><div class="seat k-tam"><b>B. Tamil</b>6 Kenanga</div></td><td><div class="seat k-sci"><b>Sains</b>5 Melati</div></td><td><div class="seat k-tam"><b>B. Tamil</b>6 Kenanga</div></td><td><div class="seat k-mat"><b>Matematik</b>3 Teratai</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="card tt-day">
+      <div class="day-tabs"><a>Mon</a><a>Tue</a><a>Wed</a><a class="on">Thu</a><a>Fri</a></div>
+      <ul class="stops">
+        <li class="done"><span class="when">7:40</span><span class="dot"></span><div><b>Bahasa Tamil</b><small>5 Melati</small></div></li>
+        <li class="now"><span class="when">9:40</span><span class="dot mdi mdi-bus-school"></span><div><b>Matematik</b><small>4 Mawar · now</small></div></li>
+        <li class="brk"><span class="when">10:40</span><span class="dot"></span><div><b>Recess</b></div></li>
+        <li><span class="when">11:00</span><span class="dot"></span><div><b>Sains</b><small>4 Mawar</small></div></li>
+        <li><span class="when">12:00</span><span class="dot"></span><div><b>Bahasa Tamil</b><small>6 Kenanga</small></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><h1>eRPH lesson passes</h1><p>Daily lesson plans · Thursday 22 October</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-qrcode"></i> QR code</button>
+      <button class="btn"><i class="mdi mdi-export-variant"></i> Export</button>
+    </div>
+    <div class="erph">
+      <div class="card">
+        <ul class="plans">
+          <li><b>5 Melati · Bahasa Tamil</b><span class="chip c-ok">Approved</span></li>
+          <li class="on"><b>4 Mawar · Matematik</b><span class="chip c-sent">Submitted</span></li>
+          <li><b>4 Mawar · Sains</b><span class="chip c-wait">Pending</span></li>
+          <li><b>6 Kenanga · Bahasa Tamil</b><span class="chip c-back">Referred back</span></li>
+          <li><b>3 Teratai · Matematik</b><span class="chip c-ok">Approved</span></li>
+        </ul>
+      </div>
+      <div>
+        <article class="pass">
+          <div class="pass__main">
+            <div class="pass__band"><i class="mdi mdi-bus-school"></i> LESSON PASS<span class="long"> · RANCANGAN PENGAJARAN HARIAN</span></div>
+            <div class="pass__route">
+              <div><small>From (content standard)</small><b>3.1 Pecahan</b></div>
+              <div class="arrow mdi mdi-arrow-right-bold"></div>
+              <div><small>To (learning standard)</small><b>3.1.1 Pecahan wajar</b></div>
+            </div>
+            <div class="pass__grid">
+              <div><small>Class</small>4 Mawar</div>
+              <div><small>Date</small>Thu 22 Oct</div>
+              <div><small>Departs</small>9:40</div>
+              <div><small>Arrives</small>10:40</div>
+            </div>
+            <div class="pass__body">
+              <div class="row"><span>Unit</span><p>Unit 3 — Pecahan, perpuluhan dan peratus</p></div>
+              <div class="row"><span>Objective</span><p>Pupils can name and write proper fractions using fraction strips.</p></div>
+              <div class="row"><span>Activities</span><p>Fold paper strips · shade and name the fraction · pair game with fraction cards</p></div>
+              <div class="row"><span>Reflection</span><p><span class="blank">24</span> / <span class="blank">29</span> pupils mastered the objective — enrichment given.<br /><span class="blank">5</span> / <span class="blank">29</span> pupils given remedial activity with teacher guidance.</p></div>
+            </div>
+          </div>
+          <div class="pass__stub">
+            <div><small>Teacher</small><b>Kavitha Raman</b></div>
+            <div><small>Status</small><span class="chip c-sent" style="font-size:13px">Submitted</span></div>
+            <div><small>Approver</small><b style="font-size:16px">Pn. Saraswathy</b></div>
+            <div class="barcode"></div>
+          </div>
+        </article>
+        <div class="actions">
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Refer back</button>
+          <button class="btn btn--yellow"><i class="mdi mdi-check"></i> Approve</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><h1>Messages</h1><p>Inbox · Sent · Complaints (2)</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--black"><i class="mdi mdi-pencil"></i> New message</button>
+    </div>
+    <div class="inbox">
+      <div class="card list" style="padding:8px 0">
+        <div class="msg on"><span class="m-av" style="--c:var(--yellow)">SN</span><div><b>Saraswathy N.</b><p>Staff meeting moved to Friday 2:30 pm</p></div><span class="muted" style="font-size:12px">10:12</span></div>
+        <div class="msg"><span class="m-av" style="--c:#dff3d2">AK</span><div><b>Arun Kumar</b><p>Can we swap Tuesday's 8:40 slot?</p></div><span class="muted" style="font-size:12px">09:05</span></div>
+        <div class="msg"><span class="m-av" style="--c:#d6ecfb">PPD</span><div><b>District office</b><p>Reminder: eRPH audit for Term 3</p></div><span class="muted" style="font-size:12px">Wed</span></div>
+        <div class="msg"><span class="m-av" style="--c:#ece0f5">LW</span><div><b>Lim Wei Ling</b><p>Thanks for approving my plans</p></div><span class="muted" style="font-size:12px">Tue</span></div>
+      </div>
+      <div class="card thread">
+        <button class="btn thread__back" data-back><i class="mdi mdi-arrow-left"></i> Inbox</button>
+        <div class="thread__head"><h2>Staff meeting moved to Friday, 2:30 pm</h2><span class="muted">Saraswathy N. (Head master) → All staff · today 10:12</span></div>
+        <div class="thread__body">
+          <p>Dear teachers,</p>
+          <p>This week's staff meeting moves from Thursday to <b>Friday, 23 October at 2:30 pm</b> in the library. Please bring your Term 3 syllabus progress report.</p>
+          <p>Agenda: mid-term assessment schedule, Deepavali celebration committee and eRPH audit preparation.</p>
+          <p>Thank you,<br />Saraswathy</p>
+        </div>
+        <div class="reply"><input placeholder="Write a reply…" /><button class="btn btn--yellow"><i class="mdi mdi-send"></i> Send</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant"></i>Home</a>
+  <a data-view="timetable"><i class="mdi mdi-clock-outline"></i>Timetable</a>
+  <a data-view="erph"><i class="mdi mdi-ticket-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-message-text-outline"></i>Messages</a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the route stops, bottom nav and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("nav [data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a message opens it full screen; Back returns to the list.
+  document.querySelectorAll(".msg").forEach(function (m) {
+    m.addEventListener("click", function () { document.querySelector(".inbox").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".inbox").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>

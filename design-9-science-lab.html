@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 9 — Science Lab</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 9 — "Science Lab"
+  The school science lab: periodic-table tiles for navigation and key
+  numbers, a colour per subject like element groups, test tubes for
+  syllabus progress and eRPH written up like a lab report.
+-->
+<style>
+  :root {
+    --bg: #f4f8f7;
+    --card: #ffffff;
+    --ink: #10243e;
+    --muted: #63748a;
+    --line: #dde7e6;
+    --teal: #0f8b8d;
+    --teal-dark: #0b6466;
+    /* element groups = subjects */
+    --g-tam: #8ecae6;   /* Bahasa Tamil */
+    --g-mat: #ffb4a2;   /* Matematik */
+    --g-sci: #b5e48c;   /* Sains */
+    --g-bm: #ffd166;    /* Bahasa Melayu */
+    --g-eng: #cdb4db;   /* English */
+    --g-brk: #e9ecef;
+    --ok: #2a9d6f;
+    --wait: #d08c00;
+    --sent: #2f6fd6;
+    --back: #d64545;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Inter", sans-serif; font-size: 14.5px; color: var(--ink);
+    background:
+      linear-gradient(rgba(15, 139, 141, .05) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, rgba(15, 139, 141, .05) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--bg);
+  }
+  h1, h2, h3 { font-family: "Space Grotesk", sans-serif; margin: 0; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+
+  /* element tile */
+  .el { position: relative; border-radius: 10px; background: var(--c, #fff); border: 2px solid rgba(16, 36, 62, .85); padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; color: var(--ink); }
+  .el .no { font: 700 11px "JetBrains Mono", monospace; }
+  .el .sym { font: 700 26px/1 "Space Grotesk", sans-serif; }
+  .el .nm { font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ---------- header ---------- */
+  .top { background: var(--card); border-bottom: 2px solid var(--ink); }
+  .top__in { max-width: 1260px; margin: 0 auto; padding: 12px 28px; display: flex; align-items: center; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand .el { width: 54px; height: 58px; --c: var(--teal); color: #fff; border-color: var(--ink); }
+  .brand .el .sym, .brand .el .no { color: #fff; }
+  .brand b { font: 700 22px "Space Grotesk", sans-serif; display: block; }
+  .brand small { color: var(--muted); font-size: 12px; }
+  .nav { display: flex; gap: 8px; margin-left: 20px; }
+  .nav a { width: 80px; height: 70px; cursor: pointer; --c: #fff; transition: transform .15s; }
+  .nav a .sym { font-size: 21px; }
+  .nav a:hover { transform: translateY(-2px); }
+  .nav a.on { --c: var(--teal); color: #fff; box-shadow: 0 4px 0 var(--ink); transform: translateY(-3px); }
+  .nav a.on .no, .nav a.on .sym, .nav a.on .nm { color: #fff; }
+  .top .grow { flex: 1; }
+  .ico { width: 40px; height: 40px; border-radius: 10px; border: 2px solid var(--ink); display: grid; place-items: center; font-size: 19px; position: relative; flex: none; background: #fff; }
+  .ico b { position: absolute; top: -7px; right: -7px; background: var(--back); color: #fff; font: 700 10px "JetBrains Mono", monospace; border-radius: 9px; padding: 1px 5px; }
+  .av { width: 40px; height: 40px; border-radius: 10px; background: var(--g-mat); border: 2px solid var(--ink); display: grid; place-items: center; font-weight: 700; flex: none; }
+
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 26px 28px 56px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .muted { color: var(--muted); }
+  .card { background: var(--card); border: 2px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 rgba(16, 36, 62, .12); overflow: hidden; }
+  .card__head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 2px dashed var(--line); }
+  .card__head h2 { font-size: 17px; }
+  .card__head .more { margin-left: auto; color: var(--teal); font-weight: 600; cursor: pointer; font-size: 13px; }
+  .card__head i.mdi { font-size: 20px; color: var(--teal); }
+  .card__body { padding: 16px 18px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; border: 2px solid var(--ink); background: #fff; color: var(--ink); font: 600 14px "Inter", sans-serif; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+  .btn--teal { background: var(--teal); color: #fff; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font: 700 11px "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .04em; border: 1.5px solid currentColor; white-space: nowrap; }
+  .c-ok { color: var(--ok); background: #e6f6ee; }
+  .c-wait { color: var(--wait); background: #fff5dc; }
+  .c-sent { color: var(--sent); background: #e8f0fd; }
+  .c-back { color: var(--back); background: #fde8e8; }
+  .page-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 32px; }
+  .page-head p { margin: 4px 0 0; color: var(--muted); }
+  .page-head .grow { flex: 1; }
+
+  /* ---------- dashboard ---------- */
+  .hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; background: var(--ink); color: #fff; border-radius: 16px; padding: 26px 30px; margin-bottom: 22px; position: relative; overflow: hidden; }
+  .hero h1 { font-size: 34px; }
+  .hero h1 span { color: #7ee0d6; }
+  .hero p { color: #b9c6d6; margin: 8px 0 18px; max-width: 520px; }
+  .hero .btn { background: #7ee0d6; border-color: #7ee0d6; color: var(--ink); box-shadow: none; }
+  .hero svg { width: 220px; height: 150px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+  .kpi { height: 128px; padding: 10px 14px; box-shadow: 4px 4px 0 rgba(16, 36, 62, .15); }
+  .kpi .sym { font-size: 46px; }
+  .kpi .nm { font-size: 13px; }
+  .kpi .val { position: absolute; right: 14px; top: 10px; font: 700 13px "JetBrains Mono", monospace; }
+  .dash { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; align-items: start; }
+  .dash > * { min-width: 0; }
+  .stack { display: grid; gap: 22px; }
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log li { display: grid; grid-template-columns: 56px 52px 1fr auto; gap: 14px; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .log li:last-child { border-bottom: 0; }
+  .log .when { font: 700 13px "JetBrains Mono", monospace; color: var(--muted); }
+  .log .el { width: 48px; height: 50px; padding: 4px 6px; }
+  .log .el .sym { font-size: 18px; }
+  .log b { display: block; }
+  .log small { color: var(--muted); }
+  .log li.now { background: #e8f7f5; box-shadow: inset 4px 0 0 var(--teal); }
+  .log li.now .when { color: var(--teal); }
+  .log li.brk { background: repeating-linear-gradient(135deg, #f7faf9 0 8px, #eef3f2 8px 16px); color: var(--muted); }
+  .tubes { display: flex; justify-content: space-around; align-items: flex-end; padding: 18px 10px 14px; gap: 10px; }
+  .tube { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; text-align: center; }
+  .tube__glass { width: 40px; height: 140px; border: 2.5px solid var(--ink); border-top: 0; border-radius: 0 0 20px 20px; position: relative; overflow: hidden; background: #fff; }
+  .tube__glass::before { content: ""; position: absolute; top: 0; left: -6px; right: -6px; height: 6px; border: 2.5px solid var(--ink); border-radius: 4px; background: #fff; z-index: 2; }
+  .tube__liquid { position: absolute; left: 0; right: 0; bottom: 0; background: var(--c); border-top: 2px solid rgba(16, 36, 62, .4); }
+  .tube__liquid::after { content: ""; position: absolute; left: 8px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, .7); box-shadow: 10px 14px 0 -1px rgba(255, 255, 255, .6), 4px 30px 0 -2px rgba(255, 255, 255, .5); }
+  .tube b { font: 700 15px "JetBrains Mono", monospace; }
+  .notes { list-style: none; margin: 0; padding: 0; }
+  .notes li { display: flex; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .notes li:last-child { border-bottom: 0; }
+  .notes i { width: 32px; height: 32px; border-radius: 8px; border: 2px solid var(--ink); display: grid; place-items: center; font-size: 16px; flex: none; }
+  .notes small { display: block; color: var(--muted); }
+
+  /* ---------- timetable ---------- */
+  .tt { display: grid; grid-template-columns: 70px repeat(5, 1fr); gap: 8px; }
+  .tt .h { font: 700 15px "Space Grotesk", sans-serif; text-align: center; padding: 8px 0; border-radius: 10px; }
+  .tt .h.today { background: var(--ink); color: #fff; }
+  .tt .t { font: 700 12px "JetBrains Mono", monospace; color: var(--muted); padding-top: 10px; text-align: right; padding-right: 6px; }
+  .tt .el { height: 76px; }
+  .tt .el .sym { font-size: 22px; }
+  .tt .empty { height: 76px; border: 2px dashed var(--line); border-radius: 10px; }
+  .tt .now { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .tt .recess { grid-column: 2 / span 5; text-align: center; padding: 6px; border-radius: 10px; background: repeating-linear-gradient(135deg, #f7faf9 0 8px, #e9efee 8px 16px); font: 700 12px "JetBrains Mono", monospace; letter-spacing: .2em; color: var(--muted); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 18px; font-size: 13px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--ink); background: var(--c); }
+  .tt-day { display: none; }
+  .day-tabs { display: flex; gap: 6px; padding: 14px 14px 4px; }
+  .day-tabs a { flex: 1; text-align: center; padding: 8px 0; border-radius: 10px; border: 2px solid var(--ink); font: 700 14px "Space Grotesk", sans-serif; }
+  .day-tabs a.on { background: var(--ink); color: #fff; }
+
+  /* ---------- eRPH (lab report) ---------- */
+  .erph { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: start; }
+  .erph > * { min-width: 0; }
+  .plans { list-style: none; margin: 0; padding: 0; }
+  .plans li { display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .plans li:last-child { border-bottom: 0; }
+  .plans li.on { background: #e8f7f5; box-shadow: inset 4px 0 0 var(--teal); }
+  .plans .el { width: 44px; height: 46px; padding: 3px 5px; }
+  .plans .el .sym { font-size: 17px; }
+  .plans b { display: block; margin-bottom: 4px; }
+  .report__head { display: flex; gap: 16px; align-items: center; padding: 20px 24px; border-bottom: 2px solid var(--ink); background: linear-gradient(90deg, #fff, #f0faf8); }
+  .report__head .el { width: 92px; height: 80px; --c: var(--g-mat); }
+  .report__head .el .sym { font-size: 30px; }
+  .report__head h2 { font-size: 24px; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .facts div { padding: 12px 24px; border-right: 1px solid var(--line); font-weight: 600; }
+  .facts div:last-child { border-right: 0; }
+  .facts small { display: block; color: var(--muted); font: 500 11px "JetBrains Mono", monospace; text-transform: uppercase; }
+  .sec { display: grid; grid-template-columns: 200px 1fr; gap: 18px; padding: 14px 24px; border-bottom: 1px dashed var(--line); }
+  .sec:last-child { border-bottom: 0; }
+  .sec > span { font: 700 13px "Space Grotesk", sans-serif; }
+  .sec > span em { font: 700 11px "JetBrains Mono", monospace; color: var(--teal); font-style: normal; display: block; }
+  .sec p { margin: 0; }
+  .blank { font: 700 15px "JetBrains Mono", monospace; color: var(--teal-dark); border-bottom: 2px solid var(--teal); padding: 0 6px; }
+  .result { display: flex; gap: 6px; margin-top: 10px; }
+  .result span { height: 12px; border-radius: 3px; }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+
+  /* ---------- messages ---------- */
+  .inbox { display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+  .inbox > * { min-width: 0; }
+  .msg { display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .msg.on { background: #e8f7f5; box-shadow: inset 4px 0 0 var(--teal); }
+  .msg .el { width: 44px; height: 46px; padding: 3px 5px; }
+  .msg .el .sym { font-size: 16px; }
+  .msg div { min-width: 0; }
+  .msg p { margin: 2px 0 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thread__back { display: none; }
+  .thread__head { padding: 18px 22px; border-bottom: 2px dashed var(--line); }
+  .thread__head h2 { font-size: 21px; }
+  .thread__body { padding: 18px 22px; line-height: 1.7; }
+  .reply { display: flex; gap: 10px; padding: 14px 22px; border-top: 2px dashed var(--line); }
+  .reply input { flex: 1; border: 2px solid var(--ink); border-radius: 10px; padding: 9px 12px; font: inherit; }
+
+  .bottom-nav { display: none; }
+
+  @media (max-width: 1120px) {
+    .nav a { width: 62px; }
+    .nav a .nm { display: none; }
+  }
+  @media (max-width: 1000px) {
+    .dash, .erph, .inbox { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .hero svg { display: none; }
+    .hero { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .top__in { padding: 10px 16px; gap: 10px; }
+    .brand { margin-right: auto; }
+    .brand .el { width: 44px; height: 48px; }
+    .brand .el .sym { font-size: 20px; }
+    .nav, .ico:not(.keep) { display: none; }
+    .wrap { padding: 18px 16px 104px; }
+    .hero { padding: 22px 20px; }
+    .hero h1 { font-size: 26px; }
+    .kpi { height: 110px; }
+    .kpi .sym { font-size: 36px; }
+    .log li { grid-template-columns: 46px 1fr auto; padding: 12px 14px; }
+    .log li .el { display: none; }
+    .page-head h1 { font-size: 26px; }
+    .tt-wrap { display: none; }
+    .brand small { display: none; }
+    .bottom-nav .nm { font-size: 10px; }
+    .tt-day { display: block; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .facts div:nth-child(2) { border-right: 0; }
+    .facts div { padding: 10px 16px; border-bottom: 1px solid var(--line); }
+    .sec { grid-template-columns: 1fr; gap: 4px; padding: 12px 16px; }
+    .report__head { padding: 16px; }
+    .inbox .thread { display: none; }
+    .inbox.reading .list { display: none; }
+    .inbox.reading .thread { display: block; }
+    .thread__back { display: inline-flex; margin: 16px 22px 0; }
+    .bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 2px solid var(--ink); justify-content: space-around; padding: 8px 6px 12px; z-index: 10; }
+    .bottom-nav a { width: 72px; height: 66px; cursor: pointer; --c: #fff; }
+    .bottom-nav a .sym { font-size: 20px; }
+    .bottom-nav a.on { --c: var(--teal); color: #fff; }
+    .bottom-nav a.on .no, .bottom-nav a.on .sym, .bottom-nav a.on .nm { color: #fff; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top__in">
+    <div class="brand"><span class="el"><span class="no">1</span><span class="sym">Ed</span></span><div><b>EduNex</b><small>SJK(T) Ladang Bukit Indah · Lab of learning</small></div></div>
+    <nav class="nav">
+      <a class="el on" data-view="dashboard"><span class="no">01</span><span class="sym">Hm</span><span class="nm">Home</span></a>
+      <a class="el" data-view="timetable"><span class="no">02</span><span class="sym">Tt</span><span class="nm">Timetable</span></a>
+      <a class="el" data-view="erph"><span class="no">03</span><span class="sym">Rp</span><span class="nm">eRPH</span></a>
+      <a class="el" data-view="messages"><span class="no">04</span><span class="sym">Ms</span><span class="nm">Messages</span></a>
+      <a class="el"><span class="no">05</span><span class="sym">Sy</span><span class="nm">Syllabus</span></a>
+    </nav>
+    <span class="grow"></span>
+    <span class="ico"><i class="mdi mdi-magnify"></i></span>
+    <span class="ico keep"><i class="mdi mdi-bell-outline"></i><b>3</b></span>
+    <span class="av">KR</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="hero">
+      <div>
+        <h1>Good morning, <span>Cikgu Kavitha</span></h1>
+        <p>Thursday, 22 October 2026. Six classes on today's bench. 4 Mawar Matematik is running now.</p>
+        <button class="btn" data-go="erph"><i class="mdi mdi-flask-outline"></i> Write reflections</button>
+      </div>
+      <!-- beaker + flask illustration -->
+      <svg viewBox="0 0 220 150" aria-hidden="true">
+        <g fill="none" stroke="#7ee0d6" stroke-width="3" stroke-linejoin="round">
+          <path d="M40 20 h40 M48 20 v40 l-26 64 a8 8 0 0 0 7 11 h62 a8 8 0 0 0 7 -11 l-26 -64 v-40" />
+          <path d="M140 30 h50 v100 a6 6 0 0 1 -6 6 h-38 a6 6 0 0 1 -6 -6 z" />
+          <path d="M146 60 h12 M146 80 h18 M146 100 h12" />
+        </g>
+        <path d="M33 105 l-10 22 a6 6 0 0 0 6 8 h62 a6 6 0 0 0 6 -8 l-10 -22 z" fill="#ffb4a2" />
+        <rect x="141" y="70" width="48" height="64" rx="5" fill="#b5e48c" />
+        <circle cx="58" cy="95" r="5" fill="#ffb4a2" /><circle cx="68" cy="80" r="3.5" fill="#ffb4a2" /><circle cx="160" cy="55" r="4" fill="#b5e48c" />
+      </svg>
+    </div>
+    <div class="kpis">
+      <div class="el kpi" style="--c:#fff"><span class="no">06</span><span class="sym">Cl</span><span class="nm">Classes today</span><span class="val">6</span></div>
+      <div class="el kpi" style="--c:var(--g-bm)"><span class="no">12</span><span class="sym">Aw</span><span class="nm">Awaiting approval</span><span class="val">12</span></div>
+      <div class="el kpi" style="--c:var(--g-mat)"><span class="no">03</span><span class="sym">Rb</span><span class="nm">Referred back</span><span class="val">3</span></div>
+      <div class="el kpi" style="--c:var(--g-sci)"><span class="no">68</span><span class="sym">Sy</span><span class="nm">Syllabus taught</span><span class="val">68%</span></div>
+    </div>
+    <div class="dash">
+      <div class="card">
+        <div class="card__head"><i class="mdi mdi-test-tube"></i><h2>Today's experiments</h2><span class="more" data-go="timetable">Full week →</span></div>
+        <ul class="log">
+          <li><span class="when">07:40</span><span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span></span><div><b>Bahasa Tamil · 5 Melati</b><small>செய்யுள் — திருக்குறள் · Bilik 12</small></div><span class="chip c-ok">Approved</span></li>
+          <li class="now"><span class="when">09:40</span><span class="el" style="--c:var(--g-mat)"><span class="no">4M</span><span class="sym">Mt</span></span><div><b>Matematik · 4 Mawar</b><small>Pecahan wajar · running now</small></div><span class="chip c-sent">Submitted</span></li>
+          <li class="brk"><span class="when">10:40</span><span></span><div><b>Recess</b></div><span></span></li>
+          <li><span class="when">11:00</span><span class="el" style="--c:var(--g-sci)"><span class="no">4M</span><span class="sym">Sn</span></span><div><b>Sains · 4 Mawar</b><small>Sistem rangka manusia · Makmal</small></div><span class="chip c-wait">Pending</span></li>
+          <li><span class="when">12:00</span><span class="el" style="--c:var(--g-tam)"><span class="no">6K</span><span class="sym">Bt</span></span><div><b>Bahasa Tamil · 6 Kenanga</b><small>கட்டுரை எழுதுதல் · Bilik 15</small></div><span class="chip c-back">Referred</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-flask-round-bottom-outline"></i><h2>Syllabus progress</h2></div>
+          <div class="tubes">
+            <div class="tube"><b>78%</b><span class="tube__glass"><span class="tube__liquid" style="height:78%;--c:var(--g-tam)"></span></span>B. Tamil</div>
+            <div class="tube"><b>64%</b><span class="tube__glass"><span class="tube__liquid" style="height:64%;--c:var(--g-mat)"></span></span>Matematik</div>
+            <div class="tube"><b style="color:var(--back)">52%</b><span class="tube__glass"><span class="tube__liquid" style="height:52%;--c:var(--g-sci)"></span></span>Sains</div>
+            <div class="tube"><b>70%</b><span class="tube__glass"><span class="tube__liquid" style="height:70%;--c:var(--g-eng)"></span></span>English</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-clipboard-text-outline"></i><h2>Lab notes</h2></div>
+          <ul class="notes">
+            <li><i class="mdi mdi-check" style="background:var(--g-sci)"></i><div><b>5 Melati plan approved</b><small>Pn. Saraswathy · 8 min ago</small></div></li>
+            <li><i class="mdi mdi-reply" style="background:var(--g-mat)"></i><div><b>6 Kenanga referred back</b><small>"Add the remedial count" · 1 h ago</small></div></li>
+            <li><i class="mdi mdi-bullhorn-outline" style="background:var(--g-tam)"></i><div><b>Staff meeting moved to Friday 2:30 pm</b><small>Head master · yesterday</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><h1>Timetable</h1><p>Week 42 · 19 – 23 October 2026</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+      <button class="btn btn--teal"><i class="mdi mdi-plus"></i> Add slot</button>
+    </div>
+    <div class="card card__body tt-wrap">
+      <div class="tt">
+        <span></span><span class="h">Mon</span><span class="h">Tue</span><span class="h">Wed</span><span class="h today">Thu</span><span class="h">Fri</span>
+        <span class="t">07:40</span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span><span class="nm">5 Melati</span></span>
+        <span class="el" style="--c:var(--g-mat)"><span class="no">4M</span><span class="sym">Mt</span><span class="nm">4 Mawar</span></span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span><span class="nm">5 Melati</span></span>
+        <span class="el" style="--c:var(--g-sci)"><span class="no">4M</span><span class="sym">Sn</span><span class="nm">4 Mawar</span></span>
+        <span class="t">08:40</span>
+        <span class="el" style="--c:var(--g-mat)"><span class="no">4M</span><span class="sym">Mt</span><span class="nm">4 Mawar</span></span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">6K</span><span class="sym">Bt</span><span class="nm">6 Kenanga</span></span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-bm)"><span class="no">3T</span><span class="sym">Bm</span><span class="nm">3 Teratai</span></span>
+        <span class="t">09:40</span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-sci)"><span class="no">4M</span><span class="sym">Sn</span><span class="nm">4 Mawar</span></span>
+        <span class="el" style="--c:var(--g-mat)"><span class="no">4M</span><span class="sym">Mt</span><span class="nm">4 Mawar</span></span>
+        <span class="el now" style="--c:var(--g-mat)"><span class="no">4M · now</span><span class="sym">Mt</span><span class="nm">4 Mawar</span></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span><span class="nm">5 Melati</span></span>
+        <span class="t">10:40</span><span class="recess">RECESS</span>
+        <span class="t">11:00</span>
+        <span class="el" style="--c:var(--g-eng)"><span class="no">6K</span><span class="sym">En</span><span class="nm">6 Kenanga</span></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span><span class="nm">5 Melati</span></span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-sci)"><span class="no">4M</span><span class="sym">Sn</span><span class="nm">4 Mawar</span></span>
+        <span class="empty"></span>
+        <span class="t">12:00</span>
+        <span class="empty"></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">6K</span><span class="sym">Bt</span><span class="nm">6 Kenanga</span></span>
+        <span class="el" style="--c:var(--g-sci)"><span class="no">5M</span><span class="sym">Sn</span><span class="nm">5 Melati</span></span>
+        <span class="el" style="--c:var(--g-tam)"><span class="no">6K</span><span class="sym">Bt</span><span class="nm">6 Kenanga</span></span>
+        <span class="el" style="--c:var(--g-mat)"><span class="no">3T</span><span class="sym">Mt</span><span class="nm">3 Teratai</span></span>
+      </div>
+      <div class="legend">
+        <span><i style="--c:var(--g-tam)"></i>Bt · Bahasa Tamil</span><span><i style="--c:var(--g-mat)"></i>Mt · Matematik</span><span><i style="--c:var(--g-sci)"></i>Sn · Sains</span><span><i style="--c:var(--g-bm)"></i>Bm · Bahasa Melayu</span><span><i style="--c:var(--g-eng)"></i>En · English</span>
+      </div>
+    </div>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="card tt-day">
+      <div class="day-tabs"><a>Mon</a><a>Tue</a><a>Wed</a><a class="on">Thu</a><a>Fri</a></div>
+      <ul class="log">
+        <li><span class="when">07:40</span><div><b>Bahasa Tamil</b><small>5 Melati</small></div><span class="chip c-ok">OK</span></li>
+        <li class="now"><span class="when">09:40</span><div><b>Matematik</b><small>4 Mawar · now</small></div><span class="chip c-sent">Sent</span></li>
+        <li class="brk"><span class="when">10:40</span><div><b>Recess</b></div><span></span></li>
+        <li><span class="when">11:00</span><div><b>Sains</b><small>4 Mawar</small></div><span class="chip c-wait">Pending</span></li>
+        <li><span class="when">12:00</span><div><b>Bahasa Tamil</b><small>6 Kenanga</small></div><span class="chip c-back">Back</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><h1>eRPH lab reports</h1><p>Daily lesson plans · Thursday 22 October</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-qrcode"></i> QR code</button>
+      <button class="btn"><i class="mdi mdi-export-variant"></i> Export</button>
+    </div>
+    <div class="erph">
+      <div class="card">
+        <ul class="plans">
+          <li><span class="el" style="--c:var(--g-tam)"><span class="no">5M</span><span class="sym">Bt</span></span><div><b>5 Melati · B. Tamil</b><span class="chip c-ok">Approved</span></div></li>
+          <li class="on"><span class="el" style="--c:var(--g-mat)"><span class="no">4M</span><span class="sym">Mt</span></span><div><b>4 Mawar · Matematik</b><span class="chip c-sent">Submitted</span></div></li>
+          <li><span class="el" style="--c:var(--g-sci)"><span class="no">4M</span><span class="sym">Sn</span></span><div><b>4 Mawar · Sains</b><span class="chip c-wait">Pending</span></div></li>
+          <li><span class="el" style="--c:var(--g-tam)"><span class="no">6K</span><span class="sym">Bt</span></span><div><b>6 Kenanga · B. Tamil</b><span class="chip c-back">Referred back</span></div></li>
+          <li><span class="el" style="--c:var(--g-mat)"><span class="no">3T</span><span class="sym">Mt</span></span><div><b>3 Teratai · Matematik</b><span class="chip c-ok">Approved</span></div></li>
+        </ul>
+      </div>
+      <div>
+        <article class="card">
+          <div class="report__head">
+            <span class="el"><span class="no">3.1.1</span><span class="sym">Mt</span><span class="nm">Matematik</span></span>
+            <div><span class="chip c-sent">Submitted</span><h2 style="margin-top:6px">Pecahan wajar</h2><span class="muted">Waiting for Pn. Saraswathy to approve</span></div>
+          </div>
+          <div class="facts">
+            <div><small>Class</small>4 Mawar</div>
+            <div><small>Date</small>Thu 22 Oct</div>
+            <div><small>Time</small>09:40 – 10:40</div>
+            <div><small>Teacher</small>Kavitha Raman</div>
+          </div>
+          <div class="sec"><span><em>01</em>Unit &amp; standards</span><p>Unit 3 — Pecahan, perpuluhan dan peratus · 3.1 Pecahan · 3.1.1 Menamakan dan menulis pecahan wajar dengan pengangka hingga 9</p></div>
+          <div class="sec"><span><em>02</em>Objective</span><p>Pupils can name and write proper fractions using fraction strips.</p></div>
+          <div class="sec"><span><em>03</em>Method (activities)</span><p>Fold paper strips into equal parts → shade and name the fraction → pair game matching fraction cards to pictures.</p></div>
+          <div class="sec"><span><em>04</em>Results (reflection)</span>
+            <div><p><span class="blank">24</span> / <span class="blank">29</span> pupils mastered the objective — enrichment given.<br /><span class="blank">5</span> / <span class="blank">29</span> pupils given remedial activity with teacher guidance.</p>
+              <div class="result"><span style="flex:24;background:var(--g-sci);border:1.5px solid var(--ink)"></span><span style="flex:5;background:var(--g-mat);border:1.5px solid var(--ink)"></span></div>
+            </div>
+          </div>
+        </article>
+        <div class="actions">
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Refer back</button>
+          <button class="btn btn--teal"><i class="mdi mdi-check"></i> Approve</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><h1>Messages</h1><p>Inbox · Sent · Complaints (2)</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--teal"><i class="mdi mdi-pencil"></i> New message</button>
+    </div>
+    <div class="inbox">
+      <div class="card list">
+        <div class="msg on"><span class="el" style="--c:var(--g-tam)"><span class="no">HM</span><span class="sym">Sn</span></span><div><b>Saraswathy N.</b><p>Staff meeting moved to Friday 2:30 pm</p></div><span class="muted mono" style="font-size:12px">10:12</span></div>
+        <div class="msg"><span class="el" style="--c:var(--g-sci)"><span class="no">T</span><span class="sym">Ak</span></span><div><b>Arun Kumar</b><p>Can we swap Tuesday's 8:40 slot?</p></div><span class="muted mono" style="font-size:12px">09:05</span></div>
+        <div class="msg"><span class="el" style="--c:var(--g-bm)"><span class="no">PPD</span><span class="sym">Do</span></span><div><b>District office</b><p>Reminder: eRPH audit for Term 3</p></div><span class="muted mono" style="font-size:12px">Wed</span></div>
+        <div class="msg"><span class="el" style="--c:var(--g-eng)"><span class="no">T</span><span class="sym">Lw</span></span><div><b>Lim Wei Ling</b><p>Thanks for approving my plans</p></div><span class="muted mono" style="font-size:12px">Tue</span></div>
+      </div>
+      <div class="card thread">
+        <button class="btn thread__back" data-back><i class="mdi mdi-arrow-left"></i> Inbox</button>
+        <div class="thread__head"><h2>Staff meeting moved to Friday, 2:30 pm</h2><span class="muted">Saraswathy N. (Head master) → All staff · today 10:12</span></div>
+        <div class="thread__body">
+          <p>Dear teachers,</p>
+          <p>This week's staff meeting moves from Thursday to <b>Friday, 23 October at 2:30 pm</b> in the library. Please bring your Term 3 syllabus progress report.</p>
+          <p>Agenda: mid-term assessment schedule, Deepavali celebration committee and eRPH audit preparation.</p>
+          <p>Thank you,<br />Saraswathy</p>
+        </div>
+        <div class="reply"><input placeholder="Write a reply…" /><button class="btn btn--teal"><i class="mdi mdi-send"></i> Send</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <a class="el on" data-view="dashboard"><span class="no">01</span><span class="sym">Hm</span><span class="nm">Home</span></a>
+  <a class="el" data-view="timetable"><span class="no">02</span><span class="sym">Tt</span><span class="nm">Timetable</span></a>
+  <a class="el" data-view="erph"><span class="no">03</span><span class="sym">Rp</span><span class="nm">eRPH</span></a>
+  <a class="el" data-view="messages"><span class="no">04</span><span class="sym">Ms</span><span class="nm">Messages</span></a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the element tiles and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("nav [data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a message opens it full screen; Back returns to the list.
+  document.querySelectorAll(".msg").forEach(function (m) {
+    m.addEventListener("click", function () { document.querySelector(".inbox").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".inbox").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>
