@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex Design Options</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;600&family=Nunito:wght@800&family=Fraunces:wght@400;600&family=Caveat:wght@700&family=Kalam:wght@700&family=Graduate&family=Playfair+Display:ital,wght@1,700&family=Special+Elite&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Poppins", sans-serif; background: #f4f6fb; color: #0f172a; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+  .brand span { width: 32px; height: 32px; border-radius: 50%; background: #2563eb; display: grid; place-items: center; }
+  h1 { font-size: 36px; margin: 24px 0 8px; }
+  .intro { color: #64748b; max-width: 640px; margin: 0 0 36px; line-height: 1.6; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .opt { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: transform .15s, box-shadow .15s; }
+  .opt:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -16px rgba(15, 23, 42, .25); }
+  .preview { height: 190px; position: relative; overflow: hidden; }
+  .body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
+  .num { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: .1em; }
+  .body h2 { margin: 4px 0 8px; font-size: 22px; }
+  .body p { margin: 0 0 14px; color: #475569; font-size: 14px; line-height: 1.6; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .tags span { font-size: 12px; background: #f1f5f9; padding: 4px 10px; border-radius: 20px; color: #334155; }
+  .swatches { display: flex; gap: 6px; margin-bottom: 14px; }
+  .swatches i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, .08); }
+  .open { margin-top: 18px; font-weight: 600; color: #2563eb; font-size: 14px; }
+  .note { margin-top: 36px; padding: 18px 22px; background: #fff; border: 1px dashed #cbd5e1; border-radius: 12px; color: #475569; font-size: 14px; line-height: 1.6; }
+
+  /* mini previews drawn in CSS */
+  .p1 { background: #f1f5f9; display: grid; grid-template-columns: 56px 1fr; }
+  .p1 .s { background: #0f172a; padding: 14px 10px; }
+  .p1 .s i { display: block; height: 8px; border-radius: 3px; background: #334155; margin-bottom: 8px; }
+  .p1 .s i:nth-child(2) { background: #0d9488; }
+  .p1 .m { padding: 14px; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 34px 1fr; gap: 8px; }
+  .p1 .m b { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; }
+  .p1 .m .big { grid-column: span 3; background: repeating-linear-gradient(#fff 0 18px, #e2e8f0 18px 19px); }
+  .p2 { background: #fdf8f3; padding: 16px; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; }
+  .p2 b { border-radius: 16px; background: #fff; }
+  .p2 b:nth-child(1) { background: linear-gradient(135deg, #7c5cff, #a083ff); }
+  .p2 b:nth-child(2) { background: #fff3d6; }
+  .p2 b:nth-child(3) { background: #ffece6; }
+  .p2 b:nth-child(4) { grid-column: span 2; }
+  .p3 { background: #f7f5f0; padding: 18px 20px; font-family: "Fraunces", serif; }
+  .p3 .k { font: 600 9px "Inter", sans-serif; color: #e4572e; letter-spacing: .14em; }
+  .p3 .h { font-size: 24px; line-height: 1.05; margin: 6px 0 12px; }
+  .p3 .h em { color: #e4572e; }
+  .p3 .r { border-top: 1px solid #1a1a1a; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .p3 .r span { font-size: 22px; padding: 6px 0; border-right: 1px solid #dcd7cc; padding-left: 6px; }
+
+  .group { font-size: 24px; margin: 48px 0 4px; }
+  .group-intro { color: #64748b; margin: 0 0 20px; }
+  .p4 { background: #2e4b3c; box-shadow: inset 0 0 0 8px #6b4423; padding: 18px 22px; color: #f3f1e7; position: relative; }
+  .p4 .h { font: 700 30px "Caveat", cursive; }
+  .p4 .n { display: flex; gap: 22px; font: 700 30px "Caveat", cursive; margin: 4px 0 8px; }
+  .p4 i { display: inline-block; width: 70px; height: 50px; background: #fff3a8; margin-right: 10px; transform: rotate(-3deg); box-shadow: 2px 4px 8px rgba(0,0,0,.3); }
+  .p4 i + i { background: #ffd1dc; transform: rotate(2deg); }
+  .p4 b { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; background: linear-gradient(#8a5a33, #4a2e17); }
+  .p5 { background: linear-gradient(90deg, transparent 34px, #f2a2a2 34px 36px, transparent 36px), repeating-linear-gradient(transparent 0 23px, #cfe0f3 23px 24px), #fffdf6; padding: 20px 20px 20px 50px; position: relative; }
+  .p5 .h { font: 700 28px "Kalam", cursive; color: #1f3a93; margin-bottom: 14px; }
+  .p5 mark { background: #fff275; color: inherit; padding: 0 4px; }
+  .p5 .st { display: inline-block; font: 700 11px "Inter", sans-serif; letter-spacing: .12em; color: #2e8b57; border: 2px solid currentColor; padding: 2px 6px; transform: rotate(-5deg); margin-right: 8px; }
+  .p5 .st.r { color: #d7263d; transform: rotate(3deg); }
+  .p5 .tabs { position: absolute; right: 0; top: 16px; display: grid; gap: 4px; }
+  .p5 .tabs i { display: block; width: 18px; height: 30px; border-radius: 0 6px 6px 0; }
+  .p6 { background: #f7f4ec; }
+  .p6 .bar { background: #13294b; height: 70px; display: flex; gap: 8px; padding: 0 18px; align-items: flex-end; border-bottom: 5px solid #f5b400; position: relative; }
+  .p6 .crest { width: 30px; height: 34px; background: #f5b400; clip-path: polygon(50% 0,100% 12%,100% 55%,50% 100%,0 55%,0 12%); align-self: center; margin-right: 8px; }
+  .p6 .pn { width: 40px; height: 44px; margin-bottom: -26px; background: #2b4f86; clip-path: polygon(0 0,100% 0,100% 72%,50% 100%,0 72%); }
+  .p6 .pn.on { background: #f5b400; }
+  .p6 .sb { margin: 38px 18px 0; background: #13294b; border-radius: 8px; padding: 10px; display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+  .p6 .sb b { background: #0b1a33; color: #f5b400; font: 22px "Graduate", serif; text-align: center; padding: 6px 0; border-radius: 4px; }
+  .p7 { background: #f1e4c8; padding: 16px 20px; text-align: center; color: #3e2c1c; }
+  .p7 .w { font: italic 700 34px "Playfair Display", serif; border-top: 3px double #3e2c1c; padding-top: 6px; }
+  .p7 .r { font: 10px "Special Elite", monospace; letter-spacing: .3em; border-bottom: 3px double #3e2c1c; padding-bottom: 8px; }
+  .p7 .tk { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+  .p7 .tk span { background: #f7eedb; font: 700 24px "Playfair Display", serif; padding: 6px 18px; border-left: 2px dashed #c9b48e; border-right: 2px dashed #c9b48e; }
+  .p8 { background: #fbf8f2; }
+  .p8 .sk { height: 14px; background: linear-gradient(135deg, #d4a73a 25%, transparent 25%) -7px 0 / 14px 14px, linear-gradient(225deg, #d4a73a 25%, transparent 25%) -7px 0 / 14px 14px, linear-gradient(315deg, #d4a73a 25%, transparent 25%) 0 0 / 14px 14px, linear-gradient(45deg, #d4a73a 25%, transparent 25%) 0 0 / 14px 14px, #6d0f1a; }
+  .p8 .hero { margin: 20px 18px; height: 120px; border-radius: 16px; background: linear-gradient(110deg, #010066 55%, transparent 55%), repeating-linear-gradient(180deg, #cc0001 0 10px, #fff 10px 20px); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+  .p8 .hero b { color: #ffcc00; font: 800 22px "Plus Jakarta Sans", sans-serif; }
+  .p8 svg { width: 70px; height: 70px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 28px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<svg width="0" height="0" style="position:absolute"><symbol id="bunga-i" viewBox="0 0 100 100"><g transform="translate(50 50)" fill="#cc0001"><ellipse rx="18" ry="30" cy="-24" /><ellipse rx="18" ry="30" cy="-24" transform="rotate(72)" /><ellipse rx="18" ry="30" cy="-24" transform="rotate(144)" /><ellipse rx="18" ry="30" cy="-24" transform="rotate(216)" /><ellipse rx="18" ry="30" cy="-24" transform="rotate(288)" /><circle r="9" fill="#8e0000" /><circle cx="15" cy="-28" r="4" fill="#ffcc00" /></g></symbol></svg>
+
+  <div class="brand"><span><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" /></svg></span> EduNex</div>
+  <h1>Eight design directions</h1>
+  <p class="intro">These are static wireframes for discussion. Each of the eight designs shows the same four screens with the same sample data, so you can compare them side by side: Dashboard, Timetable, eRPH and Messages. Click the navigation inside each design to switch screens. Every layout also works on a phone.</p>
+
+  <h2 class="group" style="margin-top:0">Modern designs</h2>
+  <p class="group-intro">Clean, app-style layouts.</p>
+  <div class="grid">
+    <a class="opt" href="design-1-slate.html">
+      <div class="preview p1"><div class="s"><i></i><i></i><i></i><i></i><i></i></div><div class="m"><b></b><b></b><b></b><b></b><b class="big"></b><b></b></div></div>
+      <div class="body">
+        <div class="num">Design 1</div>
+        <h2 style="font-family:Inter">Slate</h2>
+        <div class="swatches"><i style="background:#0f172a"></i><i style="background:#0d9488"></i><i style="background:#f1f5f9"></i><i style="background:#d97706"></i></div>
+        <p>A professional admin console. It has a fixed sidebar, a row of key figures, and dense tables with approve and refer-back actions next to each lesson plan. Best for head masters and admins who work in the app all day. Also shows the planned AI features.</p>
+        <div class="tags"><span>Sidebar navigation</span><span>Data tables</span><span>Split review panel</span><span style="background:#ede9fe;color:#6d28d9">✦ AI Assistant screens</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+    <a class="opt" href="design-2-bloom.html">
+      <div class="preview p2"><b></b><b></b><b></b><b></b><b></b></div>
+      <div class="body">
+        <div class="num">Design 2</div>
+        <h2 style="font-family:Nunito;font-weight:800">Bloom</h2>
+        <div class="swatches"><i style="background:#7c5cff"></i><i style="background:#ff7a59"></i><i style="background:#20c997"></i><i style="background:#fdf8f3"></i></div>
+        <p>Friendly and made for teachers first. It uses soft pastel cards and a day-by-day agenda. eRPH appears as a board, from Pending to Approved, and messages read like a chat. On phones there is a bottom tab bar.</p>
+        <div class="tags"><span>Bento dashboard</span><span>eRPH status board</span><span>Chat messages</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+    <a class="opt" href="design-3-ledger.html">
+      <div class="preview p3"><div class="k">THURSDAY, 22 OCTOBER</div><div class="h">Six classes, <em>two reflections</em></div><div class="r"><span>6</span><span>12</span><span style="color:#e4572e">3</span><span style="border:0">68%</span></div></div>
+      <div class="body">
+        <div class="num">Design 3</div>
+        <h2 style="font-family:Fraunces">Ledger</h2>
+        <div class="swatches"><i style="background:#1a1a1a"></i><i style="background:#e4572e"></i><i style="background:#f7f5f0"></i><i style="background:#2f7d4f"></i></div>
+        <p>Calm and editorial, inspired by print. It uses serif headlines and fine lines, with one accent colour. The day reads like a newspaper front page. eRPH looks like the printed lesson plan, with the fill-in blanks of the reflection.</p>
+        <div class="tags"><span>Top navigation</span><span>Document-style eRPH</span><span>Notice board</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+  </div>
+
+
+  <h2 class="group">School-themed designs</h2>
+  <p class="group-intro">Three more designs built around things every teacher knows from the classroom.</p>
+  <div class="grid">
+    <a class="opt" href="design-4-chalkboard.html">
+      <div class="preview p4"><div class="h">Good morning!</div><div class="n"><span>6</span><span style="color:#f6e27f">12</span><span style="color:#f4a7b9">3</span></div><i></i><i></i><b></b></div>
+      <div class="body">
+        <div class="num">Design 4</div>
+        <h2 style="font-family:Caveat;font-size:30px">Chalkboard</h2>
+        <div class="swatches"><i style="background:#2e4b3c"></i><i style="background:#6b4423"></i><i style="background:#f6e27f"></i><i style="background:#f4a7b9"></i></div>
+        <p>The classroom blackboard. A green board in a wooden frame, with chalk handwriting for headings and coloured chalk for each status. To-dos are sticky notes, and the menu sits on the wooden chalk ledge at the bottom.</p>
+        <div class="tags"><span>Chalk ledge menu</span><span>Sticky-note to-dos</span><span>Chalk colours for status</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+    <a class="opt" href="design-5-notebook.html">
+      <div class="preview p5"><div class="h"><mark>Cikgu Kavitha</mark></div><span class="st">APPROVED</span><span class="st r">REFERRED BACK</span><div class="tabs"><i style="background:#fde68a"></i><i style="background:#bfdbfe"></i><i style="background:#fecaca"></i><i style="background:#bbf7d0"></i></div></div>
+      <div class="body">
+        <div class="num">Design 5</div>
+        <h2 style="font-family:Kalam">Notebook</h2>
+        <div class="swatches"><i style="background:#fffdf6"></i><i style="background:#1f3a93"></i><i style="background:#d7263d"></i><i style="background:#fff275"></i></div>
+        <p>An exercise book on the teacher's desk. Ruled paper with a red margin and coloured divider tabs for the menu. eRPH statuses are rubber stamps, the head master's comments look like red pen, and syllabus progress is shown on rulers.</p>
+        <div class="tags"><span>Divider tab menu</span><span>Rubber-stamp status</span><span>Graph-paper timetable</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+    <a class="opt" href="design-6-campus.html">
+      <div class="preview p6"><div class="bar"><span class="crest"></span><span class="pn on"></span><span class="pn"></span><span class="pn"></span></div><div class="sb"><b>06</b><b>12</b><b style="color:#ff8a8a">03</b><b>38</b></div></div>
+      <div class="body">
+        <div class="num">Design 6</div>
+        <h2 style="font-family:Graduate">Campus</h2>
+        <div class="swatches"><i style="background:#13294b"></i><i style="background:#f5b400"></i><i style="background:#f7f4ec"></i><i style="background:#9b1c31"></i></div>
+        <p>School spirit in navy and gold. A crest on the banner and pennant-shaped menu tabs. Key figures appear on a sports-day scoreboard, the timetable is a bell schedule, and the eRPH looks like a certificate with a seal.</p>
+        <div class="tags"><span>Pennant menu</span><span>Scoreboard figures</span><span>Certificate-style eRPH</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+  </div>
+
+  <h2 class="group">Vintage &amp; Malaysian designs</h2>
+  <p class="group-intro">One design with an old-school feel, and one built around Malaysian identity.</p>
+  <div class="grid">
+    <a class="opt" href="design-7-vintage.html">
+      <div class="preview p7"><div class="w">EduNex</div><div class="r">THE SCHOOL REGISTER</div><div class="tk"><span>6</span><span>12</span><span style="color:#a23b2a">3</span></div></div>
+      <div class="body">
+        <div class="num">Design 7</div>
+        <h2 style="font-family:'Playfair Display';font-style:italic">Vintage</h2>
+        <div class="swatches"><i style="background:#f1e4c8"></i><i style="background:#3e2c1c"></i><i style="background:#a23b2a"></i><i style="background:#2f6f6a"></i></div>
+        <p>The old school register. Aged paper and typewriter text, with manila folder tabs for the menu and ticket stubs for the key figures. The head master's notice arrives as a telegram, eRPH is a library catalogue card, and messages are letters with postmarks.</p>
+        <div class="tags"><span>Folder tab menu</span><span>Catalogue-card eRPH</span><span>Telegram notices</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+    <a class="opt" href="design-8-malaysia.html">
+      <div class="preview p8"><div class="sk"></div><div class="hero"><b>Selamat pagi!</b><svg viewBox="0 0 100 100"><use href="#bunga-i" /></svg></div></div>
+      <div class="body">
+        <div class="num">Design 8</div>
+        <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;color:#010066">Malaysia</h2>
+        <div class="swatches"><i style="background:#cc0001"></i><i style="background:#010066"></i><i style="background:#ffcc00"></i><i style="background:#6d0f1a"></i></div>
+        <p>Malaysian identity in national red, blue and yellow. A gold songket border, the bunga raya as the brand mark, and a wau in the welcome card. Labels are in Bahasa Malaysia with English underneath, and the eRPH uses the official RPH terms.</p>
+        <div class="tags"><span>Bahasa Malaysia first</span><span>Songket &amp; bunga raya</span><span>RPH terms</span></div>
+        <div class="open">Open design →</div>
+      </div>
+    </a>
+  </div>
+
+  <p class="note"><b>Note:</b> the screens use example data only, and the buttons are not connected. Every design keeps the features of today's app, including eRPH approval, timetable, syllabus, staff, messages and complaints, and supports English, Malay, Tamil and Chinese. Only the look and the navigation change.</p>
+</div>
+</body>
+</html>

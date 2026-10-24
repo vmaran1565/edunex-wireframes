@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 2 — Bloom</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 2 — "Bloom"
+  Friendly, teacher-first: warm cream canvas, soft pastel bento cards,
+  big rounded shapes, pill navigation on desktop and a bottom tab bar on
+  phones. eRPH is shown as a status board instead of a table.
+-->
+<style>
+  :root {
+    --bg: #fdf8f3;
+    --card: #ffffff;
+    --text: #2b2440;
+    --muted: #8a819c;
+    --line: #f0e8df;
+    --violet: #7c5cff;
+    --violet-soft: #efeaff;
+    --coral: #ff7a59;
+    --coral-soft: #ffece6;
+    --mint: #20c997;
+    --mint-soft: #defaf0;
+    --sun: #ffb020;
+    --sun-soft: #fff3d6;
+    --sky: #3fa9f5;
+    --sky-soft: #e2f2fe;
+    --r: 24px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Nunito", sans-serif; background: var(--bg); color: var(--text); font-size: 15px; }
+  h1, h2, h3 { margin: 0; font-weight: 800; }
+
+  /* ---------- top bar ---------- */
+  .top { display: flex; align-items: center; gap: 16px; padding: 18px 32px; max-width: 1280px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; }
+  .brand__logo { width: 40px; height: 40px; border-radius: 14px; background: linear-gradient(135deg, var(--violet), #b18cff); color: #fff; display: grid; place-items: center; font-size: 22px; transform: rotate(-6deg); }
+  .pills { display: flex; gap: 4px; background: var(--card); padding: 6px; border-radius: 99px; margin: 0 auto; box-shadow: 0 4px 20px rgba(43, 36, 64, .06); }
+  .pills a { display: flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 99px; color: var(--muted); font-weight: 700; cursor: pointer; }
+  .pills a.on { background: var(--text); color: #fff; }
+  .round { width: 44px; height: 44px; border-radius: 50%; background: var(--card); display: grid; place-items: center; font-size: 20px; color: var(--text); position: relative; box-shadow: 0 4px 20px rgba(43, 36, 64, .06); flex: none; }
+  .round .badge { position: absolute; top: -2px; right: -2px; background: var(--coral); color: #fff; font-size: 11px; font-weight: 800; min-width: 20px; height: 20px; border-radius: 10px; display: grid; place-items: center; border: 2px solid var(--bg); }
+  .me { width: 44px; height: 44px; border-radius: 50%; background: var(--sun); display: grid; place-items: center; font-weight: 800; color: #6b4300; flex: none; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 8px 32px 48px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .card { background: var(--card); border-radius: var(--r); padding: 22px; box-shadow: 0 4px 24px rgba(43, 36, 64, .05); }
+  .card h3 { font-size: 17px; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .card h3 .more { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--violet); cursor: pointer; }
+  .muted { color: var(--muted); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 800; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 20px; border-radius: 99px; border: 0; font: inherit; font-weight: 800; cursor: pointer; background: var(--line); color: var(--text); }
+  .btn--dark { background: var(--text); color: #fff; }
+  .btn--violet { background: var(--violet); color: #fff; }
+
+  /* ---------- dashboard bento ---------- */
+  .bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .bento > *, .chat > * { min-width: 0; }
+  .hello { grid-column: span 2; background: linear-gradient(135deg, #7c5cff, #a083ff); color: #fff; position: relative; overflow: hidden; min-height: 210px; }
+  .hello::after { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(255, 255, 255, .12); right: -50px; bottom: -80px; }
+  .hello::before { content: ""; position: absolute; width: 110px; height: 110px; border-radius: 50%; background: rgba(255, 255, 255, .1); right: 120px; top: -40px; }
+  .hello h1 { font-size: 30px; line-height: 1.2; margin: 6px 0 10px; position: relative; z-index: 1; }
+  .hello p { margin: 0 0 18px; opacity: .9; position: relative; z-index: 1; max-width: 360px; }
+  .hello .btn { background: #fff; color: var(--violet); position: relative; z-index: 1; }
+  .stat { display: flex; flex-direction: column; justify-content: space-between; min-height: 210px; }
+  .stat__icon { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; font-size: 26px; }
+  .stat__num { font-size: 44px; font-weight: 800; line-height: 1; }
+  .next { grid-column: span 2; }
+  .lesson { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 18px; margin-bottom: 8px; }
+  .lesson__time { width: 64px; text-align: center; font-weight: 800; font-size: 14px; }
+  .lesson__time small { display: block; font-weight: 600; color: var(--muted); font-size: 11px; }
+  .lesson__dot { width: 12px; height: 46px; border-radius: 6px; flex: none; }
+  .lesson__info { flex: 1; min-width: 0; }
+  .lesson__info b { display: block; }
+  .lesson.now { background: var(--violet-soft); }
+  .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .app { display: flex; flex-direction: column; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; text-align: center; }
+  .app i { width: 58px; height: 58px; border-radius: 20px; display: grid; place-items: center; font-size: 28px; }
+  .note { display: flex; gap: 12px; padding: 10px 0; border-bottom: 2px dashed var(--line); }
+  .note:last-child { border: 0; }
+  .note i { width: 38px; height: 38px; border-radius: 14px; display: grid; place-items: center; font-size: 19px; flex: none; }
+  .note small { color: var(--muted); display: block; }
+  .ring { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--mint) 0 68%, var(--line) 68% 100%); display: grid; place-items: center; margin: 4px auto 12px; }
+  .ring span { width: 92px; height: 92px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 26px; font-weight: 800; }
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: 13px; }
+  .days b { color: var(--muted); font-size: 11px; }
+  .days span { padding: 7px 0; border-radius: 12px; font-weight: 700; }
+  .days .today { background: var(--text); color: #fff; }
+  .days .ev { background: var(--coral-soft); color: var(--coral); }
+
+  /* ---------- timetable ---------- */
+  .day-strip { display: flex; gap: 12px; margin: 8px 0 24px; overflow-x: auto; padding-bottom: 4px; }
+  .day { flex: 1 0 96px; background: var(--card); border-radius: 22px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 4px 20px rgba(43, 36, 64, .05); }
+  .day b { display: block; font-size: 26px; }
+  .day small { color: var(--muted); font-weight: 700; }
+  .day.on { background: var(--violet); color: #fff; }
+  .day.on small { color: #e3dbff; }
+  .day i { display: block; margin-top: 6px; font-style: normal; font-size: 12px; font-weight: 700; }
+  .agenda { display: grid; gap: 14px; }
+  .slot { display: grid; grid-template-columns: 90px 1fr auto; gap: 18px; align-items: center; padding: 18px 22px; border-radius: var(--r); }
+  .slot__time { font-weight: 800; font-size: 18px; }
+  .slot__time small { display: block; font-size: 12px; opacity: .7; font-weight: 600; }
+  .slot h4 { margin: 0 0 4px; font-size: 18px; }
+  .slot.break { background: transparent; border: 2px dashed #e6dccf; color: var(--muted); padding: 12px 22px; }
+
+  /* ---------- eRPH board ---------- */
+  .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
+  .col { background: #f6efe7; border-radius: var(--r); padding: 14px; }
+  .col__head { display: flex; align-items: center; gap: 8px; font-weight: 800; padding: 4px 6px 12px; }
+  .col__head .chip { margin-left: auto; background: #fff; }
+  .tile { background: var(--card); border-radius: 18px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(43, 36, 64, .05); }
+  .tile__top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .tile b { display: block; margin-bottom: 4px; }
+  .tile p { margin: 0; color: var(--muted); font-size: 13px; }
+  .tile__foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .mini { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: #fff; }
+  .tile--alert { box-shadow: inset 0 0 0 2px var(--coral); }
+  .tile--alert .say { background: var(--coral-soft); color: #c2410c; border-radius: 12px; padding: 8px 10px; font-size: 13px; margin-top: 10px; }
+
+  /* ---------- messages (chat) ---------- */
+  .chat { display: grid; grid-template-columns: 340px 1fr; gap: 20px; }
+  .people .person { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 18px; cursor: pointer; }
+  .people .person.on { background: var(--violet-soft); }
+  .people .person div { flex: 1; min-width: 0; }
+  .people .person p { margin: 2px 0 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .av { width: 46px; height: 46px; border-radius: 16px; display: grid; place-items: center; font-weight: 800; flex: none; }
+  .convo { display: flex; flex-direction: column; min-height: 560px; }
+  .convo__head { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 2px dashed var(--line); }
+  .bubbles { flex: 1; padding: 20px 0; display: flex; flex-direction: column; gap: 12px; }
+  .bubble { max-width: 70%; padding: 12px 16px; border-radius: 20px 20px 20px 6px; background: #f6efe7; line-height: 1.5; }
+  .bubble.mine { align-self: flex-end; background: var(--violet); color: #fff; border-radius: 20px 20px 6px 20px; }
+  .bubble small { display: block; font-size: 11px; opacity: .7; margin-top: 4px; }
+  .composer { display: flex; gap: 10px; background: #f6efe7; border-radius: 99px; padding: 6px 6px 6px 20px; align-items: center; }
+  .composer input { flex: 1; border: 0; background: transparent; font: inherit; outline: none; }
+  .day-sep { align-self: center; font-size: 12px; font-weight: 800; color: var(--muted); }
+
+  .head-row { display: flex; align-items: center; gap: 16px; margin: 8px 0 20px; flex-wrap: wrap; }
+  .head-row h1 { font-size: 30px; }
+  .head-row .grow { flex: 1; }
+
+  .tabbar { display: none; }
+
+  @media (max-width: 1100px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .board { grid-template-columns: repeat(2, 1fr); }
+    .pills a span { display: none; }
+  }
+  @media (max-width: 760px) {
+    .top { padding: 14px 16px; }
+    .pills, .top .round:not(.keep) { display: none; }
+    .me { margin-left: auto; }
+    .wrap { padding: 4px 16px 100px; }
+    .bento { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hello, .next { grid-column: span 2; }
+    .wide-m { grid-column: span 2; }
+    .stat { min-height: 160px; }
+    .board { grid-template-columns: 1fr; }
+    .chat { grid-template-columns: 1fr; }
+    .convo { display: none; }
+    .chat.reading .people { display: none; }
+    .chat.reading .convo { display: flex; min-height: calc(100vh - 220px); }
+    .convo__back { display: grid !important; }
+    .day-strip { gap: 6px; }
+    .day { flex: 1 0 58px; padding: 10px 2px; border-radius: 16px; }
+    .day b { font-size: 20px; }
+    .day i { font-size: 10px; }
+    .slot { grid-template-columns: 70px 1fr; }
+    .slot > :last-child { grid-column: 2; justify-self: start; }
+    .head-row h1 { font-size: 24px; }
+    .tabbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; background: var(--text); border-radius: 26px; padding: 8px; justify-content: space-around; z-index: 10; }
+    .tabbar a { color: #a69cbd; display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 18px; cursor: pointer; }
+    .tabbar a i { font-size: 22px; }
+    .tabbar a.on { color: #fff; background: rgba(255, 255, 255, .12); }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="brand__logo mdi mdi-school"></span> EduNex</div>
+  <nav class="pills">
+    <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant"></i><span>Home</span></a>
+    <a data-view="timetable"><i class="mdi mdi-calendar-heart"></i><span>Timetable</span></a>
+    <a data-view="erph"><i class="mdi mdi-notebook-heart-outline"></i><span>eRPH</span></a>
+    <a data-view="messages"><i class="mdi mdi-chat-processing-outline"></i><span>Messages</span></a>
+    <a><i class="mdi mdi-dots-grid"></i><span>Apps</span></a>
+  </nav>
+  <span class="round"><i class="mdi mdi-magnify"></i></span>
+  <span class="round keep"><i class="mdi mdi-bell-outline"></i><span class="badge">3</span></span>
+  <span class="me">KR</span>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="bento">
+      <div class="card hello">
+        <span class="chip" style="background:rgba(255,255,255,.2)">Thursday · 22 Oct</span>
+        <h1>Vanakkam, Kavitha!<br />You have 6 classes today.</h1>
+        <p>Your next class, 4 Mawar Matematik, starts at 9:40. 2 lesson plans still need a reflection.</p>
+        <button class="btn" data-go="erph"><i class="mdi mdi-pencil"></i> Write reflections</button>
+      </div>
+      <div class="card stat" style="background:var(--sun-soft)">
+        <span class="stat__icon" style="background:var(--sun);color:#fff"><i class="mdi mdi-clipboard-clock-outline"></i></span>
+        <div><div class="stat__num">12</div><b>eRPH awaiting approval</b></div>
+      </div>
+      <div class="card stat" style="background:var(--coral-soft)">
+        <span class="stat__icon" style="background:var(--coral);color:#fff"><i class="mdi mdi-reply-outline"></i></span>
+        <div><div class="stat__num">3</div><b>Referred back to you</b></div>
+      </div>
+
+      <div class="card next">
+        <h3><i class="mdi mdi-weather-sunny" style="color:var(--sun)"></i> Today's classes <span class="more" data-go="timetable">See week</span></h3>
+        <div class="lesson"><div class="lesson__time">7:40<small>60 min</small></div><span class="lesson__dot" style="background:var(--sky)"></span><div class="lesson__info"><b>Bahasa Tamil</b><span class="muted">5 Melati · Bilik 12</span></div><span class="chip" style="background:var(--mint-soft);color:#0b8a66">Approved</span></div>
+        <div class="lesson now"><div class="lesson__time">9:40<small>Now</small></div><span class="lesson__dot" style="background:var(--violet)"></span><div class="lesson__info"><b>Matematik</b><span class="muted">4 Mawar · Bilik 8</span></div><span class="chip" style="background:#fff;color:var(--violet)">Submitted</span></div>
+        <div class="lesson"><div class="lesson__time">11:00<small>60 min</small></div><span class="lesson__dot" style="background:var(--mint)"></span><div class="lesson__info"><b>Sains</b><span class="muted">4 Mawar · Makmal</span></div><span class="chip" style="background:var(--sun-soft);color:#a86b00">Pending</span></div>
+      </div>
+      <div class="card wide-m">
+        <h3>Quick apps</h3>
+        <div class="apps">
+          <div class="app"><i class="mdi mdi-notebook-edit-outline" style="background:var(--violet-soft);color:var(--violet)"></i>eRPH</div>
+          <div class="app"><i class="mdi mdi-calendar-clock" style="background:var(--coral-soft);color:var(--coral)"></i>Timetable</div>
+          <div class="app"><i class="mdi mdi-library" style="background:var(--mint-soft);color:var(--mint)"></i>Syllabus</div>
+          <div class="app"><i class="mdi mdi-account-group" style="background:var(--sun-soft);color:var(--sun)"></i>Staff</div>
+          <div class="app"><i class="mdi mdi-message-text-outline" style="background:var(--sky-soft);color:var(--sky)"></i>Messages</div>
+          <div class="app"><i class="mdi mdi-qrcode" style="background:#f2f2f2;color:var(--text)"></i>QR Code</div>
+        </div>
+      </div>
+      <div class="card wide-m">
+        <h3>Term 3 syllabus</h3>
+        <div class="ring"><span>68%</span></div>
+        <p class="muted" style="text-align:center;margin:0">34 of 50 topics taught.<br />You're on track.</p>
+      </div>
+
+      <div class="card" style="grid-column:span 2">
+        <h3>Notifications <span class="more">Clear</span></h3>
+        <div class="note"><i class="mdi mdi-party-popper" style="background:var(--mint-soft);color:var(--mint)"></i><div><b>5 Melati lesson approved</b><small>Pn. Saraswathy · 8 min ago</small></div></div>
+        <div class="note"><i class="mdi mdi-reply" style="background:var(--coral-soft);color:var(--coral)"></i><div><b>6 Kenanga reflection referred back</b><small>"Please add the remedial count" · 1 h ago</small></div></div>
+        <div class="note"><i class="mdi mdi-bullhorn-variant-outline" style="background:var(--sky-soft);color:var(--sky)"></i><div><b>Staff meeting moved to Friday</b><small>Head master · yesterday</small></div></div>
+      </div>
+      <div class="card" style="grid-column:span 2">
+        <h3>October <span class="more">Calendar</span></h3>
+        <div class="days">
+          <b>M</b><b>T</b><b>W</b><b>T</b><b>F</b><b>S</b><b>S</b>
+          <span>19</span><span>20</span><span>21</span><span class="today">22</span><span>23</span><span class="muted">24</span><span class="muted">25</span>
+          <span>26</span><span>27</span><span class="ev">28</span><span>29</span><span>30</span><span class="muted">31</span><span class="muted">1</span>
+        </div>
+        <div class="note" style="margin-top:10px"><i class="mdi mdi-star-four-points" style="background:var(--coral-soft);color:var(--coral)"></i><div><b>Sports day rehearsal</b><small>Wed 28 Oct · whole school</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="head-row"><h1>My week</h1><span class="grow"></span><button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button><button class="btn btn--dark"><i class="mdi mdi-plus"></i> Add slot</button></div>
+    <div class="day-strip">
+      <div class="day"><small>MON</small><b>19</b><i>5 classes</i></div>
+      <div class="day"><small>TUE</small><b>20</b><i>6 classes</i></div>
+      <div class="day"><small>WED</small><b>21</b><i>4 classes</i></div>
+      <div class="day on"><small>THU</small><b>22</b><i>6 classes</i></div>
+      <div class="day"><small>FRI</small><b>23</b><i>5 classes</i></div>
+    </div>
+    <div class="agenda">
+      <div class="slot" style="background:var(--sky-soft)"><div class="slot__time">7:40<small>– 8:40</small></div><div><h4>Bahasa Tamil · 5 Melati</h4><span class="muted">செய்யுள் — திருக்குறள் · Bilik 12 · 32 students</span></div><span class="chip" style="background:#fff;color:#0b8a66"><i class="mdi mdi-check-circle"></i> Approved</span></div>
+      <div class="slot" style="background:var(--violet);color:#fff"><div class="slot__time">9:40<small>– 10:40</small></div><div><h4>Matematik · 4 Mawar</h4><span style="opacity:.85">Pecahan wajar · Bilik 8 · happening now</span></div><span class="chip" style="background:#fff;color:var(--violet)"><i class="mdi mdi-send"></i> Submitted</span></div>
+      <div class="slot break"><div class="slot__time" style="font-size:15px">10:40</div><div><b>Recess</b> · 20 minutes</div><span></span></div>
+      <div class="slot" style="background:var(--mint-soft)"><div class="slot__time">11:00<small>– 12:00</small></div><div><h4>Sains · 4 Mawar</h4><span class="muted">Sistem rangka manusia · Makmal Sains</span></div><span class="chip" style="background:#fff;color:#a86b00"><i class="mdi mdi-clock-outline"></i> Pending</span></div>
+      <div class="slot" style="background:var(--coral-soft)"><div class="slot__time">12:00<small>– 12:30</small></div><div><h4>Bahasa Tamil · 6 Kenanga</h4><span class="muted">கட்டுரை எழுதுதல் · Bilik 15</span></div><span class="chip" style="background:#fff;color:var(--coral)"><i class="mdi mdi-reply"></i> Referred back</span></div>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="head-row"><h1>eRPH board</h1><span class="chip" style="background:var(--line)">Week 42</span><span class="grow"></span><button class="btn"><i class="mdi mdi-filter-variant"></i> Filter</button><button class="btn btn--violet"><i class="mdi mdi-plus"></i> New plan</button></div>
+    <div class="board">
+      <div class="col">
+        <div class="col__head"><i class="mdi mdi-clock-outline" style="color:var(--sun)"></i> Pending <span class="chip">2</span></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--mint-soft);color:#0b8a66">Sains</span><span class="muted" style="font-size:12px;margin-left:auto">Today 11:00</span></div><b>Sistem rangka manusia</b><p>4 Mawar · 6.1.2 Menyatakan fungsi rangka</p><div class="tile__foot"><i class="mdi mdi-pencil-outline"></i> Reflection not filled</div></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--sky-soft);color:#1f7fc4">B. Tamil</span><span class="muted" style="font-size:12px;margin-left:auto">Fri 7:40</span></div><b>இலக்கணம் — வினைச்சொல்</b><p>5 Melati · 4.3.1</p></div>
+      </div>
+      <div class="col">
+        <div class="col__head"><i class="mdi mdi-send-outline" style="color:var(--violet)"></i> Submitted <span class="chip">3</span></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--violet-soft);color:var(--violet)">Matematik</span><span class="muted" style="font-size:12px;margin-left:auto">Today 9:40</span></div><b>Pecahan wajar</b><p>4 Mawar · 3.1.1 · 24/29 mastered</p><div class="tile__foot"><span class="mini" style="background:var(--violet)">SN</span> Waiting for Pn. Saraswathy</div></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--violet-soft);color:var(--violet)">Matematik</span><span class="muted" style="font-size:12px;margin-left:auto">Wed 9:40</span></div><b>Pecahan setara</b><p>4 Mawar · 3.1.2</p></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--mint-soft);color:#0b8a66">Sains</span><span class="muted" style="font-size:12px;margin-left:auto">Wed 12:00</span></div><b>Kitaran hidup</b><p>5 Melati · 2.2.1</p></div>
+      </div>
+      <div class="col">
+        <div class="col__head"><i class="mdi mdi-reply" style="color:var(--coral)"></i> Referred back <span class="chip">1</span></div>
+        <div class="tile tile--alert"><div class="tile__top"><span class="chip" style="background:var(--sky-soft);color:#1f7fc4">B. Tamil</span><span class="muted" style="font-size:12px;margin-left:auto">Today 12:00</span></div><b>கட்டுரை எழுதுதல்</b><p>6 Kenanga · 3.4.2</p><div class="say"><b style="display:inline">Pn. Saraswathy:</b> Please add how many pupils needed remedial work.</div><button class="btn btn--dark" style="margin-top:10px;width:100%;justify-content:center">Update & resubmit</button></div>
+      </div>
+      <div class="col">
+        <div class="col__head"><i class="mdi mdi-check-circle-outline" style="color:var(--mint)"></i> Approved <span class="chip">9</span></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--sky-soft);color:#1f7fc4">B. Tamil</span><span class="muted" style="font-size:12px;margin-left:auto">Today 7:40</span></div><b>செய்யுள் — திருக்குறள்</b><p>5 Melati · 2.1.3</p><div class="tile__foot"><i class="mdi mdi-printer-outline"></i> Print <i class="mdi mdi-qrcode" style="margin-left:8px"></i> QR</div></div>
+        <div class="tile"><div class="tile__top"><span class="chip" style="background:var(--sun-soft);color:#a86b00">English</span><span class="muted" style="font-size:12px;margin-left:auto">Tue 11:00</span></div><b>Describing places</b><p>6 Kenanga · 2.1.4</p></div>
+        <p class="muted" style="text-align:center;font-weight:700;margin:6px 0 2px">+ 7 more</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="head-row"><h1>Messages</h1><span class="grow"></span><button class="btn"><i class="mdi mdi-alert-circle-outline"></i> Complaints</button><button class="btn btn--violet"><i class="mdi mdi-pencil"></i> New</button></div>
+    <div class="chat">
+      <div class="card people">
+        <div class="person on"><span class="av" style="background:var(--violet-soft);color:var(--violet)">SN</span><div><b>Saraswathy N.</b><p>Thank you, see you on Friday!</p></div><span class="muted" style="font-size:12px">10:12</span></div>
+        <div class="person"><span class="av" style="background:var(--mint-soft);color:#0b8a66">AK</span><div><b>Arun Kumar</b><p>Can we swap Tuesday's 8:40 slot?</p></div><span class="chip" style="background:var(--coral);color:#fff">2</span></div>
+        <div class="person"><span class="av" style="background:var(--sun-soft);color:#a86b00">4M</span><div><b>4 Mawar teachers</b><p>Lim: Sports day groups are ready</p></div><span class="muted" style="font-size:12px">Tue</span></div>
+        <div class="person"><span class="av" style="background:var(--sky-soft);color:#1f7fc4">PPD</span><div><b>District office</b><p>Reminder: eRPH audit for Term 3</p></div><span class="muted" style="font-size:12px">Mon</span></div>
+      </div>
+      <div class="card convo">
+        <div class="convo__head"><span class="round convo__back" data-back style="display:none;box-shadow:none;background:var(--bg);cursor:pointer"><i class="mdi mdi-arrow-left"></i></span><span class="av" style="background:var(--violet-soft);color:var(--violet)">SN</span><div><b>Saraswathy N.</b><div class="muted" style="font-size:13px">Head master · online</div></div><span class="round" style="margin-left:auto;box-shadow:none;background:var(--bg)"><i class="mdi mdi-dots-horizontal"></i></span></div>
+        <div class="bubbles">
+          <span class="day-sep">Today</span>
+          <div class="bubble">Good morning Kavitha. This week's staff meeting moves to <b>Friday 2:30 pm</b> in the library.<small>10:02</small></div>
+          <div class="bubble">Please bring the Term 3 syllabus progress for Year 4 and 5.<small>10:03</small></div>
+          <div class="bubble mine">Noted, I'll bring it. Year 4 Matematik is at 64%, I'll explain the gap.<small>10:10</small></div>
+          <div class="bubble">Thank you, see you on Friday!<small>10:12</small></div>
+        </div>
+        <div class="composer"><i class="mdi mdi-emoticon-happy-outline muted" style="font-size:22px"></i><input placeholder="Type a message…" /><button class="btn btn--violet"><i class="mdi mdi-send"></i></button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant"></i>Home</a>
+  <a data-view="timetable"><i class="mdi mdi-calendar-heart"></i>Week</a>
+  <a data-view="erph"><i class="mdi mdi-notebook-heart-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-chat-processing-outline"></i>Chat</a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the pill nav, bottom tab bar and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("[data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a person opens the chat full screen; Back returns to the list.
+  document.querySelectorAll(".person").forEach(function (p) {
+    p.addEventListener("click", function () { document.querySelector(".chat").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".chat").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>

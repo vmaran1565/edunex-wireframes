@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 8 — Malaysia</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 8 — "Malaysia"
+  Malaysian identity: national red, blue and yellow, a gold songket
+  border, the bunga raya (hibiscus) as the brand motif and a wau (kite)
+  in the welcome card. Labels are in Bahasa Malaysia with English below.
+-->
+<style>
+  :root {
+    --merah: #cc0001;
+    --biru: #010066;
+    --biru-2: #1a237e;
+    --kuning: #ffcc00;
+    --hijau: #0f8a4b;
+    --maroon: #6d0f1a;
+    --emas: #d4a73a;
+    --bg: #fbf8f2;
+    --card: #ffffff;
+    --text: #1c1b2e;
+    --muted: #6e6c80;
+    --line: #ece6da;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; color: var(--text);
+    background:
+      radial-gradient(circle at 10px 10px, rgba(204, 0, 1, .05) 0 3px, transparent 3.5px) 0 0 / 40px 40px,
+      radial-gradient(circle at 30px 30px, rgba(1, 0, 102, .04) 0 6px, transparent 6.5px) 0 0 / 40px 40px,
+      var(--bg);
+  }
+  h1, h2, h3 { margin: 0; font-weight: 800; }
+  .en { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+
+  /* songket border: gold diamonds on maroon */
+  .songket {
+    height: 14px;
+    background:
+      linear-gradient(135deg, var(--emas) 25%, transparent 25%) -7px 0 / 14px 14px,
+      linear-gradient(225deg, var(--emas) 25%, transparent 25%) -7px 0 / 14px 14px,
+      linear-gradient(315deg, var(--emas) 25%, transparent 25%) 0 0 / 14px 14px,
+      linear-gradient(45deg, var(--emas) 25%, transparent 25%) 0 0 / 14px 14px,
+      var(--maroon);
+  }
+
+  /* ---------- header ---------- */
+  .top { background: var(--card); }
+  .top__in { max-width: 1240px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand svg { width: 44px; height: 44px; }
+  .brand b { font-size: 22px; font-weight: 800; color: var(--biru); display: block; line-height: 1.1; }
+  .brand small { color: var(--muted); font-size: 12px; }
+  .nav { display: flex; gap: 6px; margin-left: 24px; }
+  .nav a { padding: 8px 16px; border-radius: 12px; cursor: pointer; font-weight: 700; color: var(--biru); line-height: 1.15; }
+  .nav a .en { font-size: 11px; }
+  .nav a.on { background: var(--biru); color: #fff; box-shadow: inset 0 -4px 0 var(--kuning); }
+  .nav a.on .en { color: #c8cbf0; }
+  .top .grow { flex: 1; }
+  .lang { display: flex; border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; font-size: 12px; font-weight: 700; }
+  .lang span { padding: 6px 9px; color: var(--muted); }
+  .lang span.on { background: var(--kuning); color: var(--biru); }
+  .ico { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 19px; color: var(--biru); position: relative; flex: none; }
+  .ico b { position: absolute; top: -5px; right: -5px; background: var(--merah); color: #fff; font-size: 11px; border-radius: 9px; padding: 0 5px; }
+  .av { width: 40px; height: 40px; border-radius: 12px; background: var(--merah); color: #fff; display: grid; place-items: center; font-weight: 800; flex: none; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 28px 56px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .muted { color: var(--muted); }
+  .card { background: var(--card); border-radius: 18px; border: 1px solid var(--line); box-shadow: 0 6px 20px -12px rgba(1, 0, 102, .18); overflow: hidden; }
+  .card__head { display: flex; align-items: center; gap: 10px; padding: 16px 20px 12px; }
+  .card__head h2 { font-size: 17px; line-height: 1.2; }
+  .card__head .more { margin-left: auto; font-weight: 700; color: var(--merah); cursor: pointer; font-size: 14px; }
+  .card__head svg { width: 26px; height: 26px; flex: none; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 12px; border: 1.5px solid var(--biru); background: #fff; color: var(--biru); font: inherit; font-weight: 700; cursor: pointer; }
+  .btn--red { background: var(--merah); border-color: var(--merah); color: #fff; }
+  .btn--blue { background: var(--biru); color: #fff; }
+  .btn--yellow { background: var(--kuning); border-color: var(--kuning); color: var(--biru); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .c-ok { background: #e3f5ea; color: var(--hijau); }
+  .c-wait { background: #fff4cc; color: #8a6500; }
+  .c-sent { background: #e6e6f7; color: var(--biru); }
+  .c-back { background: #fde3e3; color: var(--merah); }
+  .page-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 32px; color: var(--biru); line-height: 1.1; }
+  .page-head .en { font-size: 14px; margin-top: 4px; }
+  .page-head .grow { flex: 1; }
+
+  /* ---------- dashboard ---------- */
+  .hero { position: relative; border-radius: 22px; overflow: hidden; background: linear-gradient(120deg, var(--biru) 0%, var(--biru-2) 60%, #283593 100%); color: #fff; padding: 30px 34px; margin-bottom: 22px; min-height: 200px; }
+  .hero::after { /* red and white stripes */
+    content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 34%;
+    background: repeating-linear-gradient(180deg, var(--merah) 0 14px, #fff 14px 28px); opacity: .9;
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .hero__text { position: relative; z-index: 2; max-width: 60%; }
+  .hero h1 { font-size: 34px; line-height: 1.15; }
+  .hero h1 span { color: var(--kuning); }
+  .hero p { margin: 10px 0 18px; color: #d6d8f5; }
+  .hero .en { color: #b9bde8; font-size: 13px; }
+  .hero .wau { position: absolute; z-index: 3; right: 9%; top: 16px; width: 150px; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .3)); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+  .kpi { padding: 18px 20px; border-top: 5px solid var(--c); }
+  .kpi b { font-size: 36px; font-weight: 800; color: var(--c); display: block; line-height: 1; margin-bottom: 6px; }
+  .kpi span { font-weight: 700; display: block; }
+  .dash { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; align-items: start; }
+  .dash > * { min-width: 0; }
+  .stack { display: grid; gap: 22px; }
+  .periods { list-style: none; margin: 0; padding: 0 8px 8px; }
+  .periods li { display: grid; grid-template-columns: 70px 1fr auto; gap: 12px; align-items: center; padding: 12px; border-radius: 12px; }
+  .periods .when { font-weight: 800; color: var(--biru); }
+  .periods .when small { display: block; font-weight: 500; color: var(--muted); font-size: 11px; }
+  .periods b { display: block; }
+  .periods small { color: var(--muted); }
+  .periods li.now { background: #fff8db; box-shadow: inset 4px 0 0 var(--kuning); }
+  .periods li.brk { background: repeating-linear-gradient(135deg, #faf6ee 0 8px, #f3ede1 8px 16px); color: var(--muted); }
+  .cal { list-style: none; margin: 0; padding: 0 20px 16px; }
+  .cal li { display: flex; gap: 14px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+  .cal .d { width: 50px; text-align: center; border-radius: 10px; background: var(--c); color: #fff; padding: 4px 0; font-weight: 800; font-size: 18px; line-height: 1.1; flex: none; }
+  .cal .d small { display: block; font-size: 10px; font-weight: 600; }
+  .bar-row { padding: 6px 20px; }
+  .bar-row div { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+  .bar { height: 10px; border-radius: 6px; background: #f1ece2; overflow: hidden; }
+  .bar span { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--biru), #3949ab); }
+  .note-card { padding: 18px 20px; background: linear-gradient(90deg, #fff8db, #fff); border-left: 5px solid var(--merah); display: flex; gap: 14px; }
+
+  /* ---------- timetable ---------- */
+  .tt { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .tt th { padding: 12px; text-align: left; background: var(--biru); color: #fff; font-size: 14px; line-height: 1.2; }
+  .tt th .en { color: #c8cbf0; font-size: 11px; }
+  .tt th.today { background: var(--kuning); color: var(--biru); }
+  .tt th.today .en { color: var(--biru); }
+  .tt td { padding: 8px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); height: 72px; vertical-align: top; }
+  .tt td.time { font-weight: 800; color: var(--biru); width: 80px; background: #faf7f0; }
+  .slot { border-radius: 10px; padding: 8px 10px; height: 100%; font-size: 13px; background: var(--s); }
+  .slot b { display: block; font-size: 14px; }
+  .s-tam { --s: #e6e6f7; }
+  .s-mat { --s: #fde3e3; }
+  .s-sci { --s: #e3f5ea; }
+  .s-bm { --s: #fff4cc; }
+  .s-eng { --s: #f1e6fa; }
+  .tt td.now .slot { box-shadow: 0 0 0 3px var(--kuning); }
+  .tt tr.brk td { height: auto; padding: 0; }
+  .tt tr.brk td div { padding: 6px; text-align: center; font-weight: 700; font-size: 12px; letter-spacing: .2em; color: var(--muted); }
+  .tt tr.brk .songket { height: 8px; background-size: 8px 8px; }
+  .tt-day { display: none; }
+  .day-tabs { display: flex; gap: 6px; padding: 14px 14px 6px; }
+  .day-tabs a { flex: 1; text-align: center; padding: 8px 0; border-radius: 10px; font-weight: 800; background: #f1ece2; color: var(--biru); line-height: 1.1; }
+  .day-tabs a.on { background: var(--biru); color: #fff; box-shadow: inset 0 -3px 0 var(--kuning); }
+
+  /* ---------- eRPH ---------- */
+  .erph { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: start; }
+  .erph > * { min-width: 0; }
+  .plans { list-style: none; margin: 0; padding: 0 8px 8px; }
+  .plans li { padding: 12px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .plans li.on { background: #fff8db; box-shadow: inset 4px 0 0 var(--kuning); }
+  .rph { padding: 0; }
+  .rph__head { background: var(--biru); color: #fff; padding: 20px 24px; display: flex; gap: 16px; align-items: center; }
+  .rph__head h2 { font-size: 24px; }
+  .rph__head .en { color: #c8cbf0; }
+  .rph__head svg { width: 54px; height: 54px; flex: none; }
+  .rph__body { padding: 8px 24px 22px; }
+  .row { display: grid; grid-template-columns: 190px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .row > span { font-weight: 800; color: var(--biru); line-height: 1.2; }
+  .row p { margin: 0; }
+  .blank { font-weight: 800; color: var(--merah); border-bottom: 2px solid var(--merah); padding: 0 6px; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .facts div { background: #faf7f0; border-radius: 10px; padding: 8px 12px; font-weight: 700; }
+  .facts small { display: block; color: var(--muted); font-weight: 600; font-size: 11px; }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+
+  /* ---------- messages ---------- */
+  .inbox { display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+  .inbox > * { min-width: 0; }
+  .msg { display: flex; gap: 12px; padding: 12px; margin: 0 8px; border-radius: 12px; cursor: pointer; }
+  .msg.on { background: #fff8db; box-shadow: inset 4px 0 0 var(--kuning); }
+  .msg div { flex: 1; min-width: 0; }
+  .msg p { margin: 2px 0 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-av { width: 42px; height: 42px; border-radius: 12px; color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+  .thread__back { display: none; }
+  .thread__head { padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .thread__head h2 { font-size: 22px; color: var(--biru); }
+  .thread__body { padding: 18px 22px; line-height: 1.7; }
+  .reply { display: flex; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--line); }
+  .reply input { flex: 1; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 14px; font: inherit; }
+
+  .bottom-nav { display: none; }
+
+  @media (max-width: 1100px) {
+    .nav a .en { display: none; }
+    .lang { display: none; }
+  }
+  @media (max-width: 1000px) {
+    .dash, .erph, .inbox { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .top__in { padding: 12px 16px; gap: 10px; }
+    .brand { margin-right: auto; }
+    .nav, .ico:not(.keep) { display: none; }
+    .wrap { padding: 20px 16px 100px; }
+    .hero { padding: 24px 20px 120px; }
+    .hero__text { max-width: none; }
+    .hero h1 { font-size: 26px; }
+    .hero::after { top: auto; height: 100px; width: 100%; clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%); }
+    .hero .wau { top: auto; bottom: 8px; right: 20px; width: 100px; }
+    .page-head h1 { font-size: 26px; }
+    .kpi b { font-size: 30px; }
+    .tt-wrap { display: none; }
+    .tt-day { display: block; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .row { grid-template-columns: 1fr; gap: 4px; }
+    .inbox .thread { display: none; }
+    .inbox.reading .list { display: none; }
+    .inbox.reading .thread { display: block; }
+    .thread__back { display: inline-flex; margin: 16px 22px 0; }
+    .bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: var(--biru); z-index: 10; justify-content: space-around; padding: 8px 0 10px; box-shadow: 0 -14px 0 -7px var(--maroon); }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; color: #aeb2e6; font-size: 11px; font-weight: 700; padding: 4px 10px; cursor: pointer; border-radius: 10px; }
+    .bottom-nav a i { font-size: 22px; }
+    .bottom-nav a.on { color: var(--kuning); }
+  }
+</style>
+</head>
+<body>
+<!-- Bunga raya (hibiscus) mark, reused across the page -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="bunga" viewBox="0 0 100 100">
+    <g transform="translate(50 50)">
+      <g fill="#cc0001">
+        <ellipse rx="18" ry="30" cy="-24" />
+        <ellipse rx="18" ry="30" cy="-24" transform="rotate(72)" />
+        <ellipse rx="18" ry="30" cy="-24" transform="rotate(144)" />
+        <ellipse rx="18" ry="30" cy="-24" transform="rotate(216)" />
+        <ellipse rx="18" ry="30" cy="-24" transform="rotate(288)" />
+      </g>
+      <g stroke="#8e0000" stroke-width="2" opacity=".5">
+        <line y2="-36" /><line y2="-36" transform="rotate(72)" /><line y2="-36" transform="rotate(144)" /><line y2="-36" transform="rotate(216)" /><line y2="-36" transform="rotate(288)" />
+      </g>
+      <circle r="9" fill="#8e0000" />
+      <line x1="0" y1="0" x2="14" y2="-26" stroke="#ffcc00" stroke-width="3" stroke-linecap="round" />
+      <circle cx="15" cy="-28" r="4" fill="#ffcc00" />
+    </g>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="top__in">
+    <div class="brand"><svg><use href="#bunga" /></svg><div><b>EduNex</b><small>SJK(T) Ladang Bukit Indah</small></div></div>
+    <nav class="nav">
+      <a data-view="dashboard" class="on">Utama<span class="en">Home</span></a>
+      <a data-view="timetable">Jadual Waktu<span class="en">Timetable</span></a>
+      <a data-view="erph">eRPH<span class="en">Lesson plans</span></a>
+      <a data-view="messages">Mesej<span class="en">Messages</span></a>
+      <a>Sukatan<span class="en">Syllabus</span></a>
+    </nav>
+    <span class="grow"></span>
+    <div class="lang"><span class="on">BM</span><span>EN</span><span>தமிழ்</span><span>中文</span></div>
+    <span class="ico"><i class="mdi mdi-magnify"></i></span>
+    <span class="ico keep"><i class="mdi mdi-bell-outline"></i><b>3</b></span>
+    <span class="av">KR</span>
+  </div>
+  <div class="songket"></div>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="hero">
+      <div class="hero__text">
+        <h1>Selamat pagi, <span>Cikgu Kavitha!</span></h1>
+        <span class="en">Good morning — Khamis, 22 Oktober 2026</span>
+        <p>Anda ada 6 kelas hari ini. Kelas seterusnya: Matematik 4 Mawar, jam 9:40.<span class="en">6 classes today. Next: 4 Mawar Matematik at 9:40.</span></p>
+        <button class="btn btn--yellow" data-go="erph"><i class="mdi mdi-pencil"></i> Isi refleksi</button>
+      </div>
+      <!-- wau (traditional kite) -->
+      <svg class="wau" viewBox="0 0 120 150" aria-hidden="true">
+        <path d="M60 4 C 92 30, 116 40, 116 58 C 100 60, 84 66, 70 76 C 88 86, 100 100, 98 116 C 84 108, 70 108, 60 146 C 50 108, 36 108, 22 116 C 20 100, 32 86, 50 76 C 36 66, 20 60, 4 58 C 4 40, 28 30, 60 4 Z" fill="#ffcc00" stroke="#fff" stroke-width="3" />
+        <path d="M60 18 C 82 36, 100 44, 102 56 C 88 58, 76 64, 66 72 L 60 132 L 54 72 C 44 64, 32 58, 18 56 C 20 44, 38 36, 60 18 Z" fill="#cc0001" opacity=".85" />
+        <circle cx="60" cy="56" r="10" fill="#010066" />
+        <path d="M60 46 l3 7 7 0 -6 4 2 7 -6 -4 -6 4 2 -7 -6 -4 7 0 z" fill="#ffcc00" />
+      </svg>
+    </div>
+    <div class="kpis">
+      <div class="card kpi" style="--c:var(--biru)"><b>6</b><span>Kelas hari ini</span><span class="en">Classes today</span></div>
+      <div class="card kpi" style="--c:#b8860b"><b>12</b><span>Menunggu kelulusan</span><span class="en">Awaiting approval</span></div>
+      <div class="card kpi" style="--c:var(--merah)"><b>3</b><span>Dirujuk semula</span><span class="en">Referred back</span></div>
+      <div class="card kpi" style="--c:var(--hijau)"><b>68%</b><span>Sukatan diajar</span><span class="en">Syllabus taught</span></div>
+    </div>
+    <div class="dash">
+      <div class="card">
+        <div class="card__head"><svg><use href="#bunga" /></svg><h2>Jadual hari ini<span class="en">Today's timetable</span></h2><span class="more" data-go="timetable">Minggu ini →</span></div>
+        <ul class="periods">
+          <li><span class="when">7:40<small>60 min</small></span><div><b>Bahasa Tamil · 5 Melati</b><small>செய்யுள் — திருக்குறள் · Bilik 12</small></div><span class="chip c-ok">Lulus</span></li>
+          <li class="now"><span class="when">9:40<small>Sekarang</small></span><div><b>Matematik · 4 Mawar</b><small>Pecahan wajar · Bilik 8</small></div><span class="chip c-sent">Dihantar</span></li>
+          <li class="brk"><span class="when">10:40</span><div><b>Rehat</b><small>Recess</small></div><span></span></li>
+          <li><span class="when">11:00<small>60 min</small></span><div><b>Sains · 4 Mawar</b><small>Sistem rangka manusia · Makmal</small></div><span class="chip c-wait">Belum diisi</span></li>
+          <li><span class="when">12:00<small>30 min</small></span><div><b>Bahasa Tamil · 6 Kenanga</b><small>கட்டுரை எழுதுதல் · Bilik 15</small></div><span class="chip c-back">Dirujuk semula</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="card note-card"><i class="mdi mdi-bullhorn-variant" style="font-size:28px;color:var(--merah)"></i><div><b>Mesyuarat guru dipindahkan ke Jumaat, 2:30 ptg</b><span class="en">Staff meeting moved to Friday 2:30 pm · Guru Besar</span></div></div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-book-open-page-variant" style="font-size:22px;color:var(--biru)"></i><h2>Kemajuan sukatan<span class="en">Syllabus progress</span></h2></div>
+          <div class="bar-row"><div><span>Bahasa Tamil</span><span>78%</span></div><div class="bar"><span style="width:78%"></span></div></div>
+          <div class="bar-row"><div><span>Matematik</span><span>64%</span></div><div class="bar"><span style="width:64%"></span></div></div>
+          <div class="bar-row" style="padding-bottom:18px"><div><span>Sains</span><span style="color:var(--merah)">52%</span></div><div class="bar"><span style="width:52%;background:var(--merah)"></span></div></div>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-calendar-star" style="font-size:22px;color:var(--biru)"></i><h2>Kalendar sekolah<span class="en">School calendar</span></h2></div>
+          <ul class="cal">
+            <li><span class="d" style="--c:var(--hijau)">28<small>OKT</small></span><div><b>Raptai Hari Sukan</b><span class="en">Sports day rehearsal</span></div></li>
+            <li><span class="d" style="--c:var(--merah)">9<small>NOV</small></span><div><b>Cuti Deepavali</b><span class="en">Deepavali holiday</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><h1>Jadual Waktu</h1><span class="en">Timetable · Minggu 42 · 19 – 23 Oktober 2026</span></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Cetak</button>
+      <button class="btn btn--red"><i class="mdi mdi-plus"></i> Tambah slot</button>
+    </div>
+    <div class="card tt-wrap">
+      <table class="tt">
+        <thead><tr><th></th><th>Isnin<span class="en">Mon</span></th><th>Selasa<span class="en">Tue</span></th><th>Rabu<span class="en">Wed</span></th><th class="today">Khamis<span class="en">Thu · today</span></th><th>Jumaat<span class="en">Fri</span></th></tr></thead>
+        <tbody>
+          <tr><td class="time">7:40</td><td><div class="slot s-tam"><b>B. Tamil</b>5 Melati</div></td><td><div class="slot s-mat"><b>Matematik</b>4 Mawar</div></td><td></td><td><div class="slot s-tam"><b>B. Tamil</b>5 Melati</div></td><td><div class="slot s-sci"><b>Sains</b>4 Mawar</div></td></tr>
+          <tr><td class="time">8:40</td><td><div class="slot s-mat"><b>Matematik</b>4 Mawar</div></td><td></td><td><div class="slot s-tam"><b>B. Tamil</b>6 Kenanga</div></td><td></td><td><div class="slot s-bm"><b>B. Melayu</b>3 Teratai</div></td></tr>
+          <tr><td class="time">9:40</td><td></td><td><div class="slot s-sci"><b>Sains</b>4 Mawar</div></td><td><div class="slot s-mat"><b>Matematik</b>4 Mawar</div></td><td class="now"><div class="slot s-mat"><b>Matematik</b>4 Mawar · sekarang</div></td><td><div class="slot s-tam"><b>B. Tamil</b>5 Melati</div></td></tr>
+          <tr class="brk"><td colspan="6"><div class="songket"></div><div>REHAT · RECESS · 10:40</div></td></tr>
+          <tr><td class="time">11:00</td><td><div class="slot s-eng"><b>English</b>6 Kenanga</div></td><td><div class="slot s-tam"><b>B. Tamil</b>5 Melati</div></td><td></td><td><div class="slot s-sci"><b>Sains</b>4 Mawar</div></td><td></td></tr>
+          <tr><td class="time">12:00</td><td></td><td><div class="slot s-tam"><b>B. Tamil</b>6 Kenanga</div></td><td><div class="slot s-sci"><b>Sains</b>5 Melati</div></td><td><div class="slot s-tam"><b>B. Tamil</b>6 Kenanga</div></td><td><div class="slot s-mat"><b>Matematik</b>3 Teratai</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="card tt-day">
+      <div class="day-tabs"><a>Isn</a><a>Sel</a><a>Rab</a><a class="on">Kha</a><a>Jum</a></div>
+      <ul class="periods">
+        <li><span class="when">7:40</span><div class="slot s-tam"><b>Bahasa Tamil</b>5 Melati</div><span class="chip c-ok">Lulus</span></li>
+        <li class="now"><span class="when">9:40<small>Sekarang</small></span><div class="slot s-mat"><b>Matematik</b>4 Mawar</div><span class="chip c-sent">Dihantar</span></li>
+        <li class="brk"><span class="when">10:40</span><div><b>Rehat</b></div><span></span></li>
+        <li><span class="when">11:00</span><div class="slot s-sci"><b>Sains</b>4 Mawar</div><span class="chip c-wait">Belum</span></li>
+        <li><span class="when">12:00</span><div class="slot s-tam"><b>Bahasa Tamil</b>6 Kenanga</div><span class="chip c-back">Dirujuk</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><h1>eRPH</h1><span class="en">Rancangan Pengajaran Harian · Daily lesson plans</span></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-qrcode"></i> Kod QR</button>
+      <button class="btn"><i class="mdi mdi-export-variant"></i> Eksport</button>
+    </div>
+    <div class="erph">
+      <div class="card">
+        <div class="card__head"><h2>Khamis, 22 Oktober<span class="en">Thursday 22 October</span></h2></div>
+        <ul class="plans">
+          <li><b>5 Melati · Bahasa Tamil</b><span class="chip c-ok">Lulus · Approved</span></li>
+          <li class="on"><b>4 Mawar · Matematik</b><span class="chip c-sent">Dihantar · Submitted</span></li>
+          <li><b>4 Mawar · Sains</b><span class="chip c-wait">Belum diisi · Pending</span></li>
+          <li><b>6 Kenanga · Bahasa Tamil</b><span class="chip c-back">Dirujuk semula · Referred back</span></li>
+          <li><b>3 Teratai · Matematik</b><span class="chip c-ok">Lulus · Approved</span></li>
+        </ul>
+      </div>
+      <div>
+        <article class="card rph">
+          <div class="rph__head"><svg><use href="#bunga" /></svg><div><h2>Matematik — Pecahan wajar</h2><span class="en">4 Mawar · Dihantar kepada Pn. Saraswathy untuk kelulusan</span></div></div>
+          <div class="songket"></div>
+          <div class="rph__body">
+            <div class="facts">
+              <div><small>Kelas</small>4 Mawar</div>
+              <div><small>Tarikh</small>Kha, 22 Okt</div>
+              <div><small>Masa</small>9:40 – 10:40</div>
+              <div><small>Guru</small>Kavitha Raman</div>
+            </div>
+            <div class="row"><span>Unit<span class="en">Unit</span></span><p>Unit 3 — Pecahan, perpuluhan dan peratus</p></div>
+            <div class="row"><span>Standard Kandungan<span class="en">Content standard</span></span><p>3.1 Pecahan</p></div>
+            <div class="row"><span>Standard Pembelajaran<span class="en">Learning standard</span></span><p>3.1.1 Menamakan dan menulis pecahan wajar dengan pengangka hingga 9 dan penyebut hingga 10</p></div>
+            <div class="row"><span>Objektif<span class="en">Objective</span></span><p>Murid dapat menamakan dan menulis pecahan wajar menggunakan jalur pecahan.</p></div>
+            <div class="row" style="border:0"><span>Refleksi<span class="en">Reflection</span></span><p><span class="blank">24</span> / <span class="blank">29</span> orang murid dapat menguasai objektif pembelajaran dan diberi latihan pengayaan.<br /><span class="blank">5</span> / <span class="blank">29</span> orang murid diberi latihan pemulihan dengan bimbingan guru.</p></div>
+          </div>
+        </article>
+        <div class="actions">
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Cetak</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Rujuk semula</button>
+          <button class="btn btn--blue"><i class="mdi mdi-check"></i> Luluskan</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><h1>Mesej</h1><span class="en">Messages · Peti masuk · Dihantar · Aduan (2)</span></div>
+      <span class="grow"></span>
+      <button class="btn btn--red"><i class="mdi mdi-pencil"></i> Mesej baharu</button>
+    </div>
+    <div class="inbox">
+      <div class="card list" style="padding:8px 0">
+        <div class="msg on"><span class="m-av" style="background:var(--biru)">SN</span><div><b>Saraswathy N.</b><p>Mesyuarat guru dipindahkan ke Jumaat</p></div><span class="muted">10:12</span></div>
+        <div class="msg"><span class="m-av" style="background:var(--hijau)">AK</span><div><b>Arun Kumar</b><p>Boleh tukar slot 8:40 hari Selasa?</p></div><span class="muted">09:05</span></div>
+        <div class="msg"><span class="m-av" style="background:var(--merah)">PPD</span><div><b>Pejabat Pendidikan Daerah</b><p>Peringatan: audit eRPH Penggal 3</p></div><span class="muted">Rab</span></div>
+        <div class="msg"><span class="m-av" style="background:#b8860b">LW</span><div><b>Lim Wei Ling</b><p>Terima kasih kerana meluluskan RPH saya</p></div><span class="muted">Sel</span></div>
+      </div>
+      <div class="card thread">
+        <button class="btn thread__back" data-back><i class="mdi mdi-arrow-left"></i> Peti masuk</button>
+        <div class="thread__head"><h2>Mesyuarat guru dipindahkan ke Jumaat, 2:30 ptg</h2><span class="en">Staff meeting moved to Friday 2:30 pm · Saraswathy N., Guru Besar → Semua guru · 10:12</span></div>
+        <div class="songket" style="height:8px;background-size:8px 8px"></div>
+        <div class="thread__body">
+          <p>Assalamualaikum dan salam sejahtera, cikgu-cikgu,</p>
+          <p>Mesyuarat guru minggu ini dipindahkan dari hari Khamis ke <b>Jumaat, 23 Oktober, jam 2:30 petang</b> di perpustakaan. Sila bawa laporan kemajuan sukatan Penggal 3.</p>
+          <p>Agenda: jadual peperiksaan pertengahan penggal, jawatankuasa sambutan Deepavali dan persediaan audit eRPH.</p>
+          <p>Terima kasih,<br />Saraswathy</p>
+        </div>
+        <div class="reply"><input placeholder="Tulis balasan… / Write a reply…" /><button class="btn btn--blue"><i class="mdi mdi-send"></i> Hantar</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant-outline"></i>Utama</a>
+  <a data-view="timetable"><i class="mdi mdi-calendar-clock"></i>Jadual</a>
+  <a data-view="erph"><i class="mdi mdi-notebook-edit-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-message-text-outline"></i>Mesej</a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the top nav, bottom nav and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("nav [data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a message opens it full screen; Back returns to the list.
+  document.querySelectorAll(".msg").forEach(function (m) {
+    m.addEventListener("click", function () { document.querySelector(".inbox").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".inbox").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>

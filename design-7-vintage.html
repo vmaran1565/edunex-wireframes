@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 7 — Vintage</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Special+Elite&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 7 — "Vintage"
+  The old school register: aged paper, typewriter text, manila folder
+  tabs for navigation, ticket stubs for the key numbers, a telegram for
+  notices and eRPH as a library catalogue card.
+-->
+<style>
+  :root {
+    --paper: #f1e4c8;
+    --paper-2: #f7eedb;
+    --manila: #e3c78f;
+    --manila-2: #d6b673;
+    --ink: #3e2c1c;
+    --ink-2: #6b5640;
+    --faded: #9c8466;
+    --red: #a23b2a;
+    --teal: #2f6f6a;
+    --mustard: #b8891a;
+    --rule: #c9b48e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Libre Baskerville", serif; font-size: 14px; color: var(--ink); min-height: 100vh;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(160, 110, 40, .12), transparent 18%),
+      radial-gradient(circle at 85% 60%, rgba(160, 110, 40, .1), transparent 22%),
+      radial-gradient(circle at 40% 90%, rgba(160, 110, 40, .08), transparent 20%),
+      var(--paper);
+  }
+  .type { font-family: "Special Elite", monospace; }
+  h1, h2, h3 { font-family: "Playfair Display", serif; margin: 0; color: var(--ink); }
+
+  /* ---------- masthead ---------- */
+  .mast { max-width: 1200px; margin: 0 auto; padding: 22px 28px 0; text-align: center; }
+  .mast__rule { border-top: 3px double var(--ink); border-bottom: 1px solid var(--ink); height: 6px; }
+  .mast__row { display: flex; align-items: center; gap: 14px; padding: 12px 0; }
+  .mast__side { flex: 1; font-family: "Special Elite", monospace; font-size: 13px; color: var(--ink-2); text-align: left; }
+  .mast__side:last-child { text-align: right; display: flex; justify-content: flex-end; gap: 12px; align-items: center; }
+  .wordmark { font: italic 700 46px/1 "Playfair Display", serif; letter-spacing: -.01em; }
+  .wordmark small { display: block; font: 12px "Special Elite", monospace; letter-spacing: .3em; margin-top: 6px; color: var(--ink-2); font-style: normal; }
+  .ring { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; font-size: 18px; position: relative; flex: none; }
+  .ring b { position: absolute; top: -6px; right: -8px; background: var(--red); color: var(--paper-2); font: 11px "Special Elite", monospace; padding: 1px 5px; border-radius: 2px; }
+
+  /* folder tabs */
+  .folders { max-width: 1200px; margin: 0 auto; padding: 14px 28px 0; display: flex; gap: 6px; }
+  .folders a { position: relative; padding: 10px 26px 8px; background: var(--manila-2); color: var(--ink); font: 15px "Special Elite", monospace; cursor: pointer; border-radius: 10px 10px 0 0; clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%); }
+  .folders a.on { background: var(--manila); padding-top: 14px; margin-top: -4px; }
+  .folders a i { margin-right: 6px; }
+
+  .desk { max-width: 1200px; margin: 0 auto; padding: 0 28px 56px; }
+  .folder { background: var(--manila); padding: 28px; border-radius: 0 6px 6px 6px; box-shadow: 0 10px 24px -14px rgba(62, 44, 28, .6); }
+  .view { display: none; }
+  .view.on { display: block; }
+  .faded { color: var(--faded); }
+  .sheet { background: var(--paper-2); border: 1px solid var(--rule); padding: 22px 24px; box-shadow: 2px 3px 0 rgba(62, 44, 28, .12); position: relative; }
+  .sheet h2 { font-size: 22px; margin-bottom: 12px; display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
+  .sheet h2 .more { margin-left: auto; font: 13px "Special Elite", monospace; color: var(--red); cursor: pointer; }
+  .page-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 38px; }
+  .page-head p { margin: 4px 0 0; font-family: "Special Elite", monospace; color: var(--ink-2); }
+  .page-head .grow { flex: 1; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1.5px solid var(--ink); background: var(--paper-2); color: var(--ink); font: 14px "Special Elite", monospace; cursor: pointer; }
+  .btn--ink { background: var(--ink); color: var(--paper-2); }
+  .stamp { display: inline-block; font: 13px "Special Elite", monospace; text-transform: uppercase; letter-spacing: .1em; padding: 2px 8px; border: 2px solid currentColor; border-radius: 3px; transform: rotate(-3deg); white-space: nowrap; opacity: .85; }
+  .s-ok { color: var(--teal); }
+  .s-wait { color: var(--mustard); }
+  .s-sent { color: var(--ink-2); }
+  .s-back { color: var(--red); }
+
+  /* ---------- dashboard ---------- */
+  .tickets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .ticket { background: var(--paper-2); display: flex; position: relative; filter: drop-shadow(1px 2px 0 rgba(62, 44, 28, .15)); -webkit-mask: radial-gradient(circle 8px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat; mask: radial-gradient(circle 8px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat; }
+  .ticket b { font: 700 40px/1 "Playfair Display", serif; padding: 14px 16px; border-right: 2px dashed var(--rule); min-width: 86px; text-align: center; }
+  .ticket span { padding: 14px; font: 13px "Special Elite", monospace; align-self: center; color: var(--ink-2); }
+  .ticket small { display: block; font-size: 10px; letter-spacing: .2em; color: var(--faded); }
+  .dash { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; align-items: start; }
+  .dash > * { min-width: 0; }
+  .stack { display: grid; gap: 22px; }
+  .register { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .register th { font: 12px "Special Elite", monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-2); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--ink); }
+  .register td { padding: 10px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .register td:first-child { font-family: "Special Elite", monospace; border-right: 1.5px solid var(--red); width: 64px; }
+  .register small { display: block; color: var(--faded); font-size: 12px; }
+  .register tr.now td { background: rgba(184, 137, 26, .14); }
+  .telegram { background: #f5e9b8; padding: 18px 20px; font-family: "Special Elite", monospace; text-transform: uppercase; line-height: 1.6; border-top: 8px solid var(--red); position: relative; }
+  .telegram .hd { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .2em; color: var(--red); border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 8px; }
+  .tape-strip { background: #fff; padding: 1px 6px; box-shadow: 0 1px 0 var(--rule); }
+  .ink-bar { display: grid; grid-template-columns: 110px 1fr 42px; gap: 10px; align-items: center; padding: 6px 0; font-size: 13px; }
+  .ink-bar i { height: 10px; border: 1px solid var(--ink); display: block; position: relative; }
+  .ink-bar i span { position: absolute; inset: 0 auto 0 0; background: repeating-linear-gradient(-45deg, var(--ink) 0 2px, transparent 2px 5px); }
+  .ink-bar b { font-family: "Special Elite", monospace; text-align: right; }
+
+  /* ---------- timetable (ledger) ---------- */
+  .ledger { width: 100%; border-collapse: collapse; background: var(--paper-2); border: 1.5px solid var(--ink); }
+  .ledger th { font: 700 15px "Playfair Display", serif; padding: 10px; border-bottom: 3px double var(--ink); border-right: 1px solid var(--rule); text-align: left; }
+  .ledger th.today { background: var(--ink); color: var(--paper-2); }
+  .ledger td { padding: 10px; height: 68px; border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); vertical-align: top; }
+  .ledger td.time { font-family: "Special Elite", monospace; border-right: 2px solid var(--red); width: 80px; color: var(--ink-2); }
+  .ledger td b { display: block; }
+  .ledger td small { color: var(--faded); }
+  .ledger td.now { background: rgba(184, 137, 26, .18); outline: 2px solid var(--mustard); outline-offset: -4px; }
+  .ledger tr.brk td { height: auto; padding: 5px 10px; text-align: center; font: 12px "Special Elite", monospace; letter-spacing: .3em; color: var(--faded); background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(62, 44, 28, .05) 3px 4px); }
+  .tt-day { display: none; }
+  .day-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+  .day-tabs a { flex: 1; text-align: center; padding: 6px 0; font: 14px "Special Elite", monospace; border: 1.5px solid var(--ink); background: var(--paper-2); }
+  .day-tabs a.on { background: var(--ink); color: var(--paper-2); }
+
+  /* ---------- eRPH (catalogue cards) ---------- */
+  .erph { display: grid; grid-template-columns: 300px 1fr; gap: 26px; align-items: start; }
+  .erph > * { min-width: 0; }
+  .drawer { background: #8a6a45; padding: 12px; border-radius: 4px; box-shadow: inset 0 4px 10px rgba(0, 0, 0, .3); }
+  .drawer__label { background: var(--paper-2); border: 2px solid #c9a227; text-align: center; font: 12px "Special Elite", monospace; letter-spacing: .2em; padding: 4px; margin: 0 auto 12px; width: 70%; }
+  .tab-card { background: var(--paper-2); padding: 10px 12px; margin-bottom: 6px; border-top: 3px solid var(--rule); cursor: pointer; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .tab-card.on { border-top-color: var(--red); transform: translateX(10px); box-shadow: -2px 2px 0 rgba(0, 0, 0, .15); }
+  .tab-card b { font-family: "Special Elite", monospace; font-weight: 400; }
+  .catalog { background: var(--paper-2) repeating-linear-gradient(transparent 0 27px, #cfdbe6 27px 28px); background-position: 0 62px; border: 1px solid var(--rule); padding: 0 0 40px; box-shadow: 3px 4px 0 rgba(62, 44, 28, .15); position: relative; font-family: "Special Elite", monospace; line-height: 28px; }
+  .catalog::after { content: ""; position: absolute; bottom: 12px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--manila); box-shadow: inset 0 2px 3px rgba(0, 0, 0, .3); }
+  .catalog__top { border-bottom: 2px solid var(--red); padding: 14px 28px 6px; display: flex; gap: 14px; align-items: baseline; }
+  .catalog__top h2 { font-size: 24px; }
+  .catalog__top .call { margin-left: auto; color: var(--red); }
+  .catalog dl { margin: 0; padding: 0 28px; display: grid; grid-template-columns: 170px 1fr; }
+  .catalog dt { color: var(--ink-2); text-transform: uppercase; font-size: 12px; letter-spacing: .1em; }
+  .catalog dd { margin: 0; }
+  .blank { color: var(--red); border-bottom: 1.5px solid var(--red); padding: 0 6px; }
+  .catalog .stamp { position: absolute; right: 30px; top: 70px; font-size: 18px; padding: 4px 12px; transform: rotate(-9deg); border-width: 3px; background: rgba(247, 238, 219, .6); }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+
+  /* ---------- messages (letters) ---------- */
+  .inbox { display: grid; grid-template-columns: 330px 1fr; gap: 26px; align-items: start; }
+  .inbox > * { min-width: 0; }
+  .envelope { display: flex; gap: 12px; padding: 12px; background: var(--paper-2); border: 1px solid var(--rule); margin-bottom: 8px; cursor: pointer; position: relative; }
+  .envelope.on { border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+  .envelope div { flex: 1; min-width: 0; }
+  .envelope p { margin: 2px 0 0; color: var(--faded); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .postage { width: 40px; height: 46px; border: 2px dotted var(--ink-2); background: var(--c); display: grid; place-items: center; color: var(--paper-2); font: 13px "Special Elite", monospace; flex: none; outline: 3px solid var(--paper-2); outline-offset: -5px; }
+  .thread__back { display: none; }
+  .letter { background: var(--paper-2); padding: 30px 34px; border: 1px solid var(--rule); box-shadow: 3px 4px 0 rgba(62, 44, 28, .15); position: relative; line-height: 1.8; }
+  .postmark { position: absolute; right: 28px; top: 22px; width: 92px; height: 92px; border: 2px solid var(--red); border-radius: 50%; color: var(--red); display: grid; place-items: center; text-align: center; font: 11px/1.3 "Special Elite", monospace; transform: rotate(14deg); opacity: .75; }
+  .letter h2 { font-size: 26px; max-width: 75%; }
+  .reply { display: flex; gap: 10px; margin-top: 16px; }
+  .reply input { flex: 1; border: 0; border-bottom: 1.5px solid var(--ink); background: transparent; font: 15px "Special Elite", monospace; color: var(--ink); padding: 6px 2px; outline: none; }
+
+  .bottom-nav { display: none; }
+
+  @media (max-width: 1000px) {
+    .dash, .erph, .inbox { grid-template-columns: 1fr; }
+    .tickets { grid-template-columns: repeat(2, 1fr); }
+    .drawer { display: flex; gap: 8px; overflow-x: auto; }
+    .drawer__label { display: none; }
+    .tab-card { flex: none; margin: 0; }
+    .tab-card.on { transform: translateY(-4px); }
+  }
+  @media (max-width: 720px) {
+    .mast { padding: 14px 16px 0; }
+    .mast__side:first-child { display: none; }
+    .wordmark { font-size: 32px; text-align: left; }
+    .wordmark small { letter-spacing: .15em; font-size: 10px; }
+    .folders { display: none; }
+    .desk { padding: 16px 12px 96px; }
+    .folder { padding: 18px 14px; border-radius: 6px; }
+    .page-head h1 { font-size: 28px; }
+    .ticket b { font-size: 30px; min-width: 64px; padding: 12px 10px; }
+    .ticket span { padding: 10px; font-size: 12px; }
+    .ledger { display: none; }
+    .tt-day { display: block; }
+    .catalog dl { grid-template-columns: 1fr; padding: 0 16px; }
+    .catalog__top { padding: 12px 16px 6px; flex-wrap: wrap; }
+    .catalog .stamp { position: static; display: inline-block; margin: 10px 16px; }
+    .letter { padding: 22px 18px; }
+    .postmark { width: 70px; height: 70px; font-size: 9px; right: 12px; }
+    .inbox .thread { display: none; }
+    .inbox.reading .list { display: none; }
+    .inbox.reading .thread { display: block; }
+    .thread__back { display: inline-flex; margin-bottom: 12px; }
+    .bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: var(--manila); border-top: 3px double var(--ink); justify-content: space-around; padding: 6px 0 10px; z-index: 10; }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; font: 12px "Special Elite", monospace; color: var(--ink-2); padding: 4px 10px; cursor: pointer; }
+    .bottom-nav a i { font-size: 22px; }
+    .bottom-nav a.on { color: var(--red); }
+  }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="mast__rule"></div>
+  <div class="mast__row">
+    <div class="mast__side">Vol. III · No. 42<br />Thursday, 22 October 2026</div>
+    <div class="wordmark">EduNex<small>THE SCHOOL REGISTER</small></div>
+    <div class="mast__side"><span class="ring"><i class="mdi mdi-bell-outline"></i><b>3</b></span><span class="ring" style="font:13px 'Special Elite'">KR</span></div>
+  </div>
+  <div class="mast__rule"></div>
+</header>
+<nav class="folders">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-book-open-variant"></i>Register</a>
+  <a data-view="timetable"><i class="mdi mdi-clock-outline"></i>Timetable</a>
+  <a data-view="erph"><i class="mdi mdi-card-text-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-email-outline"></i>Letters</a>
+  <a><i class="mdi mdi-bookshelf"></i>Syllabus</a>
+</nav>
+
+<main class="desk"><div class="folder">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="page-head">
+      <div><h1>Good morning, Cikgu Kavitha.</h1><p>SJK(T) Ladang Bukit Indah · Term 3, Week 42</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--ink" data-go="erph"><i class="mdi mdi-fountain-pen-tip"></i> Write reflections</button>
+    </div>
+    <div class="tickets">
+      <div class="ticket"><b>6</b><span><small>ADMIT ONE</small>periods today</span></div>
+      <div class="ticket"><b>12</b><span><small>ADMIT ONE</small>awaiting approval</span></div>
+      <div class="ticket"><b style="color:var(--red)">3</b><span><small>ADMIT ONE</small>referred back</span></div>
+      <div class="ticket"><b>38</b><span><small>ADMIT ONE</small>staff present</span></div>
+    </div>
+    <div class="dash">
+      <div class="sheet">
+        <h2>Today's register <span class="more" data-go="timetable">full week →</span></h2>
+        <table class="register">
+          <thead><tr><th>Time</th><th>Class &amp; subject</th><th>eRPH</th></tr></thead>
+          <tbody>
+            <tr><td>07:40</td><td><b>Bahasa Tamil · 5 Melati</b><small>செய்யுள் — திருக்குறள் · Bilik 12</small></td><td><span class="stamp s-ok">Approved</span></td></tr>
+            <tr class="now"><td>09:40</td><td><b>Matematik · 4 Mawar</b><small>Pecahan wajar · in progress</small></td><td><span class="stamp s-sent">Submitted</span></td></tr>
+            <tr><td>11:00</td><td><b>Sains · 4 Mawar</b><small>Sistem rangka manusia · Makmal</small></td><td><span class="stamp s-wait">Pending</span></td></tr>
+            <tr><td>12:00</td><td><b>Bahasa Tamil · 6 Kenanga</b><small>கட்டுரை எழுதுதல் · Bilik 15</small></td><td><span class="stamp s-back">Referred</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack">
+        <div class="telegram">
+          <div class="hd"><span>Telegram</span><span>22 OCT · 10:12</span></div>
+          <span class="tape-strip">STAFF MEETING MOVED TO FRIDAY 2.30 PM STOP</span><br />
+          <span class="tape-strip">LIBRARY STOP BRING SYLLABUS REPORT STOP</span><br />
+          <span style="font-size:12px;color:var(--ink-2)">— HEAD MASTER</span>
+        </div>
+        <div class="sheet">
+          <h2>Syllabus progress</h2>
+          <div class="ink-bar"><span>Bahasa Tamil</span><i><span style="width:78%"></span></i><b>78%</b></div>
+          <div class="ink-bar"><span>Matematik</span><i><span style="width:64%"></span></i><b>64%</b></div>
+          <div class="ink-bar"><span>Sains</span><i><span style="width:52%;background:repeating-linear-gradient(-45deg,var(--red) 0 2px,transparent 2px 5px)"></span></i><b style="color:var(--red)">52%</b></div>
+        </div>
+        <div class="sheet">
+          <h2>Memoranda</h2>
+          <div class="type" style="line-height:1.9">
+            ☐ Correct the 6 Kenanga reflection<br />
+            ☐ Reflection for 4 Mawar Sains<br />
+            ☐ Review 3 plans from Year 3<br />
+            ☑ <s class="faded">Submit 4 Mawar Matematik plan</s>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><h1>Timetable</h1><p>Week 42 · 19 – 23 October 2026</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+      <button class="btn btn--ink"><i class="mdi mdi-plus"></i> Add slot</button>
+    </div>
+    <table class="ledger">
+      <thead><tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th class="today">Thursday</th><th>Friday</th></tr></thead>
+      <tbody>
+        <tr><td class="time">07:40</td><td><b>B. Tamil</b><small>5 Melati</small></td><td><b>Matematik</b><small>4 Mawar</small></td><td></td><td><b>B. Tamil</b><small>5 Melati</small></td><td><b>Sains</b><small>4 Mawar</small></td></tr>
+        <tr><td class="time">08:40</td><td><b>Matematik</b><small>4 Mawar</small></td><td></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td></td><td><b>B. Melayu</b><small>3 Teratai</small></td></tr>
+        <tr><td class="time">09:40</td><td></td><td><b>Sains</b><small>4 Mawar</small></td><td><b>Matematik</b><small>4 Mawar</small></td><td class="now"><b>Matematik</b><small>4 Mawar · now</small></td><td><b>B. Tamil</b><small>5 Melati</small></td></tr>
+        <tr class="brk"><td>10:40</td><td colspan="5">— RECESS —</td></tr>
+        <tr><td class="time">11:00</td><td><b>English</b><small>6 Kenanga</small></td><td><b>B. Tamil</b><small>5 Melati</small></td><td></td><td><b>Sains</b><small>4 Mawar</small></td><td></td></tr>
+        <tr><td class="time">12:00</td><td></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td><b>Sains</b><small>5 Melati</small></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td><b>Matematik</b><small>3 Teratai</small></td></tr>
+      </tbody>
+    </table>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="tt-day sheet">
+      <div class="day-tabs"><a>Mon</a><a>Tue</a><a>Wed</a><a class="on">Thu</a><a>Fri</a></div>
+      <table class="register">
+        <tbody>
+          <tr><td>07:40</td><td><b>Bahasa Tamil</b><small>5 Melati</small></td></tr>
+          <tr class="now"><td>09:40</td><td><b>Matematik</b><small>4 Mawar · now</small></td></tr>
+          <tr><td>10:40</td><td class="type faded">— recess —</td></tr>
+          <tr><td>11:00</td><td><b>Sains</b><small>4 Mawar</small></td></tr>
+          <tr><td>12:00</td><td><b>Bahasa Tamil</b><small>6 Kenanga</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><h1>eRPH catalogue</h1><p>Daily lesson plans · 22 October</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-qrcode"></i> QR code</button>
+      <button class="btn"><i class="mdi mdi-export-variant"></i> Export</button>
+    </div>
+    <div class="erph">
+      <div class="drawer">
+        <div class="drawer__label">22 · OCT · 26</div>
+        <div class="tab-card"><b>5 Melati · B. Tamil</b><span class="stamp s-ok">Approved</span></div>
+        <div class="tab-card on"><b>4 Mawar · Matematik</b><span class="stamp s-sent">Submitted</span></div>
+        <div class="tab-card"><b>4 Mawar · Sains</b><span class="stamp s-wait">Pending</span></div>
+        <div class="tab-card"><b>6 Kenanga · B. Tamil</b><span class="stamp s-back">Referred back</span></div>
+        <div class="tab-card"><b>3 Teratai · Matematik</b><span class="stamp s-ok">Approved</span></div>
+      </div>
+      <div>
+        <article class="catalog">
+          <div class="catalog__top"><h2>Pecahan wajar</h2><span class="faded">Matematik · 4 Mawar</span><span class="call">MT 3.1.1</span></div>
+          <span class="stamp s-sent">Submitted</span>
+          <dl>
+            <dt>Date</dt><dd>Thursday 22 October 2026, 09:40 – 10:40</dd>
+            <dt>Teacher</dt><dd>Kavitha Raman</dd>
+            <dt>Unit</dt><dd>3 — Pecahan, perpuluhan dan peratus</dd>
+            <dt>Content std.</dt><dd>3.1 Pecahan</dd>
+            <dt>Learning std.</dt><dd>3.1.1 Menamakan dan menulis pecahan wajar</dd>
+            <dt>Objective</dt><dd>Name and write proper fractions using fraction strips.</dd>
+            <dt>Reflection</dt><dd><span class="blank">24</span> / <span class="blank">29</span> mastered — enrichment given.<br /><span class="blank">5</span> / <span class="blank">29</span> given remedial activity.</dd>
+          </dl>
+        </article>
+        <div class="actions">
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Refer back</button>
+          <button class="btn btn--ink"><i class="mdi mdi-check"></i> Approve</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><h1>Letters</h1><p>Inbox · Sent · Complaints (2)</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--ink"><i class="mdi mdi-fountain-pen-tip"></i> Write a letter</button>
+    </div>
+    <div class="inbox">
+      <div class="list">
+        <div class="envelope on"><span class="postage" style="--c:var(--red)">SN</span><div><b>Saraswathy N.</b><p>Staff meeting moved to Friday 2:30 pm</p></div><span class="type faded">10:12</span></div>
+        <div class="envelope"><span class="postage" style="--c:var(--teal)">AK</span><div><b>Arun Kumar</b><p>Can we swap Tuesday's 8:40 slot?</p></div><span class="type faded">09:05</span></div>
+        <div class="envelope"><span class="postage" style="--c:var(--mustard)">PPD</span><div><b>District office</b><p>Reminder: eRPH audit for Term 3</p></div><span class="type faded">Wed</span></div>
+        <div class="envelope"><span class="postage" style="--c:var(--ink-2)">LW</span><div><b>Lim Wei Ling</b><p>Thanks for approving my plans</p></div><span class="type faded">Tue</span></div>
+      </div>
+      <div class="letter thread">
+        <button class="btn thread__back" data-back><i class="mdi mdi-arrow-left"></i> Letters</button>
+        <div class="postmark">BUKIT INDAH<br />22 OCT<br />2026</div>
+        <div class="type faded">From: Saraswathy N., Head master<br />To: All staff</div>
+        <h2 style="margin-top:12px">Staff meeting moved to Friday, 2:30 pm</h2>
+        <p>Dear teachers,</p>
+        <p>This week's staff meeting moves from Thursday to <b>Friday, 23 October at 2:30 pm</b> in the library. Please bring your Term 3 syllabus progress report.</p>
+        <p>Agenda: mid-term assessment schedule, Deepavali celebration committee and eRPH audit preparation.</p>
+        <p>Yours sincerely,<br /><i style="font-family:'Playfair Display';font-size:20px">Saraswathy</i></p>
+        <div class="reply"><input placeholder="Type your reply…" /><button class="btn btn--ink"><i class="mdi mdi-send"></i></button></div>
+      </div>
+    </div>
+  </section>
+</div></main>
+
+<nav class="bottom-nav">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-book-open-variant"></i>Register</a>
+  <a data-view="timetable"><i class="mdi mdi-clock-outline"></i>Timetable</a>
+  <a data-view="erph"><i class="mdi mdi-card-text-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-email-outline"></i>Letters</a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the folder tabs, bottom nav and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("nav [data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a letter opens it full screen; Back returns to the list.
+  document.querySelectorAll(".envelope").forEach(function (m) {
+    m.addEventListener("click", function () { document.querySelector(".inbox").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".inbox").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 3 — Ledger</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 3 — "Ledger"
+  Calm, editorial, print-inspired: paper background, ink-black type,
+  serif headlines, hairline rules and a single vermilion accent.
+  The eRPH screen reads like the printed lesson plan document.
+-->
+<style>
+  :root {
+    --paper: #f7f5f0;
+    --sheet: #fffefb;
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --muted: #8b877e;
+    --rule: #dcd7cc;
+    --accent: #e4572e;
+    --accent-soft: #fbe7e0;
+    --ok: #2f7d4f;
+    --wait: #a06a00;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "IBM Plex Sans", sans-serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.5; }
+  .serif { font-family: "Fraunces", serif; }
+  .mono { font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+  h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+
+  /* ---------- masthead ---------- */
+  .mast { border-bottom: 1px solid var(--ink); }
+  .mast__top { max-width: 1200px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--ink-2); }
+  .mast__top .grow { flex: 1; }
+  .mast__top a { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .wordmark { font-family: "Fraunces", serif; font-size: 26px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
+  .wordmark span { color: var(--accent); }
+  .nav { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; gap: 28px; overflow-x: auto; }
+  .nav a { padding: 10px 0 12px; color: var(--muted); font-weight: 500; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .nav a.on { color: var(--ink); border-color: var(--accent); }
+  .nav a sup { color: var(--accent); font-weight: 600; line-height: 0; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 32px 64px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .muted { color: var(--muted); }
+  .kicker { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); font-weight: 600; }
+  .rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+  .rule--ink { border-top-color: var(--ink); }
+  .link { color: var(--ink); border-bottom: 1px solid var(--accent); cursor: pointer; font-weight: 500; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border: 1px solid var(--ink); background: transparent; font: inherit; font-weight: 500; cursor: pointer; color: var(--ink); }
+  .btn--ink { background: var(--ink); color: var(--paper); }
+  .status { font-family: "IBM Plex Mono", monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+  .st-ok { color: var(--ok); }
+  .st-wait { color: var(--wait); }
+  .st-sent { color: var(--ink-2); }
+  .st-back { color: var(--accent); }
+  .status::before { content: "● "; }
+
+  /* ---------- dashboard ---------- */
+  .lead { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-bottom: 24px; border-bottom: 1px solid var(--ink); }
+  .lead h1 { font-size: 56px; line-height: 1.02; font-weight: 400; }
+  .lead h1 em { font-style: italic; color: var(--accent); }
+  .lead p { margin: 12px 0 0; color: var(--ink-2); max-width: 560px; font-size: 17px; }
+  .figures { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--rule); }
+  .fig { padding: 22px 20px 22px 0; border-right: 1px solid var(--rule); }
+  .fig + .fig { padding-left: 20px; }
+  .fig:last-child { border-right: 0; }
+  .fig b { font-family: "Fraunces", serif; font-size: 48px; font-weight: 400; line-height: 1; display: block; }
+  .fig span { color: var(--muted); font-size: 13px; }
+  .cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; margin-top: 32px; }
+  .section-title { display: flex; align-items: baseline; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--ink); margin-bottom: 4px; }
+  .section-title h2 { font-size: 24px; }
+  .section-title .link { margin-left: auto; font-size: 13px; }
+  .day-line { list-style: none; margin: 0; padding: 0; }
+  .day-line li { display: grid; grid-template-columns: 80px 1fr auto; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .day-line .when { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); }
+  .day-line h3 { font-size: 20px; font-weight: 400; }
+  .day-line .meta { color: var(--muted); font-size: 13px; }
+  .day-line li.now { position: relative; }
+  .day-line li.now::before { content: "NOW"; position: absolute; left: -48px; top: 18px; font-size: 10px; letter-spacing: .1em; color: var(--accent); font-weight: 600; }
+  .day-line li.now .when { color: var(--accent); }
+  .day-line li.now h3 { font-weight: 600; }
+  .todo { list-style: none; margin: 0; padding: 0; counter-reset: t; }
+  .todo li { counter-increment: t; display: grid; grid-template-columns: 34px 1fr; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .todo li::before { content: counter(t, decimal-leading-zero); font-family: "IBM Plex Mono", monospace; color: var(--accent); font-size: 13px; padding-top: 2px; }
+  .todo b { font-weight: 600; }
+  .todo small { display: block; color: var(--muted); }
+  .bulletin { background: var(--ink); color: var(--paper); padding: 22px; margin-top: 28px; }
+  .bulletin .kicker { color: #ff8a65; }
+  .bulletin h3 { font-size: 22px; margin: 6px 0 8px; font-weight: 400; }
+  .bulletin p { margin: 0; color: #c9c5bb; font-size: 14px; }
+  .meter { display: grid; grid-template-columns: 110px 1fr 44px; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+  .meter i { height: 2px; background: var(--rule); position: relative; display: block; }
+  .meter i span { position: absolute; left: 0; top: -2px; height: 6px; background: var(--ink); }
+  .meter .mono { text-align: right; }
+
+  /* ---------- timetable ---------- */
+  .ttable { width: 100%; border-collapse: collapse; background: var(--sheet); border: 1px solid var(--ink); }
+  .ttable th { font-family: "Fraunces", serif; font-weight: 600; font-size: 16px; text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--ink); border-right: 1px solid var(--rule); }
+  .ttable th.today { background: var(--ink); color: var(--paper); }
+  .ttable td { padding: 12px 14px; border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); vertical-align: top; height: 72px; font-size: 14px; }
+  .ttable td.time { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); width: 84px; }
+  .ttable td b { display: block; font-weight: 600; }
+  .ttable td small { color: var(--muted); }
+  .ttable td.now { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .ttable tr.recess td { height: auto; padding: 6px 14px; background: repeating-linear-gradient(90deg, transparent 0 6px, #efece5 6px 7px); font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+  /* phone-only single-day timetable */
+  .tt-day { display: none; }
+  .day-tabs { display: flex; border: 1px solid var(--ink); }
+  .day-tabs a { flex: 1; text-align: center; padding: 8px 0; font-family: "Fraunces", serif; font-weight: 600; border-right: 1px solid var(--rule); }
+  .day-tabs a:last-child { border-right: 0; }
+  .day-tabs a.on { background: var(--ink); color: var(--paper); }
+  .legend { display: flex; gap: 24px; margin-top: 14px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+
+  /* ---------- eRPH document ---------- */
+  .doc-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
+  .cols > *, .notices > *, .doc-layout > * { min-width: 0; }
+  .index { list-style: none; margin: 0; padding: 0; }
+  .index li { padding: 12px 0; border-bottom: 1px solid var(--rule); cursor: pointer; }
+  .index li b { display: block; font-weight: 500; }
+  .index li.on b { color: var(--accent); }
+  .index li.on { border-bottom-color: var(--accent); }
+  .sheet { background: var(--sheet); border: 1px solid var(--rule); box-shadow: 0 1px 0 var(--rule), 0 12px 30px -18px rgba(0, 0, 0, .25); padding: 48px 56px; }
+  .sheet__head { display: flex; align-items: flex-start; gap: 20px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+  .sheet__head h2 { font-size: 30px; }
+  .sheet__head .qr { margin-left: auto; width: 64px; height: 64px; background:
+      conic-gradient(var(--ink) 25%, transparent 0 50%, var(--ink) 0 75%, transparent 0) 0 0 / 16px 16px; border: 4px solid var(--sheet); outline: 1px solid var(--ink); flex: none; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--rule); }
+  .facts div { padding: 14px 14px 14px 0; }
+  .facts div + div { padding-left: 14px; border-left: 1px solid var(--rule); }
+  .facts small { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  .block { display: grid; grid-template-columns: 160px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .block > small { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding-top: 3px; }
+  .block p { margin: 0; }
+  .fill { border-bottom: 1px solid var(--accent); padding: 0 6px; font-family: "IBM Plex Mono", monospace; color: var(--accent); }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px; }
+  .sign div { border-top: 1px solid var(--ink); padding-top: 8px; font-size: 13px; }
+  .sign small { color: var(--muted); display: block; }
+  .doc-actions { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+
+  /* ---------- messages ---------- */
+  .notices { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
+  .notice { padding: 22px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 100px 1fr; gap: 20px; }
+  .notice .when { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .notice h3 { font-size: 22px; font-weight: 400; margin-bottom: 6px; }
+  .notice p { margin: 0; color: var(--ink-2); }
+  .notice .from { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .notice.feature h3 { font-size: 32px; line-height: 1.15; }
+  .notice.unread h3::after { content: " •"; color: var(--accent); }
+  .side-box { border: 1px solid var(--ink); padding: 20px; margin-bottom: 24px; }
+  .side-box h3 { font-size: 18px; margin-bottom: 10px; }
+  .field { border: 0; border-bottom: 1px solid var(--ink); background: transparent; width: 100%; padding: 8px 0; font: inherit; margin-bottom: 12px; outline: none; }
+  textarea.field { resize: none; height: 80px; }
+
+  .page-head { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 44px; font-weight: 400; line-height: 1.05; }
+  .page-head .grow { flex: 1; }
+
+  @media (max-width: 1000px) {
+    .cols, .notices, .doc-layout { grid-template-columns: 1fr; gap: 32px; }
+    .figures { grid-template-columns: repeat(2, 1fr); }
+    .fig:nth-child(2) { border-right: 0; }
+    .fig:nth-child(3) { padding-left: 0; }
+    .fig:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .index { display: flex; gap: 20px; overflow-x: auto; }
+    .index li { flex: none; }
+    .day-line li.now::before { display: none; }
+  }
+  @media (max-width: 640px) {
+    .mast__top, .nav, .wrap { padding-left: 16px; padding-right: 16px; }
+    .mast__top .hide-m { display: none; }
+    .lead { grid-template-columns: 1fr; }
+    .lead h1 { font-size: 38px; }
+    .page-head h1 { font-size: 34px; }
+    .day-line li { grid-template-columns: 64px 1fr; }
+    .day-line li .status { grid-column: 2; }
+    .t-wrap { display: none; }
+    .tt-day { display: block; }
+    .sheet { padding: 24px 18px; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .facts div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .block { grid-template-columns: 1fr; gap: 4px; }
+    .notice { grid-template-columns: 1fr; gap: 6px; }
+    .notice.feature h3 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="mast__top">
+    <span class="wordmark">EduNex<span>.</span></span>
+    <span class="hide-m muted">SJK(T) Ladang Bukit Indah · Term 3, Week 42</span>
+    <span class="grow"></span>
+    <a class="hide-m"><i class="mdi mdi-magnify"></i> Search</a>
+    <a class="hide-m"><i class="mdi mdi-translate"></i> EN</a>
+    <a><i class="mdi mdi-bell-outline"></i> 3</a>
+    <a><b>K. Raman</b></a>
+  </div>
+  <nav class="nav">
+    <a data-view="dashboard" class="on">Today</a>
+    <a data-view="timetable">Timetable</a>
+    <a data-view="erph">eRPH <sup>4</sup></a>
+    <a>Syllabus</a>
+    <a>Staff</a>
+    <a data-view="messages">Notices</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="lead">
+      <div>
+        <div class="kicker">Thursday, 22 October 2026</div>
+        <h1 style="margin-top:10px">Six classes, <em>two reflections</em><br />and one plan to fix.</h1>
+        <p>Good morning, Kavitha. 4 Mawar Matematik is under way. The 6 Kenanga Tamil plan was referred back with one comment.</p>
+      </div>
+      <button class="btn btn--ink" data-go="erph">Open eRPH <i class="mdi mdi-arrow-right"></i></button>
+    </div>
+
+    <div class="figures">
+      <div class="fig"><b>6</b><span>classes today</span></div>
+      <div class="fig"><b>12</b><span>plans awaiting approval</span></div>
+      <div class="fig"><b style="color:var(--accent)">3</b><span>referred back</span></div>
+      <div class="fig"><b>68<small style="font-size:24px">%</small></b><span>term syllabus taught</span></div>
+    </div>
+
+    <div class="cols">
+      <div>
+        <div class="section-title"><h2>The day</h2><span class="link" data-go="timetable">Full timetable</span></div>
+        <ul class="day-line">
+          <li><span class="when">07:40</span><div><h3>Bahasa Tamil — 5 Melati</h3><div class="meta">செய்யுள் — திருக்குறள் · Bilik 12</div></div><span class="status st-ok">Approved</span></li>
+          <li class="now"><span class="when">09:40</span><div><h3>Matematik — 4 Mawar</h3><div class="meta">Pecahan wajar · Bilik 8</div></div><span class="status st-sent">Submitted</span></li>
+          <li><span class="when">11:00</span><div><h3>Sains — 4 Mawar</h3><div class="meta">Sistem rangka manusia · Makmal</div></div><span class="status st-wait">Pending</span></li>
+          <li><span class="when">12:00</span><div><h3>Bahasa Tamil — 6 Kenanga</h3><div class="meta">கட்டுரை எழுதுதல் · Bilik 15</div></div><span class="status st-back">Referred</span></li>
+          <li><span class="when">14:30</span><div><h3>Co-curricular — Tamil Society</h3><div class="meta">Dewan · Thursday club</div></div><span></span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-title"><h2>To do</h2></div>
+        <ol class="todo">
+          <li><div><b>Fix the 6 Kenanga reflection</b><small>"Please add the remedial count" — Pn. Saraswathy</small></div></li>
+          <li><div><b>Write the reflection for 4 Mawar Sains</b><small>After the 11:00 class</small></div></li>
+          <li><div><b>Review 3 plans from Year 3 teachers</b><small>Arun Kumar, Meena S., Lim Wei Ling</small></div></li>
+        </ol>
+        <div class="bulletin">
+          <div class="kicker">Notice · Head master</div>
+          <h3 class="serif">Staff meeting moves to Friday, 2:30 pm</h3>
+          <p>Library. Bring your Term 3 syllabus progress report.</p>
+        </div>
+        <div class="section-title" style="margin-top:28px"><h2>Syllabus</h2></div>
+        <div class="meter"><span>Bahasa Tamil</span><i><span style="width:78%"></span></i><span class="mono">78%</span></div>
+        <div class="meter"><span>Matematik</span><i><span style="width:64%"></span></i><span class="mono">64%</span></div>
+        <div class="meter"><span>Sains</span><i><span style="width:52%;background:var(--accent)"></span></i><span class="mono">52%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><div class="kicker">Week 42 · 19 – 23 October</div><h1 style="margin-top:8px">Timetable</h1></div>
+      <span class="grow"></span>
+      <span class="link">Class details</span><span class="link">Subject assign</span><span class="link">Time slots</span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+    </div>
+    <div class="t-wrap">
+      <table class="ttable">
+        <thead><tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th class="today">Thursday</th><th>Friday</th></tr></thead>
+        <tbody>
+          <tr><td class="time">07:40<br />08:40</td><td><b>B. Tamil</b><small>5 Melati</small></td><td><b>Matematik</b><small>4 Mawar</small></td><td></td><td><b>B. Tamil</b><small>5 Melati</small></td><td><b>Sains</b><small>4 Mawar</small></td></tr>
+          <tr><td class="time">08:40<br />09:40</td><td><b>Matematik</b><small>4 Mawar</small></td><td></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td></td><td><b>B. Melayu</b><small>3 Teratai</small></td></tr>
+          <tr><td class="time">09:40<br />10:40</td><td></td><td><b>Sains</b><small>4 Mawar</small></td><td><b>Matematik</b><small>4 Mawar</small></td><td class="now"><b>Matematik</b><small>4 Mawar · now</small></td><td><b>B. Tamil</b><small>5 Melati</small></td></tr>
+          <tr class="recess"><td>10:40</td><td colspan="5">Recess</td></tr>
+          <tr><td class="time">11:00<br />12:00</td><td><b>English</b><small>6 Kenanga</small></td><td><b>B. Tamil</b><small>5 Melati</small></td><td></td><td><b>Sains</b><small>4 Mawar</small></td><td></td></tr>
+          <tr><td class="time">12:00<br />12:30</td><td></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td><b>Sains</b><small>5 Melati</small></td><td><b>B. Tamil</b><small>6 Kenanga</small></td><td><b>Matematik</b><small>3 Teratai</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="tt-day">
+      <div class="day-tabs"><a>Mon</a><a>Tue</a><a>Wed</a><a class="on">Thu</a><a>Fri</a></div>
+      <ul class="day-line">
+        <li><span class="when">07:40</span><div><h3>B. Tamil — 5 Melati</h3><div class="meta">until 08:40</div></div></li>
+        <li class="now"><span class="when">09:40</span><div><h3>Matematik — 4 Mawar</h3><div class="meta">now · until 10:40</div></div></li>
+        <li><span class="when">10:40</span><div><div class="meta" style="text-transform:uppercase;letter-spacing:.1em">Recess</div></div></li>
+        <li><span class="when">11:00</span><div><h3>Sains — 4 Mawar</h3><div class="meta">until 12:00</div></div></li>
+        <li><span class="when">12:00</span><div><h3>B. Tamil — 6 Kenanga</h3><div class="meta">until 12:30</div></div></li>
+      </ul>
+    </div>
+    <div class="legend"><span>24 periods this week</span><span>4 classes</span><span>5 subjects</span><span style="color:var(--accent)">▍ Current period</span></div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><div class="kicker">Rancangan Pengajaran Harian</div><h1 style="margin-top:8px">eRPH</h1></div>
+    </div>
+    <div class="doc-layout">
+      <div>
+        <div class="section-title"><h2 style="font-size:18px">22 October</h2></div>
+        <ul class="index">
+          <li><b>5 Melati · B. Tamil</b><span class="status st-ok">Approved</span></li>
+          <li class="on"><b>4 Mawar · Matematik</b><span class="status st-sent">Submitted</span></li>
+          <li><b>4 Mawar · Sains</b><span class="status st-wait">Pending</span></li>
+          <li><b>6 Kenanga · B. Tamil</b><span class="status st-back">Referred back</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="doc-actions">
+          <span class="status st-sent">Submitted · waiting for Pn. Saraswathy</span>
+          <span style="flex:1"></span>
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Refer back</button>
+          <button class="btn btn--ink"><i class="mdi mdi-check"></i> Approve</button>
+        </div>
+        <article class="sheet">
+          <div class="sheet__head">
+            <div><div class="kicker">Daily lesson plan</div><h2 style="margin-top:6px">Matematik — Pecahan wajar</h2><div class="muted" style="margin-top:4px">SJK(T) Ladang Bukit Indah</div></div>
+            <span class="qr" aria-label="QR code"></span>
+          </div>
+          <div class="facts">
+            <div><small>Class</small>4 Mawar</div>
+            <div><small>Date</small>Thu 22 Oct 2026</div>
+            <div><small>Time</small>09:40 – 10:40</div>
+            <div><small>Teacher</small>Kavitha Raman</div>
+          </div>
+          <div class="block"><small>Unit</small><p>Unit 3 — Pecahan, perpuluhan dan peratus</p></div>
+          <div class="block"><small>Content standard</small><p>3.1 Pecahan</p></div>
+          <div class="block"><small>Learning standard</small><p>3.1.1 Menamakan dan menulis pecahan wajar dengan pengangka hingga 9 dan penyebut hingga 10.</p></div>
+          <div class="block"><small>Objective</small><p>By the end of the lesson pupils can name and write proper fractions using fraction strips.</p></div>
+          <div class="block"><small>Activities</small><p>1. Fold paper strips into equal parts. 2. Shade and name the fraction. 3. Pair game: match fraction cards to pictures.</p></div>
+          <div class="block"><small>Reflection</small><p><span class="fill">24</span> / <span class="fill">29</span> pupils mastered the objective and were given enrichment exercises.<br /><span class="fill">5</span> / <span class="fill">29</span> pupils were given remedial activity with teacher guidance.</p></div>
+          <div class="sign">
+            <div><small>Prepared by</small>Kavitha Raman</div>
+            <div><small>Verified by</small><span class="muted">—</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><div class="kicker">Messages & announcements</div><h1 style="margin-top:8px">Notices</h1></div>
+      <span class="grow"></span>
+      <span class="link">Inbox</span><span class="link">Sent</span><span class="link">Complaints (2)</span>
+    </div>
+    <div class="notices">
+      <div>
+        <div class="notice feature unread"><div class="when">TODAY<br />10:12</div><div><h3>Staff meeting moves to Friday, 2:30 pm in the library</h3><p>Please bring your Term 3 syllabus progress report. Agenda: mid-term assessment schedule, Deepavali committee and eRPH audit preparation.</p><div class="from">Saraswathy N., Head master → All staff</div></div></div>
+        <div class="notice unread"><div class="when">TODAY<br />09:05</div><div><h3>Can we swap Tuesday's 8:40 slot?</h3><p>I have a district course next Tuesday morning. Would you take my 3 Teratai period and I'll take your Friday one?</p><div class="from">Arun Kumar → You</div></div></div>
+        <div class="notice"><div class="when">22 OCT</div><div><h3>Reminder: eRPH audit for Term 3</h3><p>Schools should keep approved lesson plans printable with QR codes until the end of the year.</p><div class="from">District education office → Administrators</div></div></div>
+        <div class="notice"><div class="when">20 OCT</div><div><h3>New in EduNex: print eRPH with a QR code</h3><p>Each printed plan now carries a code that opens the live version.</p><div class="from">EduNex</div></div></div>
+      </div>
+      <aside>
+        <div class="side-box">
+          <h3>Write a notice</h3>
+          <input class="field" placeholder="To — all staff, a class, a teacher" />
+          <input class="field" placeholder="Subject" />
+          <textarea class="field" placeholder="Message"></textarea>
+          <button class="btn btn--ink" style="width:100%;justify-content:center">Send notice</button>
+        </div>
+        <div class="side-box" style="border-color:var(--accent)">
+          <h3>Open complaints</h3>
+          <div style="padding:8px 0;border-bottom:1px solid var(--rule)"><b>Projector in Bilik 8 not working</b><div class="muted" style="font-size:13px">Lim Wei Ling · 2 days</div></div>
+          <div style="padding:8px 0"><b>Timetable clash on Wednesday</b><div class="muted" style="font-size:13px">Meena S. · 4 days</div></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Static demo: switch screens from the nav and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll(".nav a[data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>

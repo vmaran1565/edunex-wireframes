@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>EduNex · Design 6 — Campus</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<!--
+  Design 6 — "Campus"
+  School spirit: navy and gold school colours, a crest on the banner,
+  pennant navigation, a sports-day scoreboard for the key numbers, the
+  bell schedule for today, and eRPH shown like a certificate with a seal.
+-->
+<style>
+  :root {
+    --navy: #13294b;
+    --navy-2: #1d3a66;
+    --navy-3: #2b4f86;
+    --gold: #f5b400;
+    --gold-soft: #fff4d1;
+    --cream: #f7f4ec;
+    --card: #ffffff;
+    --text: #1b2433;
+    --muted: #6b7486;
+    --line: #e4dfd2;
+    --maroon: #9b1c31;
+    --green: #1f7a4d;
+    --sky: #2563eb;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Source Sans 3", sans-serif; font-size: 15px; background: var(--cream); color: var(--text); }
+  .varsity { font-family: "Graduate", serif; letter-spacing: .02em; }
+  h1, h2, h3 { margin: 0; font-family: "Graduate", serif; font-weight: 400; color: var(--navy); }
+
+  /* ---------- banner ---------- */
+  .banner { background: var(--navy); color: #fff; position: relative; padding-bottom: 54px; background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .03) 0 14px, transparent 14px 28px); }
+  .banner::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: repeating-linear-gradient(90deg, var(--gold) 0 40px, #fff 40px 44px); }
+  .banner__in { max-width: 1240px; margin: 0 auto; padding: 18px 28px 0; display: flex; align-items: center; gap: 18px; }
+  .crest { width: 58px; height: 66px; background: var(--gold); clip-path: polygon(50% 0, 100% 12%, 100% 55%, 50% 100%, 0 55%, 0 12%); display: grid; place-items: center; flex: none; }
+  .crest span { width: 48px; height: 56px; background: var(--navy); clip-path: polygon(50% 0, 100% 12%, 100% 55%, 50% 100%, 0 55%, 0 12%); display: grid; place-items: center; color: var(--gold); font-size: 24px; padding-bottom: 6px; }
+  .school h1 { color: #fff; font-size: 26px; }
+  .school small { color: #c9d4ea; display: block; letter-spacing: .2em; text-transform: uppercase; font-size: 11px; margin-top: 2px; }
+  .banner .grow { flex: 1; }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who b { display: block; }
+  .who small { color: #c9d4ea; }
+  .badge-ico { width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .25); display: grid; place-items: center; font-size: 19px; position: relative; flex: none; }
+  .badge-ico b { position: absolute; top: -4px; right: -4px; background: var(--gold); color: var(--navy); font-size: 11px; border-radius: 9px; padding: 0 5px; }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: var(--navy); display: grid; place-items: center; font-weight: 700; flex: none; }
+
+  /* pennant navigation hanging from the banner */
+  .pennants { position: absolute; left: 0; right: 0; bottom: -46px; z-index: 3; }
+  .pennants__in { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: flex; gap: 10px; }
+  .pennants a { width: 120px; padding: 14px 0 26px; text-align: center; background: var(--navy-3); color: #fff; clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%); font: 13px "Graduate", serif; cursor: pointer; transition: padding .15s; }
+  .pennants a i { display: block; font-size: 22px; margin-bottom: 2px; }
+  .pennants a.on { background: var(--gold); color: var(--navy); padding-top: 22px; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 76px 28px 56px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .muted { color: var(--muted); }
+  .page-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 34px; }
+  .page-head p { margin: 4px 0 0; color: var(--muted); }
+  .page-head .grow { flex: 1; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 6px; border: 2px solid var(--navy); background: #fff; color: var(--navy); font: inherit; font-weight: 700; cursor: pointer; }
+  .btn--gold { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+  .btn--navy { background: var(--navy); color: #fff; }
+  .card { background: var(--card); border-radius: 10px; border: 1px solid var(--line); overflow: hidden; }
+  .card__head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 3px solid var(--navy); }
+  .card__head h2 { font-size: 18px; }
+  .card__head .more { margin-left: auto; color: var(--sky); font-weight: 600; cursor: pointer; font-size: 14px; }
+  .card__body { padding: 16px 18px; }
+  .ribbon { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px 3px 8px; font-size: 12px; font-weight: 700; color: #fff; clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 50%, 100% 100%, 0 100%); padding-right: 14px; white-space: nowrap; }
+  .r-ok { background: var(--green); }
+  .r-wait { background: #b7791f; }
+  .r-sent { background: var(--sky); }
+  .r-back { background: var(--maroon); }
+
+  /* ---------- dashboard ---------- */
+  .scoreboard { background: var(--navy); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; box-shadow: inset 0 0 0 3px var(--navy-2); }
+  .score { background: #0b1a33; border-radius: 8px; padding: 12px 14px; text-align: center; border: 1px solid #23406e; }
+  .score b { font: 46px/1 "Graduate", serif; color: var(--gold); display: block; text-shadow: 0 0 12px rgba(245, 180, 0, .35); }
+  .score span { color: #c9d4ea; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; }
+  .score--alert b { color: #ff8a8a; text-shadow: 0 0 12px rgba(255, 120, 120, .35); }
+  .dash { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; align-items: start; }
+  .dash > * { min-width: 0; }
+  .stack { display: grid; gap: 22px; align-content: start; }
+  .bells { list-style: none; margin: 0; padding: 0; }
+  .bells li { display: grid; grid-template-columns: 34px 70px 1fr auto; gap: 12px; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .bells li:last-child { border-bottom: 0; }
+  .bells .bell { width: 30px; height: 30px; border-radius: 50%; background: var(--gold-soft); color: #9a6b00; display: grid; place-items: center; font-size: 16px; }
+  .bells .when { font: 15px "Graduate", serif; color: var(--navy); }
+  .bells small { display: block; color: var(--muted); }
+  .bells li.now { background: var(--gold-soft); box-shadow: inset 4px 0 0 var(--gold); }
+  .bells li.now .bell { background: var(--gold); color: var(--navy); animation: ring 1.6s ease-in-out infinite; }
+  .bells li.brk { background: repeating-linear-gradient(135deg, #faf8f2 0 8px, #f3efe4 8px 16px); color: var(--muted); }
+  @keyframes ring { 0%, 70%, 100% { transform: rotate(0); } 75% { transform: rotate(14deg); } 85% { transform: rotate(-14deg); } }
+  .report { width: 100%; border-collapse: collapse; }
+  .report td { padding: 10px 18px; border-bottom: 1px solid var(--line); }
+  .report tr:last-child td { border-bottom: 0; }
+  .grade { font: 18px "Graduate", serif; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 2px solid; }
+  .rule-bar { height: 14px; border-radius: 3px; background: repeating-linear-gradient(90deg, #c9c2ae 0 1px, transparent 1px 10%) , #f1ede2; position: relative; overflow: hidden; min-width: 80px; }
+  .rule-bar span { position: absolute; inset: 0 auto 0 0; background: var(--navy); opacity: .85; }
+  .notice { display: flex; gap: 14px; padding: 16px 18px; background: var(--gold-soft); border-left: 5px solid var(--gold); }
+  .notice i { font-size: 26px; color: var(--navy); }
+  .notice b { display: block; color: var(--navy); }
+
+  /* ---------- timetable ---------- */
+  .tt { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
+  .tt th { background: var(--navy); color: #fff; font: 15px "Graduate", serif; padding: 12px; text-align: left; font-weight: 400; }
+  .tt th.today { background: var(--gold); color: var(--navy); }
+  .tt td { padding: 10px 12px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); vertical-align: top; height: 70px; }
+  .tt td.time { font: 13px "Graduate", serif; color: var(--navy); background: #faf8f2; width: 90px; }
+  .tt td b { display: block; }
+  .tt td small { color: var(--muted); }
+  .tt .tam b { color: var(--sky); }
+  .tt .mat b { color: var(--maroon); }
+  .tt .sci b { color: var(--green); }
+  .tt .bm b { color: #b7791f; }
+  .tt .eng b { color: #7c3aed; }
+  .tt td.now { background: var(--gold-soft); box-shadow: inset 0 0 0 2px var(--gold); }
+  .tt tr.brk td { height: auto; padding: 6px 12px; background: repeating-linear-gradient(135deg, #faf8f2 0 8px, #f3efe4 8px 16px); color: var(--muted); font: 12px "Graduate", serif; letter-spacing: .2em; text-align: center; }
+  .tt-day { display: none; }
+  .day-tabs { display: flex; gap: 0; border-bottom: 3px solid var(--navy); }
+  .day-tabs a { flex: 1; text-align: center; padding: 10px 0; font: 14px "Graduate", serif; color: var(--muted); }
+  .day-tabs a.on { background: var(--navy); color: var(--gold); }
+
+  /* ---------- eRPH (certificate) ---------- */
+  .erph { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: start; }
+  .erph > * { min-width: 0; }
+  .plans { list-style: none; margin: 0; padding: 0; }
+  .plans li { padding: 12px 18px; border-bottom: 1px solid var(--line); cursor: pointer; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .plans li.on { background: var(--gold-soft); box-shadow: inset 4px 0 0 var(--gold); }
+  .plans li b { color: var(--navy); }
+  .cert { background: #fff; border: 2px solid var(--navy); outline: 6px double var(--gold); outline-offset: -14px; padding: 40px 44px; position: relative; border-radius: 4px; }
+  .cert .kick { text-align: center; color: var(--muted); letter-spacing: .3em; text-transform: uppercase; font-size: 12px; }
+  .cert h2 { text-align: center; font-size: 30px; margin: 6px 0 4px; }
+  .cert .who-line { text-align: center; color: var(--muted); margin-bottom: 20px; }
+  .seal { position: absolute; right: 34px; top: 30px; width: 86px; height: 86px; border-radius: 50%; background: radial-gradient(circle, var(--sky) 0 52%, #1d4ed8 53% 60%, var(--sky) 61%); color: #fff; display: grid; place-items: center; text-align: center; font: 11px/1.1 "Graduate", serif; transform: rotate(-12deg); box-shadow: 0 4px 10px rgba(0, 0, 0, .2); }
+  .seal::after { content: ""; position: absolute; bottom: -18px; left: 22px; width: 42px; height: 30px; background: linear-gradient(90deg, #1d4ed8 0 45%, transparent 45% 55%, #1d4ed8 55%); clip-path: polygon(0 0, 100% 0, 100% 100%, 75% 75%, 50% 100%, 25% 75%, 0 100%); z-index: -1; }
+  .field { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px dotted #c9c2ae; }
+  .field > span { font: 12px "Graduate", serif; color: var(--navy); padding-top: 2px; }
+  .field p { margin: 0; }
+  .blank { border-bottom: 2px solid var(--navy); padding: 0 8px; font-weight: 700; color: var(--navy); }
+  .sigs { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 28px; text-align: center; font-size: 13px; color: var(--muted); }
+  .sigs div { border-top: 1px solid var(--navy); padding-top: 6px; }
+  .sigs b { display: block; color: var(--text); }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 14px; flex-wrap: wrap; }
+
+  /* ---------- messages ---------- */
+  .inbox { display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+  .inbox > * { min-width: 0; }
+  .msg { display: flex; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .msg.on { background: var(--gold-soft); box-shadow: inset 4px 0 0 var(--gold); }
+  .msg div { flex: 1; min-width: 0; }
+  .msg p { margin: 2px 0 0; color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .shield { width: 40px; height: 46px; clip-path: polygon(50% 0, 100% 12%, 100% 55%, 50% 100%, 0 55%, 0 12%); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 13px; flex: none; padding-bottom: 4px; }
+  .thread__back { display: none; }
+  .pa { background: var(--navy); color: #fff; padding: 18px 22px; display: flex; gap: 14px; align-items: center; }
+  .pa i { font-size: 30px; color: var(--gold); }
+  .pa h2 { color: #fff; font-size: 22px; }
+  .pa small { color: #c9d4ea; }
+  .letter { padding: 20px 22px; line-height: 1.7; }
+  .reply { display: flex; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--line); }
+  .reply input { flex: 1; border: 2px solid var(--line); border-radius: 6px; padding: 9px 12px; font: inherit; }
+
+  .bottom-nav { display: none; }
+
+  @media (max-width: 1000px) {
+    .dash, .erph, .inbox { grid-template-columns: 1fr; }
+    .scoreboard { grid-template-columns: repeat(2, 1fr); }
+    .who div { display: none; }
+  }
+  @media (max-width: 720px) {
+    .banner { padding-bottom: 14px; }
+    .banner__in { padding: 14px 16px 0; gap: 12px; }
+    .crest { width: 44px; height: 50px; }
+    .crest span { width: 36px; height: 42px; font-size: 18px; }
+    .school h1 { font-size: 18px; }
+    .school small { letter-spacing: .1em; font-size: 10px; }
+    .badge-ico:not(.keep) { display: none; }
+    .pennants { display: none; }
+    .wrap { padding: 24px 16px 100px; }
+    .page-head h1 { font-size: 26px; }
+    .score b { font-size: 36px; }
+    .bells li { grid-template-columns: 30px 56px 1fr; padding: 12px 14px; }
+    .bells li .ribbon { grid-column: 3; justify-self: start; }
+    .tt-wrap { display: none; }
+    .tt-day { display: block; }
+    .cert { padding: 28px 18px; outline-offset: -10px; }
+    .seal { position: static; margin: 0 auto 12px; }
+    .field { grid-template-columns: 1fr; gap: 2px; }
+    .inbox .thread { display: none; }
+    .inbox.reading .list { display: none; }
+    .inbox.reading .thread { display: block; }
+    .thread__back { display: inline-flex; margin: 14px 22px 0; }
+    .bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: var(--navy); border-top: 4px solid var(--gold); z-index: 10; justify-content: space-around; padding: 6px 0 10px; }
+    .bottom-nav a { color: #9fb0cf; display: flex; flex-direction: column; align-items: center; font: 11px "Graduate", serif; padding: 6px 10px; cursor: pointer; }
+    .bottom-nav a i { font-size: 22px; }
+    .bottom-nav a.on { color: var(--gold); }
+  }
+</style>
+</head>
+<body>
+<header class="banner">
+  <div class="banner__in">
+    <span class="crest"><span class="mdi mdi-school"></span></span>
+    <div class="school"><h1>EduNex</h1><small>SJK(T) Ladang Bukit Indah · Learn · Lead · Serve</small></div>
+    <span class="grow"></span>
+    <span class="badge-ico"><i class="mdi mdi-magnify"></i></span>
+    <span class="badge-ico keep"><i class="mdi mdi-bell-outline"></i><b>3</b></span>
+    <div class="who"><span class="avatar">KR</span><div><b>Kavitha Raman</b><small>Administrator</small></div></div>
+  </div>
+  <nav class="pennants"><div class="pennants__in">
+    <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant-outline"></i>Home</a>
+    <a data-view="timetable"><i class="mdi mdi-bell-outline"></i>Bells</a>
+    <a data-view="erph"><i class="mdi mdi-certificate-outline"></i>eRPH</a>
+    <a data-view="messages"><i class="mdi mdi-bullhorn-outline"></i>Notices</a>
+    <a><i class="mdi mdi-library-outline"></i>Syllabus</a>
+    <a><i class="mdi mdi-account-group-outline"></i>Staff</a>
+  </div></nav>
+</header>
+
+<main class="wrap">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="view on" id="dashboard">
+    <div class="page-head">
+      <div><h1>Good morning, Cikgu Kavitha</h1><p>Thursday, 22 October 2026 · Term 3, Week 42</p></div>
+      <span class="grow"></span>
+      <button class="btn btn--gold" data-go="erph"><i class="mdi mdi-pencil"></i> Write reflections</button>
+    </div>
+    <div class="scoreboard">
+      <div class="score"><b>06</b><span>Periods today</span></div>
+      <div class="score"><b>12</b><span>Awaiting approval</span></div>
+      <div class="score score--alert"><b>03</b><span>Referred back</span></div>
+      <div class="score"><b>38</b><span>Staff present</span></div>
+    </div>
+    <div class="dash">
+      <div class="card">
+        <div class="card__head"><i class="mdi mdi-bell-ring-outline" style="color:var(--gold);font-size:20px"></i><h2>Today's bell schedule</h2><span class="more" data-go="timetable">Full week</span></div>
+        <ul class="bells">
+          <li><span class="bell mdi mdi-bell-outline"></span><span class="when">7:40</span><div><b>Bahasa Tamil · 5 Melati</b><small>செய்யுள் — திருக்குறள் · Bilik 12</small></div><span class="ribbon r-ok">Approved</span></li>
+          <li class="now"><span class="bell mdi mdi-bell"></span><span class="when">9:40</span><div><b>Matematik · 4 Mawar</b><small>Pecahan wajar · in progress</small></div><span class="ribbon r-sent">Submitted</span></li>
+          <li class="brk"><span class="bell mdi mdi-food-apple-outline"></span><span class="when">10:40</span><div><b>Recess</b></div><span></span></li>
+          <li><span class="bell mdi mdi-bell-outline"></span><span class="when">11:00</span><div><b>Sains · 4 Mawar</b><small>Sistem rangka manusia · Makmal</small></div><span class="ribbon r-wait">Pending</span></li>
+          <li><span class="bell mdi mdi-bell-outline"></span><span class="when">12:00</span><div><b>Bahasa Tamil · 6 Kenanga</b><small>கட்டுரை எழுதுதல் · Bilik 15</small></div><span class="ribbon r-back">Referred back</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <div class="notice"><i class="mdi mdi-bullhorn-variant"></i><div><b>From the head master</b>Staff meeting moves to <b style="display:inline">Friday 2:30 pm</b> in the library. Bring your syllabus report.</div></div>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-file-certificate-outline" style="color:var(--gold);font-size:20px"></i><h2>Syllabus report card</h2></div>
+          <table class="report">
+            <tr><td>Bahasa Tamil</td><td style="width:45%"><div class="rule-bar"><span style="width:78%"></span></div></td><td><span class="grade" style="color:var(--green)">A</span></td></tr>
+            <tr><td>Matematik</td><td><div class="rule-bar"><span style="width:64%"></span></div></td><td><span class="grade" style="color:var(--sky)">B</span></td></tr>
+            <tr><td>Sains</td><td><div class="rule-bar"><span style="width:52%;background:var(--maroon)"></span></div></td><td><span class="grade" style="color:var(--maroon)">C</span></td></tr>
+            <tr><td>English</td><td><div class="rule-bar"><span style="width:70%"></span></div></td><td><span class="grade" style="color:var(--sky)">B</span></td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card__head"><i class="mdi mdi-calendar-star" style="color:var(--gold);font-size:20px"></i><h2>School calendar</h2></div>
+          <ul class="bells">
+            <li><span class="bell mdi mdi-run-fast"></span><span class="when">28 Oct</span><div><b>Sports day rehearsal</b><small>Whole school</small></div></li>
+            <li><span class="bell mdi mdi-lamp-outline"></span><span class="when">9 Nov</span><div><b>Deepavali holiday</b><small>Mon – Tue</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMETABLE ================= -->
+  <section class="view" id="timetable">
+    <div class="page-head">
+      <div><h1>Bell schedule</h1><p>Week 42 · 19 – 23 October 2026</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+      <button class="btn btn--navy"><i class="mdi mdi-plus"></i> Add slot</button>
+    </div>
+    <div class="card tt-wrap">
+      <table class="tt">
+        <thead><tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th class="today">Thursday</th><th>Friday</th></tr></thead>
+        <tbody>
+          <tr><td class="time">7:40</td><td class="tam"><b>B. Tamil</b><small>5 Melati</small></td><td class="mat"><b>Matematik</b><small>4 Mawar</small></td><td></td><td class="tam"><b>B. Tamil</b><small>5 Melati</small></td><td class="sci"><b>Sains</b><small>4 Mawar</small></td></tr>
+          <tr><td class="time">8:40</td><td class="mat"><b>Matematik</b><small>4 Mawar</small></td><td></td><td class="tam"><b>B. Tamil</b><small>6 Kenanga</small></td><td></td><td class="bm"><b>B. Melayu</b><small>3 Teratai</small></td></tr>
+          <tr><td class="time">9:40</td><td></td><td class="sci"><b>Sains</b><small>4 Mawar</small></td><td class="mat"><b>Matematik</b><small>4 Mawar</small></td><td class="mat now"><b>Matematik</b><small>4 Mawar · now</small></td><td class="tam"><b>B. Tamil</b><small>5 Melati</small></td></tr>
+          <tr class="brk"><td>10:40</td><td colspan="5">RECESS</td></tr>
+          <tr><td class="time">11:00</td><td class="eng"><b>English</b><small>6 Kenanga</small></td><td class="tam"><b>B. Tamil</b><small>5 Melati</small></td><td></td><td class="sci"><b>Sains</b><small>4 Mawar</small></td><td></td></tr>
+          <tr><td class="time">12:00</td><td></td><td class="tam"><b>B. Tamil</b><small>6 Kenanga</small></td><td class="sci"><b>Sains</b><small>5 Melati</small></td><td class="tam"><b>B. Tamil</b><small>6 Kenanga</small></td><td class="mat"><b>Matematik</b><small>3 Teratai</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Phones: one day at a time instead of the week grid -->
+    <div class="card tt-day">
+      <div class="day-tabs"><a>Mon</a><a>Tue</a><a>Wed</a><a class="on">Thu</a><a>Fri</a></div>
+      <ul class="bells">
+        <li><span class="bell mdi mdi-bell-outline"></span><span class="when">7:40</span><div><b>Bahasa Tamil</b><small>5 Melati</small></div></li>
+        <li class="now"><span class="bell mdi mdi-bell"></span><span class="when">9:40</span><div><b>Matematik</b><small>4 Mawar · now</small></div></li>
+        <li class="brk"><span class="bell mdi mdi-food-apple-outline"></span><span class="when">10:40</span><div><b>Recess</b></div></li>
+        <li><span class="bell mdi mdi-bell-outline"></span><span class="when">11:00</span><div><b>Sains</b><small>4 Mawar</small></div></li>
+        <li><span class="bell mdi mdi-bell-outline"></span><span class="when">12:00</span><div><b>Bahasa Tamil</b><small>6 Kenanga</small></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= eRPH ================= -->
+  <section class="view" id="erph">
+    <div class="page-head">
+      <div><h1>eRPH</h1><p>Daily lesson plans · Thursday 22 October</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-qrcode"></i> QR code</button>
+      <button class="btn"><i class="mdi mdi-export-variant"></i> Export</button>
+    </div>
+    <div class="erph">
+      <div class="card">
+        <ul class="plans">
+          <li><b>5 Melati · Bahasa Tamil</b><span class="ribbon r-ok">Approved</span></li>
+          <li class="on"><b>4 Mawar · Matematik</b><span class="ribbon r-sent">Submitted</span></li>
+          <li><b>4 Mawar · Sains</b><span class="ribbon r-wait">Pending</span></li>
+          <li><b>6 Kenanga · Bahasa Tamil</b><span class="ribbon r-back">Referred back</span></li>
+          <li><b>3 Teratai · Matematik</b><span class="ribbon r-ok">Approved</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="actions">
+          <button class="btn"><i class="mdi mdi-printer-outline"></i> Print</button>
+          <button class="btn"><i class="mdi mdi-undo-variant"></i> Refer back</button>
+          <button class="btn btn--gold"><i class="mdi mdi-check"></i> Approve</button>
+        </div>
+        <article class="cert">
+          <div class="seal">SUBMITTED<br />22·10·26</div>
+          <div class="kick">Rancangan Pengajaran Harian</div>
+          <h2>Matematik — Pecahan wajar</h2>
+          <div class="who-line">4 Mawar · Thursday 22 October 2026 · 9:40 – 10:40</div>
+          <div class="field"><span>Unit</span><p>Unit 3 — Pecahan, perpuluhan dan peratus</p></div>
+          <div class="field"><span>Content standard</span><p>3.1 Pecahan</p></div>
+          <div class="field"><span>Learning standard</span><p>3.1.1 Menamakan dan menulis pecahan wajar dengan pengangka hingga 9</p></div>
+          <div class="field"><span>Objective</span><p>Pupils can name and write proper fractions using fraction strips.</p></div>
+          <div class="field"><span>Reflection</span><p><span class="blank">24</span> / <span class="blank">29</span> pupils mastered the objective — enrichment given.<br /><span class="blank">5</span> / <span class="blank">29</span> pupils given remedial activity with teacher guidance.</p></div>
+          <div class="sigs">
+            <div><b>Kavitha Raman</b>Prepared by</div>
+            <div><b>&nbsp;</b>Verified by</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MESSAGES ================= -->
+  <section class="view" id="messages">
+    <div class="page-head">
+      <div><h1>Notices</h1><p>Messages, announcements and complaints</p></div>
+      <span class="grow"></span>
+      <button class="btn"><i class="mdi mdi-alert-circle-outline"></i> Complaints (2)</button>
+      <button class="btn btn--navy"><i class="mdi mdi-pencil"></i> New notice</button>
+    </div>
+    <div class="inbox">
+      <div class="card list">
+        <div class="msg on"><span class="shield" style="background:var(--navy)">SN</span><div><b>Saraswathy N.</b><p>Staff meeting moved to Friday 2:30 pm</p></div><span class="muted">10:12</span></div>
+        <div class="msg"><span class="shield" style="background:var(--green)">AK</span><div><b>Arun Kumar</b><p>Can we swap Tuesday's 8:40 slot?</p></div><span class="muted">09:05</span></div>
+        <div class="msg"><span class="shield" style="background:var(--maroon)">PPD</span><div><b>District office</b><p>Reminder: eRPH audit for Term 3</p></div><span class="muted">Wed</span></div>
+        <div class="msg"><span class="shield" style="background:#b7791f">LW</span><div><b>Lim Wei Ling</b><p>Thanks for approving my plans</p></div><span class="muted">Tue</span></div>
+      </div>
+      <div class="card thread">
+        <button class="btn thread__back" data-back><i class="mdi mdi-arrow-left"></i> Notices</button>
+        <div class="pa"><i class="mdi mdi-bullhorn-variant"></i><div><h2>Staff meeting moved to Friday</h2><small>Saraswathy N., Head master → All staff · today 10:12</small></div></div>
+        <div class="letter">
+          <p>Dear teachers,</p>
+          <p>This week's staff meeting moves from Thursday to <b>Friday, 23 October at 2:30 pm</b> in the library. Please bring your Term 3 syllabus progress report.</p>
+          <p>Agenda: mid-term assessment schedule, Deepavali celebration committee and eRPH audit preparation.</p>
+          <p>Thank you,<br />Saraswathy</p>
+        </div>
+        <div class="reply"><input placeholder="Write a reply…" /><button class="btn btn--navy"><i class="mdi mdi-send"></i> Send</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <a data-view="dashboard" class="on"><i class="mdi mdi-home-variant-outline"></i>Home</a>
+  <a data-view="timetable"><i class="mdi mdi-bell-outline"></i>Bells</a>
+  <a data-view="erph"><i class="mdi mdi-certificate-outline"></i>eRPH</a>
+  <a data-view="messages"><i class="mdi mdi-bullhorn-outline"></i>Notices</a>
+</nav>
+
+<script>
+  // Static demo: switch screens from the pennants, bottom nav and in-page links.
+  function show(id) {
+    document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("on", v.id === id); });
+    document.querySelectorAll("nav [data-view]").forEach(function (a) { a.classList.toggle("on", a.dataset.view === id); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view],[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { show(el.dataset.view || el.dataset.go); });
+  });
+  // Phones: tapping a message opens it full screen; Back returns to the list.
+  document.querySelectorAll(".msg").forEach(function (m) {
+    m.addEventListener("click", function () { document.querySelector(".inbox").classList.add("reading"); });
+  });
+  document.querySelector("[data-back]").addEventListener("click", function () { document.querySelector(".inbox").classList.remove("reading"); });
+  // Open a screen directly, e.g. design.html#erph
+  if (document.getElementById(location.hash.slice(1))) {
+    show(location.hash.slice(1));
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  }
+</script>
+</body>
+</html>
