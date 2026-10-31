@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EduNex v2 — Requirements Document</title>
+<meta name="description" content="Requirements for EduNex v2, a generic multi-school portal: three delivery phases, inclusions, exclusions and acceptance criteria for each module, the optional AI subscription, and areas to be discussed.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Shared print styles for the EduNex PDF documents (A4). */
+
+:root {
+  --ink: #1c1b2e;
+  --muted: #6e6c80;
+  --blue: #010066;
+  --blue-dark: #010066;
+  --red: #cc0001;
+  --yellow: #ffcc00;
+  --maroon: #6d0f1a;
+  --gold: #d4a73a;
+  --orange: #f97316;
+  --line: #ece6da;
+  --soft: #faf7f0;
+}
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+}
+@page cover {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover;
+  height: 297mm;
+  padding: 34mm 22mm 24mm;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: #fff;
+  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.045) 0 14px, transparent 14px 32px), var(--blue);
+  break-after: page;
+}
+.cover .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-variant-caps: small-caps;
+  font-weight: 700;
+  font-size: 26pt;
+}
+.cover .brand span {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: var(--blue);
+  background: var(--yellow);
+  font-size: 20pt;
+}
+.cover .brand svg {
+  width: 56px;
+  height: 64px;
+  flex: none;
+}
+/* Songket border: gold diamonds on maroon. */
+.cover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 78mm;
+  height: 14px;
+  background:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25%) -7px 0 / 14px 14px,
+    linear-gradient(225deg, var(--gold) 25%, transparent 25%) -7px 0 / 14px 14px,
+    linear-gradient(315deg, var(--gold) 25%, transparent 25%) 0 0 / 14px 14px,
+    linear-gradient(45deg, var(--gold) 25%, transparent 25%) 0 0 / 14px 14px,
+    var(--maroon);
+}
+.cover h1 {
+  font-size: 34pt;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 46mm 0 6mm;
+  color: #fff;
+  break-before: avoid;
+}
+.cover .subtitle {
+  font-size: 14pt;
+  color: #d6d8f5;
+  max-width: 140mm;
+}
+.cover .meta {
+  margin-top: auto;
+  font-size: 10pt;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+/* ---------- headings & text ---------- */
+h1 {
+  font-size: 22pt;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 4mm;
+  color: var(--blue);
+  break-before: page;
+}
+h1 .num {
+  display: inline-block;
+  color: var(--red);
+  margin-right: 8px;
+}
+.lead {
+  font-size: 12pt;
+  color: var(--muted);
+  margin: 0 0 6mm;
+}
+h2 {
+  font-size: 14pt;
+  margin: 8mm 0 2mm;
+  break-after: avoid;
+}
+h3 {
+  font-size: 11.5pt;
+  margin: 5mm 0 1mm;
+  break-after: avoid;
+}
+p {
+  margin: 0 0 3mm;
+}
+a {
+  color: var(--blue-dark);
+}
+code,
+kbd {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 9pt;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0 4px;
+}
+ul,
+ol {
+  margin: 0 0 3mm;
+  padding-left: 6mm;
+}
+li {
+  margin-bottom: 1.2mm;
+}
+
+/* Numbered steps whose numbers match the orange badges on the screenshots. */
+ol.marks {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: mark;
+}
+ol.marks > li {
+  counter-increment: mark;
+  position: relative;
+  padding-left: 9mm;
+  margin-bottom: 2mm;
+  break-inside: avoid;
+}
+ol.marks > li::before {
+  content: counter(mark);
+  position: absolute;
+  left: 0;
+  top: 0.2mm;
+  width: 6mm;
+  height: 6mm;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  font-weight: 800;
+  font-size: 9pt;
+  line-height: 6mm;
+  text-align: center;
+}
+/* Plain numbered how-to steps. */
+ol.steps {
+  padding-left: 0;
+  list-style: none;
+  counter-reset: step;
+}
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 9mm;
+  margin-bottom: 2mm;
+  break-inside: avoid;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.2mm;
+  width: 6mm;
+  height: 6mm;
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 800;
+  font-size: 9pt;
+  line-height: 6mm;
+  text-align: center;
+}
+
+/* ---------- figures ---------- */
+figure {
+  margin: 3mm 0 5mm;
+  break-inside: avoid;
+}
+figure img {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+figure.narrow img {
+  width: 62%;
+  margin: 0 auto;
+}
+figure.small img {
+  width: 46%;
+  margin: 0 auto;
+}
+figcaption {
+  font-size: 9pt;
+  color: var(--muted);
+  margin-top: 2mm;
+  text-align: center;
+}
+.phones {
+  display: flex;
+  gap: 8mm;
+  justify-content: center;
+  break-inside: avoid;
+}
+.phones figure {
+  width: 62mm;
+  margin: 3mm 0 5mm;
+}
+
+/* ---------- callouts ---------- */
+.box {
+  border-radius: 10px;
+  padding: 3mm 4mm;
+  margin: 3mm 0 4mm;
+  break-inside: avoid;
+  border-left: 4px solid;
+}
+.box p:last-child,
+.box ul:last-child {
+  margin-bottom: 0;
+}
+.box > strong:first-child {
+  display: block;
+  margin-bottom: 1mm;
+}
+.tip {
+  background: #eef4ff;
+  border-color: var(--blue);
+}
+.note {
+  background: #fff7e6;
+  border-color: #e0a21b;
+}
+.warn {
+  background: #fdecec;
+  border-color: #e5484d;
+}
+
+/* ---------- tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2mm 0 5mm;
+  font-size: 9.5pt;
+  break-inside: avoid;
+}
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  padding: 2mm 2.5mm;
+  border-bottom: 1px solid var(--line);
+}
+th {
+  background: var(--soft);
+  font-weight: 700;
+}
+tr {
+  break-inside: avoid;
+}
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 8.5pt;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pill.draft { background: #e7e9f0; color: #3c4258; }
+.pill.submitted { background: #e6e6f7; color: #010066; }
+.pill.reflection { background: #fff4cc; color: #7d5b00; }
+.pill.approved { background: #e3f5ea; color: #0b6e3b; }
+.pill.referred { background: #fde3e3; color: #b80001; }
+
+/* ---------- contents ---------- */
+.toc {
+  break-before: page;
+}
+.toc ol {
+  list-style: none;
+  padding: 0;
+  columns: 1;
+}
+.toc li {
+  display: flex;
+  gap: 4mm;
+  padding: 2.2mm 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 11pt;
+}
+.toc li span {
+  color: var(--blue);
+  font-weight: 800;
+  width: 8mm;
+}
+.toc a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.keep {
+  break-inside: avoid;
+}
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
+}
+
+/* ---------- diagrams (architecture document) ---------- */
+.diagram {
+  margin: 3mm 0 5mm;
+  padding: 4mm;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfcff;
+  break-inside: avoid;
+  text-align: center;
+}
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.diagram .mermaid {
+  font-size: 13px;
+}
+</style>
+<style>
+  /* Arial, not the app's font: Plus Jakarta Sans splits words for Mac PDF search and some text readers. */
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; line-height: 1.42; }
+  .lead { font-size: 10.5pt; margin-bottom: 3mm; }
+  h2 { font-size: 12pt; margin: 4.5mm 0 1mm; }
+  table { margin: 1.5mm 0 3mm; font-size: 8.8pt; break-inside: auto; }
+  th, td { padding: 1.1mm 1.8mm; }
+  p { margin-bottom: 1.6mm; }
+  ul { margin-bottom: 1.4mm; padding-left: 5mm; }
+  li { margin-bottom: 0.4mm; }
+  figure { margin: 2mm 0 2mm; }
+  figcaption { margin-top: 1mm; font-size: 8pt; }
+  .box { margin: 2mm 0 2.5mm; padding: 2mm 3mm; }
+  .facts th { width: 25%; background: none; font-weight: 700; color: var(--blue); }
+  .lab { font-weight: 700; color: var(--blue); margin: 1.6mm 0 0.5mm; break-after: avoid; }
+  .meta-line { color: var(--muted); margin-bottom: 1mm; break-after: avoid; }
+  
+  /* Screen layout: the source document is written for A4 print. */
+  @media screen {
+    body { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; background: #fff; font-size: 11pt; line-height: 1.55; overflow-wrap: anywhere; }
+    table { font-size: 10pt; }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; }
+    .bar a { color: var(--blue); font-weight: 700; }
+    .cover { height: auto; padding: 40px 28px 28px; border-radius: 14px; }
+    .cover::after { top: 112px; }
+    .cover h1 { margin: 72px 0 16px; font-size: 30pt; }
+    .cover .meta { margin-top: 32px; }
+    .toc { margin-top: 32px; }
+    h1 { margin-top: 44px; font-size: 20pt; }
+    figure[style] { width: min(100%, 360px) !important; }
+    .phones-row { grid-template-columns: 1fr; }
+  }
+  @media print { .bar { display: none; } }
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Page links"><a href="index.html">← EduNex design options</a><a href="EduNex-Requirements-Document.pdf" download>Download PDF</a></nav>
+
+<section class="cover">
+  <div class="brand"><svg viewBox="0 0 56 64" aria-hidden="true">
+      <polygon points="28,0 56,10 56,42 28,64 0,42 0,10" fill="#ffcc00"/>
+      <polygon points="28,5 51,13 51,40 28,58 5,40 5,13" fill="#fff"/>
+      <g transform="translate(28 30) scale(.36)">
+        <g fill="#cc0001"><ellipse rx="18" ry="30" cy="-24"/><ellipse rx="18" ry="30" cy="-24" transform="rotate(72)"/><ellipse rx="18" ry="30" cy="-24" transform="rotate(144)"/><ellipse rx="18" ry="30" cy="-24" transform="rotate(216)"/><ellipse rx="18" ry="30" cy="-24" transform="rotate(288)"/></g>
+        <circle r="9" fill="#8e0000"/><line x2="14" y2="-26" stroke="#ffcc00" stroke-width="3" stroke-linecap="round"/><circle cx="15" cy="-28" r="4" fill="#ffcc00"/>
+      </g>
+    </svg> EduNex</div>
+  <h1>Requirements<br>Document</h1>
+  <p class="subtitle">What EduNex v2 will deliver across three phases, for your review.</p>
+  <div class="meta">
+    <strong>Version 1.1 · 31 October 2026 · For customer review</strong><br>
+    Based on the EduNex module specifications (Modules 0 to 11, October 2026), the Software Requirements Specification (SRS) Frozen Baseline v1.0 of 18 October 2026, and the approved Malaysia design. Every name and record in the picture is made up.
+  </div>
+</section>
+
+<section class="toc">
+  <h1 style="break-before: avoid">Contents</h1>
+  <ol>
+    <li><span>1</span><a href="#overview">Overview</a></li>
+    <li><span>2</span><a href="#people">Users and roles</a></li>
+    <li><span>3</span><a href="#phases">Delivery in three phases</a></li>
+    <li><span>4</span><a href="#ai">AI features: additional subscription</a></li>
+    <li><span>5</span><a href="#p1">Phase 1 modules</a></li>
+    <li><span>6</span><a href="#p2">Phase 2 modules</a></li>
+    <li><span>7</span><a href="#p3">Phase 3 modules</a></li>
+    <li><span>8</span><a href="#shared">Requirements for every module</a></li>
+    <li><span>9</span><a href="#limits">Product-wide exclusions and assumptions</a></li>
+    <li><span>10</span><a href="#discuss">Areas to be discussed</a></li>
+  </ol>
+</section>
+
+<h1 id="overview"><span class="num">1</span> Overview</h1>
+<p class="lead">EduNex v2 is one online portal for running a Malaysian primary school. It brings lesson plans, timetables, relief duty, attendance, student affairs, co-curricular work, meetings and school reports into one place, so teachers enter information once and find it again easily.</p>
+
+<table class="facts">
+  <tr><th>Product</th><td>EduNex v2, the upgrade of Tamilini. Tagline: Lightening Teachers' Workloads.</td></tr>
+  <tr><th>Schools served</th><td>SK, SJK(C) and SJK(T) primary schools, including preschool classes</td></tr>
+  <tr><th>Users</th><td>School staff and the EduNex support team. Pupils and parents do not sign in.</td></tr>
+  <tr><th>Devices</th><td>Mobile-first web application (PWA) for computer, tablet and phone</td></tr>
+  <tr><th>Languages</th><td>Malay (default), English, Tamil and Chinese for screen labels</td></tr>
+  <tr><th>Delivery</th><td>Three phases (section 3). Delivery dates, prices and commercial terms are not covered in this document.</td></tr>
+  <tr><th>AI features</th><td>Optional additional subscription. Every module works without AI (section 4).</td></tr>
+</table>
+
+<h2>A generic product for many schools</h2>
+<p>EduNex is one standard application shared by many schools. It is not built for a single school or customer, and every school receives the same product and the same updates.</p>
+<ul>
+  <li><strong>Separate data:</strong> each school has its own private space. One school can never see another school's data.</li>
+  <li><strong>Configured, not customised:</strong> each school sets its own identity and logo, school type, calendar, operating days, time slots, staff, classes, delegated approvers, document templates, deadlines, reminders and subscription plan.</li>
+  <li><strong>No fixed local assumptions:</strong> operating days, lesson lengths and school rules are settings. Monday to Friday, a set number of periods or one school's practice are never built in.</li>
+  <li><strong>Changes for one school:</strong> a request that only one school needs becomes a setting for all schools or a separate change request. It does not create a separate version of EduNex.</li>
+</ul>
+
+<h2>How this document relates to the specifications</h2>
+<p>This document summarises the phases, inclusions, exclusions, acceptance criteria and AI subscription model. It does not replace the module specifications or the SRS, which remain the detailed baseline. Where they differ from this summary, they apply unless a change request says otherwise.</p>
+
+<h1 id="people"><span class="num">2</span> Users and roles</h1>
+<p class="lead">Each person sees only what their role allows. Super Admin, School Admin and Teacher are the role categories, and a Parent category is reserved for the future. Duties such as Panel Head are named, scoped and dated, so one person can hold several. A job title alone never grants approval rights.</p>
+<table>
+  <tr><th style="width:29%">Role or duty</th><th>What they need to do in EduNex</th></tr>
+  <tr><td>Teacher</td><td>Write lesson plans and reflections, view their timetable, cover relief, request staff movement, complete tasks</td></tr>
+  <tr><td>Class Teacher</td><td>Maintain class lists, validate the daily register, record absence evidence</td></tr>
+  <tr><td>Headteacher</td><td>Appoint reviewers, confirm reports and minutes, publish the timetable, issue inspection passes</td></tr>
+  <tr><td>GPK Pentadbiran</td><td>Publish the timetable, review panel reports and formal presentations</td></tr>
+  <tr><td>PK HEM, PK Kokurikulum</td><td>Review formal documents in their area; PK HEM follows up attendance</td></tr>
+  <tr><td>PK designated by the Headteacher</td><td>Approve staff movement; authorised PK can also change relief</td></tr>
+  <tr><td>eRPH reviewer</td><td>Review lesson plans for an assigned group, using their own account</td></tr>
+  <tr><td>Panel Head, Panel Secretary, Unit Advisor, coordinators</td><td>Run panels, co-curricular units, programmes, and RMT, welfare, SPBT, health or safety services</td></tr>
+  <tr><td>Counsellor, discipline teacher</td><td>Handle restricted counselling and discipline records within their scope</td></tr>
+  <tr><td>Recorder, action verifier</td><td>Prepare minutes; verify evidence before an action closes</td></tr>
+  <tr><td>Question Bank reviewer, publisher</td><td>Review and release shared questions across schools</td></tr>
+  <tr><td>School institutional account</td><td>Stays with the school when the Headteacher changes; used to set up and recover administration</td></tr>
+  <tr><td>EduNex SuperAdmin</td><td>Review school registrations, manage billing and the master curriculum. Does not sign school reports or read counselling notes.</td></tr>
+</table>
+<figure style="width:42%;margin-left:auto;margin-right:auto"><img src="requirements-home.jpg" alt="EduNex teacher home page in the Malaysia design: navy header with crest and songket border, five tabs named Utama, Jadual Waktu, eRPH, Mesej and Sukatan, a welcome card, four number tiles, today's timetable, an announcement, syllabus progress and the school calendar."><figcaption>Teacher home page in the approved Malaysia design (made-up data)</figcaption></figure>
+
+<h1 id="phases"><span class="num">3</span> Delivery in three phases</h1>
+<p class="lead">Each phase builds on the one before it and gives schools something usable on its own. Phase 1 creates the school, its people and daily teaching work. Phase 2 adds pupil, staff and meeting operations. Phase 3 joins everything into one view and adds the Question Bank.</p>
+<table>
+  <tr><th style="width:12%">Phase</th><th style="width:22%">Theme</th><th>Modules delivered</th><th style="width:35%">What schools can do at the end</th></tr>
+  <tr><td><strong>Phase 1</strong></td><td>Foundation and daily teaching</td><td>M0 Access and billing; Home and Settings; M1 Master Setup; M2 Timetable and Smart Relief; M3 eRPH; M4 Preschool eRPH</td><td>Register a school, set it up, publish the timetable, assign relief, and plan, reflect on and review lessons with syllabus progress</td></tr>
+  <tr><td><strong>Phase 2</strong></td><td>School operations</td><td>M8 Attendance and Student Affairs; M9 eGerak; M7 Meetings; M5 Co-curricular</td><td>Run registers, HEM services, staff movement, minutes with follow-up actions, and co-curricular records with PAJSK preparation</td></tr>
+  <tr><td><strong>Phase 3</strong></td><td>Integration and insight</td><td>M6 Curriculum, Panels and Presentation; M10 Integrated Dashboard, Task Centre and Document Centre; M11 Question Bank (teacher workspace)</td><td>Present the school's progress from one place, see all tasks and documents together, and build practice and exam papers from reviewed questions</td></tr>
+</table>
+
+<h2>Why this order</h2>
+<ul>
+  <li>Master Setup supplies the school, staff, classes, pupils, calendar and templates that every later module reuses, so it comes first.</li>
+  <li>eRPH needs the timetable and curriculum, and Smart Relief needs the timetable. These belong together in Phase 1.</li>
+  <li>Phase 1 relief uses absences recorded by authorised staff. M9 in Phase 2 adds teacher requests, approvals and actual movement to the same relief engine.</li>
+  <li>M7 owns all meetings and actions, and M5 sets up the shared programme documents. M6 reuses both, so it follows them.</li>
+  <li>M10 only combines records from other modules, so it comes last. M11 links to the panel hub in M6.</li>
+</ul>
+
+<h2>What applies to every phase</h2>
+<ul>
+  <li>A phase is complete when its modules pass their acceptance criteria in section 5, 6 or 7, plus the shared criteria in section 8, and the customer accepts the phase.</li>
+  <li>Apps from a later phase stay hidden or locked until they are delivered.</li>
+  <li>AI features arrive in the same phase as their module, for schools that subscribe (section 4).</li>
+  <li>The sequence is the plan. Delivery dates for each phase are agreed separately.</li>
+</ul>
+
+<h2>Scope by module</h2>
+<table>
+  <tr><th style="width:31%">Module</th><th style="width:8%">Ref</th><th>Purpose</th><th style="width:12%">Phase</th></tr>
+  <tr><td>Access, registration and billing</td><td>M0</td><td>Public page, sign-in, registration, joining, subscriptions</td><td>Phase 1</td></tr>
+  <tr><td>Home, Settings, notifications</td><td>SH</td><td>Header, home page, widgets, app launcher, personal settings</td><td>Phase 1</td></tr>
+  <tr><td>Master Setup</td><td>M1</td><td>School profile, calendar, staff, classes, pupils, curriculum</td><td>Phase 1</td></tr>
+  <tr><td>Timetable and Smart Relief</td><td>M2</td><td>Timetables, absences and fair relief</td><td>Phase 1</td></tr>
+  <tr><td>Core eRPH</td><td>M3</td><td>Lesson plans, reflection, review, progress, inspection</td><td>Phase 1</td></tr>
+  <tr><td>Preschool eRPH</td><td>M4</td><td>Five-section daily preschool plan</td><td>Phase 1</td></tr>
+  <tr><td>Attendance and Student Affairs</td><td>M8</td><td>Registers, discipline, counselling, welfare, SPBT, health, safety</td><td>Phase 2</td></tr>
+  <tr><td>eGerak Staff Movement</td><td>M9</td><td>Staff movement requests, approval and relief link</td><td>Phase 2</td></tr>
+  <tr><td>Meetings and Briefings</td><td>M7</td><td>Minutes, publication and verified follow-up actions</td><td>Phase 2</td></tr>
+  <tr><td>Co-curricular</td><td>M5</td><td>Units, logs, programmes, PAJSK, SEGAK and BMI</td><td>Phase 2</td></tr>
+  <tr><td>Curriculum, Panels, Presentation</td><td>M6</td><td>Digital panel hub, officer presentation, slides</td><td>Phase 3</td></tr>
+  <tr><td>Integrated School Centre</td><td>M10</td><td>Tasks, Documents, Reports, Help and review inbox</td><td>Phase 3</td></tr>
+  <tr><td>Question Bank</td><td>M11</td><td>Shared questions, practice sets and exam papers</td><td>Phase 3</td></tr>
+  <tr><td>Messages</td><td>None</td><td>Staff inbox in the approved design, not in the specifications</td><td>To be discussed</td></tr>
+  <tr><td>Pupil-level PBD and UASA entry</td><td>None</td><td>Individual marks entry</td><td>Not included</td></tr>
+</table>
+
+<h1 id="ai"><span class="num">4</span> AI features: additional subscription</h1>
+<p class="lead">AI tools inside EduNex are an optional add-on, charged in addition to the standard EduNex subscription. Every module works fully without AI, and a school can use EduNex without ever buying the add-on.</p>
+<table>
+  <tr><th style="width:9%">Phase</th><th style="width:7%">Ref</th><th style="width:37%">AI feature in the add-on</th><th>Without the add-on</th></tr>
+  <tr><td>1</td><td>M1</td><td>Extract school-plan documents into draft events</td><td>Template or manual entry</td></tr>
+  <tr><td>1</td><td>M2</td><td>Read a timetable from a phone photo, image or PDF</td><td>Manual timetable entry</td></tr>
+  <tr><td>1</td><td>M3</td><td>Draft objectives, success criteria, activities and variants</td><td>Teacher writes the lesson plan</td></tr>
+  <tr><td>1</td><td>M4</td><td>Suggest ideas for each preschool daily block</td><td>Teacher writes the daily plan</td></tr>
+  <tr><td>2</td><td>M5</td><td>Draft weekly, competition reports and proposals</td><td>Teacher writes them from templates</td></tr>
+  <tr><td>2</td><td>M7</td><td>Draft minutes and briefing notes from recorder notes</td><td>Recorder writes the minutes</td></tr>
+  <tr><td>2</td><td>M8</td><td>Draft HEM programme proposals and reports</td><td>Teacher writes them from templates</td></tr>
+  <tr><td>3</td><td>M6</td><td>Build slide drafts from school records</td><td>Presentation Mode, manual slides and exports remain</td></tr>
+  <tr><td>3</td><td>M11</td><td>Draft original questions, answers, distractors and rubrics</td><td>Teachers write questions and use the bank</td></tr>
+</table>
+
+<h2>Rules for every AI feature</h2>
+<ul>
+  <li><strong>People stay responsible:</strong> a teacher previews and accepts every suggestion. AI cannot submit, approve, sign, publish, close an action or mark a lesson taught.</li>
+  <li><strong>No invented facts:</strong> AI cannot create attendance, results, reflections, costs or approvals. Missing facts are flagged for the teacher.</li>
+  <li><strong>Private data stays out:</strong> pupil names and identifiers, guardian contacts, health, counselling, discipline and household records, credentials and signatures are not sent to AI.</li>
+  <li><strong>Partial use:</strong> a teacher can generate one section, and regenerating it keeps their other edits.</li>
+  <li><strong>Traceable:</strong> each use records the person, time, provider, model and whether it was applied.</li>
+  <li><strong>Safe failure:</strong> if AI fails, or the school's allowance runs out, manual work and saving carry on.</li>
+</ul>
+
+<h2>How the subscription works</h2>
+<ul>
+  <li>The add-on is a separate item on the school's subscription, and turning it on or off is a billing setting. AI buttons are locked when it is not active.</li>
+  <li>The add-on includes a usage allowance. The plan level, price and allowance are set out in the commercial terms.</li>
+  <li>Removing the add-on never removes records or drafts already saved, including text produced by AI.</li>
+</ul>
+
+<h1 id="p1"><span class="num">5</span> Phase 1 modules</h1>
+<p class="lead">Foundation and daily teaching. "AI" marks a feature that needs the additional subscription.</p>
+
+<h2>M0 Landing, Registration and Authentication</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Public landing page with features, pricing, demo and contact; language and school-type selection. Demo uses isolated made-up data.</li>
+  <li>School registration through a SuperAdmin QR or link: 10 proposed fields, application status, and states Draft, Submitted, Needs Information, Approved, Rejected, Inactive.</li>
+  <li>Teacher joining by QR or email invitation with school approval. New teachers must prove an official @moe-dl.edu.my address.</li>
+  <li>Google (DELIMa) and manual sign-in, remembered school and Change School. One account for life, so changing school keeps the person.</li>
+  <li>Password recovery by emailed code. Proposed: 6 digits, 10 minutes, 5 attempts, 60-second resend.</li>
+  <li>Named delegated duties, teacher transfer between schools, and Headteacher succession.</li>
+  <li>Individual teacher and school or group plans, pay-later arrangements, invoices, payment proof, receipts and reminders. Requested options: QR or Touch 'n Go, bank transfer, institutional payment.</li>
+  <li>Background subscription check every 45 seconds. School branding with a small "Powered by EduNex" mark.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Parent login, or any use of a Google password</li>
+  <li>Blocking ordinary work for late payment or a failed status check</li>
+  <li>Automatic school or teacher approval from a payment or QR scan</li>
+  <li>Any official DELIMa integration agreement or KPM endorsement</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M0-A1:</strong> A QR or invitation gives no access until the correct separate approval. Replaying it does not create duplicates or raise privileges.</li>
+  <li><strong>M0-A2:</strong> A new teacher without a verified @moe-dl.edu.my identity cannot register.</li>
+  <li><strong>M0-A3:</strong> Switching school shows only that school's records. Matching email text alone cannot link or take over an account.</li>
+  <li><strong>M0-A4:</strong> Expired or used codes and excess attempts fail. A password reset never grants school access.</li>
+  <li><strong>M0-A5:</strong> Overdue payment or a failed check never interrupts authorised work.</li>
+  <li><strong>M0-A6:</strong> Payment proof alone does not create a confirmed receipt, and a repeated gateway event does not duplicate a payment.</li>
+  <li><strong>M0-A7:</strong> The demo cannot read real schools, send live messages or take payments.</li>
+</ul>
+
+<h2>Home, Settings and Notifications</h2>
+<p class="meta-line">From the SRS and the approved design.</p>
+<p class="lab">Included</p>
+<ul>
+  <li>Header with school identity, language switch, search, Apps, notifications and account menu; main tabs for Home, Timetable, eRPH, Messages (see section 10) and Syllabus.</li>
+  <li>Home page with welcome card, four number tiles and role-filtered widgets. Computer and phone layouts are saved separately.</li>
+  <li>App launcher: apps outside a school's plan show a padlock and explain why.</li>
+  <li>In-app notifications with filters and links to the record. Email and WhatsApp channels are optional per person.</li>
+  <li>Malaysia, Blue, Green and Dark themes, background scenes, custom colour and school photo.</li>
+  <li>Profile, language, notification channels, privacy and devices, and linked accounts.</li>
+  <li>Installable to a phone home screen, with a simple offline page.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Offline editing or offline approvals</li>
+  <li>Translating records written by users</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>SH-A1:</strong> Widgets show only what the person's role allows, and adding one never reveals extra data.</li>
+  <li><strong>SH-A2:</strong> Changing the home layout on a phone does not change the computer layout.</li>
+  <li><strong>SH-A3:</strong> Theme and language changes apply at once and never change records.</li>
+  <li><strong>SH-A4:</strong> Screens work from 1440 px to 390 px wide with no sideways scrolling.</li>
+  <li><strong>SH-A5:</strong> Sign-out clears personal items from the device.</li>
+</ul>
+
+<h2>M1 Master Setup</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Five tabs: School Profile; Calendar and Operating Times with School Planning; Staff; Classes and Shared Pupil Registry; Curriculum (DSKP and RPT).</li>
+  <li>School profile by official school code, with Malay and mother-tongue names and logo.</li>
+  <li>School plan by template or manual entry, with one authoritative event per real event. AI: extraction from uploaded documents.</li>
+  <li>Programme reminders 30 and 7 days before, on the day and 7 days after. Meeting notices 2 weeks before.</li>
+  <li>Staff approval, groups, reviewers and appointments with dates, appointing authority and substitute.</li>
+  <li>One shared pupil registry for Years 1 to 6 and Preschool, with stable pupil IDs. Total Pupils = Islamic Education + Moral Education.</li>
+  <li>Master curriculum and the school's RPT; two measures of teaching progress with eRPH (see M3).</li>
+  <li>Guided setup checklist, Excel and CSV import for staff, classes and pupils, and data-quality checks.</li>
+  <li>Reviewed annual rollover, calendar conflict and impact checks, change history and handover.</li>
+  <li>Versioned template library (letterhead, reports, proposals, letters) with unique document reference numbers.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Automatic pupil promotion without a reviewed mapping</li>
+  <li>Copying results, signatures or last year's dates in rollover</li>
+  <li>Schools editing the official DSKP</li>
+  <li>Automatic mapping of operating groups to states, or a claim of KPM endorsement</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M1-A1:</strong> Imports flag unclear data and unmatched teachers. Repeating an import creates no duplicates.</li>
+  <li><strong>M1-A2:</strong> Confirmed events create tasks in the right units. Programmes send the four reminders, and meeting notices keep the 2-week rule.</li>
+  <li><strong>M1-A3:</strong> Postponing records a reason and replaces unsent reminders; cancelling stops them. A delivered message never closes a task.</li>
+  <li><strong>M1-A4:</strong> Total pupils equals Islamic plus Moral, remedial pupils are not added twice, and unclassified data stays flagged.</li>
+  <li><strong>M1-A5:</strong> Class changes and promotion keep attendance, membership and earlier evidence.</li>
+  <li><strong>M1-A6:</strong> Rollover keeps source records and does not renew privileged appointments.</li>
+  <li><strong>M1-A7:</strong> An appointment label alone gives no approval rights across modules.</li>
+  <li><strong>M1-A8:</strong> A template update leaves issued documents unchanged, and issued reference numbers stay unique.</li>
+</ul>
+
+<h2>M2 Timetable and Smart Relief</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Time slots, teaching assignments and dated timetable versions, with weekly views by teacher and class, and a teacher's week on a phone.</li>
+  <li>Combined classes and multiple sessions. Clash checks for teachers and classes.</li>
+  <li>Publishing by the Headteacher or GPK Pentadbiran only.</li>
+  <li>AI: read a timetable from a phone photo, image or PDF, including aSc exports, with review beside the source before publishing.</li>
+  <li>Teacher absences recorded by authorised staff: full-day, part-day and multi-day, with configurable reasons.</li>
+  <li>Dual-Mode relief: automatic allocation by fair rotation, or an authorised manual choice under the same checks.</li>
+  <li>Default cap of six teaching periods a day (own plus relief), which a school can change with an audit trail.</li>
+  <li>School-branded relief slip and immediate WhatsApp notice after confirmation; teacher acknowledgement and completion.</li>
+  <li>Timetable, relief and workload reports in PDF, Word or spreadsheet.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Native aSc project files or a lossless aSc connection</li>
+  <li>Teacher self-service absence requests (M9, Phase 2)</li>
+  <li>Automatic split-period relief</li>
+  <li>Assuming a school event cancels all lessons</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M2-A1:</strong> A clash is blocked. An allowed combined or shared lesson is recorded consistently.</li>
+  <li><strong>M2-A2:</strong> Only the Headteacher or GPK Pentadbiran can publish, by any route.</li>
+  <li><strong>M2-A3:</strong> Changing a timetable never overwrites drafts, submitted or approved eRPH, or completed relief.</li>
+  <li><strong>M2-A4:</strong> A partial absence affects only overlapping lessons. Holidays and recess create no relief need.</li>
+  <li><strong>M2-A5:</strong> With the default cap, four own periods allow two relief periods, five allow one and six allow none. A double period counts as two.</li>
+  <li><strong>M2-A6:</strong> Absent or clashing teachers are excluded, and panel priority never overrides the cap. With no eligible teacher, the lesson stays Unfilled.</li>
+  <li><strong>M2-A7:</strong> One confirmation creates one slip and one notice; a change updates both teachers. Slips and notices exclude private absence reasons.</li>
+  <li><strong>M2-A8:</strong> An imported draft cannot publish, assign relief or send messages. Uncertain cells stay flagged, never guessed.</li>
+</ul>
+
+<h2>M3 Core eRPH</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Six-section lesson plan: basic information and attendance; DSKP selection; objectives and success criteria; starter, main and plenary; EMK, values, KBAT, i-Think, aids and PBD; reflection and postponement.</li>
+  <li>Curriculum selection by Theme, Unit, Topic, SK and SP, with full Tamil, Chinese and Jawi support.</li>
+  <li>Saving separate from submitting. Submitting the reflection locks all six sections for everyone.</li>
+  <li>Review by Headteacher-appointed reviewers with named accounts, including batch review. No self-approval.</li>
+  <li>Amendments authorised by a reviewer create a new version; the original stays locked.</li>
+  <li>Saturday Replacement, Clone Past eRPH, and Carry Forward of postponed lessons.</li>
+  <li>Two progress measures, side by side: teacher-confirmed SP taught, and SP supported by approved eRPH.</li>
+  <li>Inspection passes for Nazir, PPD and JPN: Headteacher only, time-limited, scoped and read-only, with every view logged.</li>
+  <li>Reminders for plans, reflections and reviews. Individual, daily and weekly PDF and Word exports.</li>
+  <li>AI: draft planning content with teacher review and partial regeneration. Reusable templates need no AI.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Secondary school curriculum (KSSM)</li>
+  <li>A claim of full MOE compliance or official certification</li>
+  <li>Marking a future lesson as taught to complete reflections early</li>
+  <li>Inspector access to pupil identities or private staff details, or any editing</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M3-A1:</strong> Drafts save incomplete work, and submitting rejects missing required fields.</li>
+  <li><strong>M3-A2:</strong> After the reflection, no route, including administrator tools, can edit the six sections.</li>
+  <li><strong>M3-A3:</strong> Only a current in-scope non-author reviewer can approve or authorise an amendment. The original stays unchanged.</li>
+  <li><strong>M3-A4:</strong> Present 28 and achieved 23 gives 5 needing support. Invalid counts are rejected, and zero attendance makes no false claim.</li>
+  <li><strong>M3-A5:</strong> A Saturday following Tuesday uses the right schedule and leaves other Tuesdays unchanged.</li>
+  <li><strong>M3-A6:</strong> Cloning and carrying forward copy planning only, never attendance, reflection or approval.</li>
+  <li><strong>M3-A7:</strong> With 40 target SP, 30 teacher-confirmed and 24 approved, EduNex shows 75% and 60%. Repeated SP never raise the count.</li>
+  <li><strong>M3-A8:</strong> An expired or revoked pass fails for records, assets and exports.</li>
+  <li><strong>M3-A9:</strong> Tamil, Chinese and Jawi display correctly in forms and exports.</li>
+</ul>
+
+<h2>M4 Preschool eRPH</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Five-section daily plan: routine and morning conversation; physical activity and free play; early literacy and languages; integrated learning; closure and reflection.</li>
+  <li>Selected automatically from the class level, on a versioned preschool curriculum, not one fixed framework.</li>
+  <li>Aggregate attendance, confirmed by the teacher. No pupil names needed to plan.</li>
+  <li>Activity reflections stay editable. Only Submit Final Daily Reflection locks the whole day.</li>
+  <li>Partial days are recorded accurately, block by block.</li>
+  <li>The M3 review, amendment, progress, cloning, relief, inspection and export rules apply.</li>
+  <li>AI: suggestions for each daily block, with teacher review.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Individual developmental assessment, attainment levels and evidence photos</li>
+  <li>Parent portal, parent messaging or pupil-photo sharing</li>
+  <li>A fixed universal daily timetable for preschool</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M4-A1:</strong> The form keeps routine, songs, physical and free play, literacy, integrated learning and closure.</li>
+  <li><strong>M4-A2:</strong> Saving an activity reflection leaves the day editable. Final submission locks every section.</li>
+  <li><strong>M4-A3:</strong> A partly taught day counts only the SP confirmed as delivered.</li>
+  <li><strong>M4-A4:</strong> Publishing a newer curriculum leaves old revisions unchanged.</li>
+  <li><strong>M4-A5:</strong> Inspection passes do not expose pupil assessment or photos. Assessment screens stay disabled.</li>
+</ul>
+
+<h1 id="p2"><span class="num">6</span> Phase 2 modules</h1>
+<p class="lead">School operations. These modules reuse the staff, pupils, calendar, templates and approvals delivered in Phase 1.</p>
+
+<h2>M8 Attendance and Student Affairs (HEM)</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Daily register for Years 1 to 6 and Preschool, validated by the Class Teacher. Register reminders go to the Class Teacher and the coordinator or PK HEM.</li>
+  <li>Absence evidence recorded by teachers on behalf of guardians, with decisions per date.</li>
+  <li>Attendance follow-up alerts and draft warning letters under versioned, validated rules.</li>
+  <li>Discipline cases, one-way guardian notices after verification, and restricted counselling records.</li>
+  <li>RMT, assistance and welfare, SPBT stock and loans, health, safety and HEM programmes.</li>
+  <li>Formal documents: Teacher, then PK HEM, then Headteacher. Corrections keep the original.</li>
+  <li>Safety and programme actions verified by PK HEM or an appointed officer.</li>
+  <li>HEM readiness dashboard and exports. A suggested attendance count for eRPH, confirmed by the teacher.</li>
+  <li>AI: drafts of HEM programme proposals and reports only.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Parent accounts or online excuse submission</li>
+  <li>Automatic expulsion, enrolment removal or punishment</li>
+  <li>APDM, SSDM or government claim connections</li>
+  <li>AI on counselling, health, discipline or warning decisions</li>
+  <li>Medical diagnosis, or use as an emergency response service</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M8-A1:</strong> Unknown attendance never becomes Present or Absent automatically, and totals reconcile to school days.</li>
+  <li><strong>M8-A2:</strong> Daily attendance does not wait in the approval queue. A late register sends a reminder, never a guardian warning.</li>
+  <li><strong>M8-A3:</strong> Accepted evidence updates only its dates and flags draft letters that are out of date.</li>
+  <li><strong>M8-A4:</strong> Unvalidated rules cannot issue letters, and no counter removes a pupil.</li>
+  <li><strong>M8-A5:</strong> Formal reports need PK HEM review and Headteacher confirmation, by non-authors.</li>
+  <li><strong>M8-A6:</strong> Counselling, medical and financial details stay out of dashboards, messages, AI and slides, and views are logged.</li>
+  <li><strong>M8-A7:</strong> Meals, welfare and textbook stock reconcile to recorded movements.</li>
+</ul>
+
+<h2>M9 eGerak Staff Movement</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Full-day absence, late arrival, early departure, temporary exit and urgent recording, with proxy entry.</li>
+  <li>Approval by the Headteacher and PK specifically designated by the Headteacher.</li>
+  <li>Timetable impact, with one coverage need for each affected lesson, feeding the M2 relief engine.</li>
+  <li>Any overlap with a lesson requires cover for the whole period.</li>
+  <li>Emergency cover can be confirmed while the leave decision is pending.</li>
+  <li>Teachers record their own actual exit, arrival and return; authorised administrators review or correct them.</li>
+  <li>Daily movement lists, unfilled cover, workload and operational dashboard.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Leave entitlement, payroll or HRMIS connection</li>
+  <li>Guard accounts, public check-in pages, GPS or biometric attendance</li>
+  <li>Automatic split-period relief, or a second relief engine</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M9-A1:</strong> A draft or pending ordinary request never sends relief. Approved requests allocate cover automatically.</li>
+  <li><strong>M9-A2:</strong> Partial overlap produces cover for the whole period. Touching a lesson's edge produces none.</li>
+  <li><strong>M9-A3:</strong> Several absences or retries cannot create more than one coverage need for a lesson.</li>
+  <li><strong>M9-A4:</strong> Missing timetable data shows as unresolved, not as "no classes affected".</li>
+  <li><strong>M9-A5:</strong> Corrections keep the original value, person, time and reason. A recorded exit never approves leave.</li>
+  <li><strong>M9-A6:</strong> Private reasons and medical files stay out of relief notices, dashboards and slides.</li>
+</ul>
+
+<h2>M7 Meetings, Briefings and Follow-up Actions</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Staff, management and special meetings, plus short briefings with a simpler format. One record per meeting.</li>
+  <li>Agendas, invitations, attendance including guests, attachments and minutes.</li>
+  <li>Route: recorder submits, Headteacher confirms, with no other stage.</li>
+  <li>Confirmation automatically publishes to the configured internal staff group and sends out the actions.</li>
+  <li>Action closure only after the Headteacher or an appointed officer verifies the evidence.</li>
+  <li>Unfinished actions carry forward as the same action. Corrections create a new version.</li>
+  <li>Action dashboard, meeting register, and PDF and Word exports.</li>
+  <li>AI: minutes and briefing drafts from notes and readable documents, verified by the recorder.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Voice recording, audio transcription or live meeting capture</li>
+  <li>Publishing on the public internet</li>
+  <li>Tasks issued directly from AI output</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M7-A1:</strong> A record starts as Draft and cannot publish before Headteacher confirmation. Recorders cannot confirm their own minutes.</li>
+  <li><strong>M7-A2:</strong> Confirmation publishes the exact version to the configured audience. Retrying creates no duplicates.</li>
+  <li><strong>M7-A3:</strong> Attendance separates missing entries, apologies and actual participation.</li>
+  <li><strong>M7-A4:</strong> Teacher submission does not close an action. Only an in-scope verifier can, and not for their own work.</li>
+  <li><strong>M7-A5:</strong> Failed reminders never undo publication or complete work.</li>
+  <li><strong>M7-A6:</strong> Corrected minutes keep the original and keep the identity of unchanged actions.</li>
+</ul>
+
+<h2>M5 Co-curricular</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Uniformed bodies, clubs and sports units, advisors, and Year 4 to 6 membership with positions.</li>
+  <li>Annual plans, tracking 12 meetings and 24 hours as separate measures.</li>
+  <li>Weekly logs with attendance, optional pupil QR, and 1 to 4 photos.</li>
+  <li>Proposals, preparation letters, implementation, competition and financial reports, and minutes.</li>
+  <li>Route: Teacher, then PK Kokurikulum, then Headteacher, for reports and annual PAJSK packs.</li>
+  <li>Achievements and extra-curricular evidence, with a versioned PAJSK working calculation of six elements.</li>
+  <li>SEGAK and BMI records.</li>
+  <li>Readiness dashboard, annual logbooks, batch exports and data prepared for SPPB.</li>
+  <li>AI: drafts of weekly reports, competition reports and proposals.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>A certified PAJSK calculator or official KPM slips</li>
+  <li>A direct SPPB connection, or storing KPM passwords</li>
+  <li>Exercise or medical advice</li>
+  <li>AI analysis of activity photos</li>
+  <li>Younger-pupil BMI workflows until eligibility is validated</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M5-A1:</strong> Excused, unexcused and unknown attendance stay distinct. Repeated QR scans do not duplicate attendance.</li>
+  <li><strong>M5-A2:</strong> The meeting count and annual hours differ correctly, and short or cancelled sessions gain no false credit.</li>
+  <li><strong>M5-A3:</strong> PK review alone cannot confirm, and authors cannot review their own reports. Material edits restart review.</li>
+  <li><strong>M5-A4:</strong> Financial totals reconcile to transactions and receipts.</li>
+  <li><strong>M5-A5:</strong> Results apply only to pupils who took part, not to the whole unit.</li>
+  <li><strong>M5-A6:</strong> PAJSK shows "Rules pending validation" and cannot finalise until rule tables are validated. Missing data is not scored as zero.</li>
+  <li><strong>M5-A7:</strong> A finalised pack is never reported as saved in SPPB.</li>
+  <li><strong>M5-A8:</strong> BMI unit conversions are correct, and incomplete fitness records stay incomplete.</li>
+</ul>
+
+<h1 id="p3"><span class="num">7</span> Phase 3 modules</h1>
+<p class="lead">Integration and insight. These modules combine what earlier phases record, so they cannot be finished before those modules exist.</p>
+
+<h2>M6 Curriculum, Subject Panels and Presentation</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Annual panels and a six-folder hub: organisation, curriculum, meetings, strategic planning, improvement programmes, question bank and assessment.</li>
+  <li>Curriculum committee meetings through M7, with no fictitious panel.</li>
+  <li>Strategic plans, interventions, PInTaS and OPPM, and programme documents.</li>
+  <li>Panel report route: Teacher or Secretary, Panel Head, PK Administration, Headteacher.</li>
+  <li>Aggregate PBD and UASA analysis from uploaded evidence, after a person validates it.</li>
+  <li>Curriculum dashboard using the two M3 progress measures.</li>
+  <li>Officer Presentation Mode with frozen reporting snapshots.</li>
+  <li>Formal presentations: PK Administration reviews, Headteacher confirms the exact version. PowerPoint and PDF export.</li>
+  <li>AI: slide builder, with a source record for each factual slide.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Pupil-by-pupil PBD or UASA entry</li>
+  <li>Pulling HEM, health or private pupil data into slides</li>
+  <li>Use of eRPH inspection passes for panel records</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M6-A1:</strong> A panel report cannot skip Panel Head or PK review. Authors and out-of-date versions are blocked.</li>
+  <li><strong>M6-A2:</strong> All six folders are searchable, and new versions keep approved evidence.</li>
+  <li><strong>M6-A3:</strong> Filing a document in a folder never counts as approval.</li>
+  <li><strong>M6-A4:</strong> Figures show scope, numerator, denominator and missing data, and shared programmes are not double-counted.</li>
+  <li><strong>M6-A5:</strong> Imported analysis needs validated mapping before it can publish.</li>
+  <li><strong>M6-A6:</strong> Issued decks stay reproducible, and source changes block confirmation until reconciled.</li>
+  <li><strong>M6-A7:</strong> Draft slides are visibly Draft and carry no confirmation marks.</li>
+</ul>
+
+<h2>M10 Integrated Dashboard, Task Centre and Document Centre</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>School Dashboard with role-based summaries and drill-down to source records.</li>
+  <li>Task Centre: My Tasks, Team, Waiting for Others, Review Required, Corrections, Upcoming and Overdue.</li>
+  <li>Unified review inbox that keeps each module's approval route.</li>
+  <li>Document Centre: permission-checked search linked to authoritative versions.</li>
+  <li>Reporting packs with a list of contents, and school-branded exports.</li>
+  <li>Notification overview with delivery outcomes. Help and guides.</li>
+  <li>Versioned metric definitions, with stale data shown as Stale, never as zero.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>A second database of pupils, timetables or tasks, or editing outside the owning module</li>
+  <li>A global AI assistant, predictive scoring or automatic decisions</li>
+  <li>Public sharing, broad guardian groups or external guest links</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M10-A1:</strong> Filters, search and packs never reveal another school's records, or restricted filenames and counts.</li>
+  <li><strong>M10-A2:</strong> Dashboard totals reconcile to authorised records, with cutoff and definition shown.</li>
+  <li><strong>M10-A3:</strong> No inbox button or batch action can shorten an approval route. Partial failures are itemised.</li>
+  <li><strong>M10-A4:</strong> Completing a task cannot confirm a report, finalise PAJSK, approve movement or mark a pupil present.</li>
+  <li><strong>M10-A5:</strong> Losing permission removes access to previews and exports immediately.</li>
+  <li><strong>M10-A6:</strong> Rebuilding the dashboard or search never resends old notifications.</li>
+</ul>
+
+<h2>M11 Question Bank and Assessment Builder (teacher workspace)</h2>
+<p class="lab">Included</p>
+<ul>
+  <li>Original question contribution with answers, rubrics, curriculum links and a rights declaration.</li>
+  <li>Question types: objective, matching, fill-in-the-blank, short, structured and subjective.</li>
+  <li>Panel review and publishing, with private, school and reviewed shared scopes across schools.</li>
+  <li>Practice set builder linked from eRPH, and an exam composer with confidential papers.</li>
+  <li>Separate question papers and answer keys, Set A and B variants, and PDF and Word export.</li>
+  <li>AI: draft questions, answers, distractors and rubrics, with shared release still needing panel review.</li>
+</ul>
+<p class="lab">Not included</p>
+<ul>
+  <li>Online pupil assignments, responses and marking (section 10)</li>
+  <li>Pupil logins, parent access and Google Classroom connection</li>
+  <li>Contributor payments, including the RM1 example</li>
+  <li>AI marking of pupil answers, or copying protected textbook content</li>
+  <li>A claim of official PBD or UASA format compliance</li>
+</ul>
+<p class="lab">Acceptance criteria</p>
+<ul>
+  <li><strong>M11-A1:</strong> Unpublished questions and school exams cannot be found across schools by search or links.</li>
+  <li><strong>M11-A2:</strong> Shared release needs a named non-author panel reviewer. Duplicates are flagged for a person to decide.</li>
+  <li><strong>M11-A3:</strong> A teacher's local edit never changes the shared question and its answer is rechecked.</li>
+  <li><strong>M11-A4:</strong> Sets keep exact question and answer versions, and later corrections flag owners without changing issued sets.</li>
+  <li><strong>M11-A5:</strong> Wrong mark totals, repeated items and unsafe shuffles are caught before issue.</li>
+  <li><strong>M11-A6:</strong> Pupil papers exclude answer keys.</li>
+  <li><strong>M11-A7:</strong> If the bank is short of questions, the shortfall is shown, never silently filled.</li>
+  <li><strong>M11-A8:</strong> Tamil, Chinese, Jawi, mathematics and diagrams display correctly in preview, PDF and Word.</li>
+</ul>
+
+<h1 id="shared"><span class="num">8</span> Requirements for every module</h1>
+<p class="lead">These apply in every phase and to every school.</p>
+<table>
+  <tr><th style="width:21%">Area</th><th>Requirement</th></tr>
+  <tr><td>School separation</td><td>Enforced in the database and server. Changing a code, link or identifier never reaches another school.</td></tr>
+  <tr><td>Access control</td><td>Permissions are checked on the server for every read, write, download and AI request.</td></tr>
+  <tr><td>Approvals</td><td>Each document type keeps its own route. Nobody approves their own work, and a conflicted or vacant stage needs a recorded substitute. Stale versions are rejected.</td></tr>
+  <tr><td>Corrections</td><td>Locked and approved records are never overwritten. Changes create a linked version, and old signatures are never copied across.</td></tr>
+  <tr><td>Records and archive</td><td>Inactive status keeps all evidence. The three-year gallery is a display window and never deletes.</td></tr>
+  <tr><td>Storage and exports</td><td>EduNex cloud storage is authoritative. PDF and editable Word use school templates, and editing a download never changes the record. Google Drive export is optional.</td></tr>
+  <tr><td>Notifications</td><td>Dashboard, email and WhatsApp. Messages hold minimal details and a protected link. Delivery never means approval or completion, and failure never stops work.</td></tr>
+  <tr><td>Sensitive records</td><td>Counselling, medical, discipline, guardian and household data stay restricted, and every view of a restricted record is logged.</td></tr>
+  <tr><td>Audit trail</td><td>An append-only log records who, when, before and after, and the reason.</td></tr>
+  <tr><td>Reliability</td><td>A retry or double tap never creates a second record. Saved means confirmed by the server.</td></tr>
+  <tr><td>Languages</td><td>Original Tamil, Chinese and Jawi text stays intact. Interface language never changes stored content.</td></tr>
+</table>
+<h2>Shared acceptance criteria (every phase)</h2>
+<ul>
+  <li><strong>ALL-A1:</strong> A user of one school cannot read, change or export another school's data by altering identifiers.</li>
+  <li><strong>ALL-A2:</strong> Refusing Google Drive, late payment, or a failed notification never blocks authorised work.</li>
+  <li><strong>ALL-A3:</strong> Deactivating a teacher, class or school deletes no evidence.</li>
+  <li><strong>ALL-A4:</strong> Exports show the correct school's identity, revision and status, in all supported scripts.</li>
+  <li><strong>ALL-A5:</strong> Every core workflow can be completed without the AI subscription.</li>
+  <li><strong>ALL-A6:</strong> A setting changed for one school has no effect on any other school.</li>
+</ul>
+
+<h1 id="limits"><span class="num">9</span> Product-wide exclusions and assumptions</h1>
+<h2>Not included in any of the three phases</h2>
+<ul>
+  <li>Pupil-level PBD and UASA entry, and individual Preschool developmental assessment</li>
+  <li>Pupil and parent accounts, and online guardian access</li>
+  <li>eRAGUR</li>
+  <li>Offline editing and offline approvals</li>
+  <li>Official connections to SPPB, APDM, SSDM, HRMIS or any government system</li>
+  <li>Any statement of official KPM endorsement or certification</li>
+  <li>Features built for one school only, outside the configuration in section 1</li>
+</ul>
+<h2>Assumptions and dependencies</h2>
+<table>
+  <tr><th style="width:27%">Item</th><th>What we assume</th></tr>
+  <tr><td>Outside services</td><td>Google (DELIMa), email, a WhatsApp gateway, Google Drive, a payment route and an AI provider are available to EduNex. Their costs are covered in the commercial terms.</td></tr>
+  <tr><td>Curriculum data</td><td>Approved DSKP, RPT and preschool curriculum content is supplied and validated before use.</td></tr>
+  <tr><td>Official rules</td><td>PAJSK tables, SEGAK norms and warning-letter thresholds are officially confirmed before they are enabled.</td></tr>
+  <tr><td>School setup</td><td>Each school supplies its own staff, pupils, calendar, templates and logos, and completes Master Setup.</td></tr>
+  <tr><td>Language review</td><td>Native speakers review the Malay, Tamil and Chinese labels.</td></tr>
+  <tr><td>Tamilini</td><td>Any move of data from Tamilini needs a controlled migration plan.</td></tr>
+</table>
+
+<h1 id="discuss"><span class="num">10</span> Areas to be discussed</h1>
+<p class="lead">These points are not yet clear. Each has a proposed position so work can plan ahead. Write "Accept" or your change in the last column. Items 13 to 17 differ from the SRS and need a change request or your acceptance (SRS §21). OD numbers refer to the open decisions in SRS §19.</p>
+<table>
+  <tr><th style="width:5%">No</th><th style="width:28%">Area</th><th>Proposed position</th><th style="width:21%">Your position</th></tr>
+  <tr><td>1</td><td>Phase plan</td><td>Modules are split as in section 3; dates agreed separately</td><td></td></tr>
+  <tr><td>2</td><td>AI add-on charging</td><td>Charged per school with a usage allowance. Individual teacher plans to be decided.</td><td></td></tr>
+  <tr><td>3</td><td>AI when payment is late</td><td>Late standard payment never blocks work. AI buttons lock only when the add-on has ended.</td><td></td></tr>
+  <tr><td>4</td><td>Messages staff inbox</td><td>In the approved design but not in any specification. If kept, add it in Phase 2 through a change request.</td><td></td></tr>
+  <tr><td>5</td><td>Android and iOS store apps</td><td>Specifications require a web app (PWA) only. If wanted, add them after Phase 3.</td><td></td></tr>
+  <tr><td>6</td><td>Web Push notifications</td><td>Not in the specifications. Add only if confirmed.</td><td></td></tr>
+  <tr><td>7</td><td>Question Bank online practice</td><td>Accepted direction, but needs a pupil access model. Plan as a later release.</td><td></td></tr>
+  <tr><td>8</td><td>Pupil login model</td><td>To be decided with item 7, along with result release and retakes</td><td></td></tr>
+  <tr><td>9</td><td>Google Classroom</td><td>Later release, after testing the provider route</td><td></td></tr>
+  <tr><td>10</td><td>Pupil-level PBD and UASA (OD-20)</td><td>Not included. Aggregate analysis only.</td><td></td></tr>
+  <tr><td>11</td><td>Prices and payment gateway (OD-04)</td><td>To be agreed</td><td></td></tr>
+  <tr><td>12</td><td>WhatsApp provider and costs</td><td>To be agreed; who pays for messages needs a decision</td><td></td></tr>
+  <tr><td>13</td><td>Module pages use tabs, not a sidebar (SH-R07)</td><td>Full-width tabs, with other modules opened from Apps</td><td></td></tr>
+  <tr><td>14</td><td>Search as an icon (SH-R01)</td><td>Header icon opens search on the Apps page</td><td></td></tr>
+  <tr><td>15</td><td>Module colours (SRS 3.2)</td><td>National-palette shades with flat tiles</td><td></td></tr>
+  <tr><td>16</td><td>Home page layout</td><td>Welcome card and number tiles fixed, widgets customisable</td><td></td></tr>
+  <tr><td>17</td><td>Button colours (SH-R09, NFR-10)</td><td>Darker buttons in Green and Dark themes to pass AA contrast</td><td></td></tr>
+  <tr><td>18</td><td>Accessibility standard</td><td>WCAG AA and 44 px touch targets, as in the SRS; not stated in the module specifications</td><td></td></tr>
+  <tr><td>19</td><td>Registration fields (OD-01)</td><td>All 10 fields mandatory; mother-tongue label for SK to be agreed</td><td></td></tr>
+  <tr><td>20</td><td>Teachers in several schools (OD-03)</td><td>Allowed, one live membership per school</td><td></td></tr>
+  <tr><td>21</td><td>Session timeouts, two-step sign-in (OD-05)</td><td>Authenticator app or email code; password limits subject to security review</td><td></td></tr>
+  <tr><td>22</td><td>Headteacher succession evidence</td><td>Verify through institutional control and appointment evidence</td><td></td></tr>
+  <tr><td>23</td><td>Who confirms calendar changes</td><td>Headteacher or authorised administrator</td><td></td></tr>
+  <tr><td>24</td><td>Deadlines for minutes and reports</td><td>Each school sets its own</td><td></td></tr>
+  <tr><td>25</td><td>School-plan import formats (OD-07)</td><td>PDF, Word, Excel, template or manual entry</td><td></td></tr>
+  <tr><td>26</td><td>Relief fairness period (OD-12)</td><td>Configurable by year or term; panel priority rules to be agreed</td><td></td></tr>
+  <tr><td>27</td><td>eRPH review timing</td><td>Final approval after reflection, with no separate pre-lesson review</td><td></td></tr>
+  <tr><td>28</td><td>Who reviews the Headteacher's work</td><td>An eligible non-author substitute; otherwise "Awaiting assignment"</td><td></td></tr>
+  <tr><td>29</td><td>Inspection pass model</td><td>Bearer link or verified inspector identity, maximum validity and exports to be agreed</td><td></td></tr>
+  <tr><td>30</td><td>External officer links for panels and dashboards</td><td>Not included unless a separate policy is agreed</td><td></td></tr>
+  <tr><td>31</td><td>PAJSK rubric (OD-18)</td><td>Scores stay working figures until rules are validated</td><td></td></tr>
+  <tr><td>32</td><td>Warning-letter thresholds (OD-21)</td><td>Candidate values: 3, 10, 17 consecutive days, escalating at 31; 10, 20, 40 cumulative days, escalating at 60. Inactive until validated.</td><td></td></tr>
+  <tr><td>33</td><td>Attendance deadline (OD-22)</td><td>Set by each school</td><td></td></tr>
+  <tr><td>34</td><td>Headteacher access to counselling (OD-23)</td><td>Counsellor and, under an agreed policy, the Headteacher, with every view logged</td><td></td></tr>
+  <tr><td>35</td><td>Gallery year and former-school access (OD-27)</td><td>Uses the academic year; former-school access to be agreed</td><td></td></tr>
+  <tr><td>36</td><td>Pupil transfer between schools</td><td>Controlled process; no automatic access to prior records</td><td></td></tr>
+  <tr><td>37</td><td>KPM logo</td><td>Used only with authorisation and approved assets</td><td></td></tr>
+  <tr><td>38</td><td>Data retention</td><td>Retention of source files, attempts and backups to be agreed in the technical specification</td><td></td></tr>
+</table>
+
+</body>
+</html>
