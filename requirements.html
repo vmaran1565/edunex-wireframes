@@ -404,7 +404,7 @@ tr {
   
   /* Screen layout: the source document is written for A4 print. */
   @media screen {
-    body { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; background: #fff; font-size: 11pt; line-height: 1.55; overflow-wrap: anywhere; }
+    body { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; background: #fff; font-size: 11pt; line-height: 1.55; overflow-wrap: break-word; }
     table { font-size: 10pt; }
     .bar { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; }
     .bar a { color: var(--blue); font-weight: 700; }
@@ -417,7 +417,37 @@ tr {
     figure[style] { width: min(100%, 360px) !important; }
     .phones-row { grid-template-columns: 1fr; }
   }
+  /* Keep words whole on phones; a wide table scrolls inside itself. */
+  @media screen and (max-width: 640px) {
+    table { display: block; max-width: 100%; overflow-x: auto; }
+    th, td { min-width: 76px; }
+  }
   @media print { .bar { display: none; } }
+
+  /* Screen carousel and enlarged view. */
+  .carousel { margin: 20px 0 8px; }
+  .track { display: flex; gap: 12px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 12px; }
+  .track::-webkit-scrollbar { display: none; }
+  .track:focus-visible, .carousel button:focus-visible, .lightbox button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; }
+  .shot { display: block; width: 100%; height: min(460px, 62vh); padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); cursor: zoom-in; }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .slide-cap { margin: 8px 0 0; text-align: center; font-weight: 700; }
+  .controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 8px; }
+  .controls button, .lb-nav button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: #fff; color: var(--blue); font-size: 24px; line-height: 1; cursor: pointer; }
+  .controls button:disabled, .lb-nav button:disabled { opacity: .35; cursor: default; }
+  .count { min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
+  .hint { margin: 6px 0 0; text-align: center; color: var(--muted); font-size: 13px; }
+  .lightbox { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0; background: #0d1030; color: #fff; }
+  .lightbox[open] { display: flex; flex-direction: column; }
+  .lightbox::backdrop { background: #0d1030; }
+  .lb-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: center; padding: 10px 16px; }
+  .lb-cap { font-weight: 700; }
+  .lb-nav { display: flex; gap: 8px; }
+  .lb-body { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 16px; text-align: center; }
+  .lb-body img { width: 100%; height: auto; border-radius: 8px; }
+  @media (max-width: 640px) { .lb-body { text-align: left; } }
+  @media print { .controls, .hint, .lightbox { display: none; } .track { display: block; overflow: visible; } .slide:not(:first-child) { display: none; } }
 </style>
 </head>
 <body>
@@ -499,7 +529,55 @@ tr {
   <tr><td>School institutional account</td><td>Stays with the school when the Headteacher changes; used to set up and recover administration</td></tr>
   <tr><td>EduNex SuperAdmin</td><td>Review school registrations, manage billing and the master curriculum. Does not sign school reports or read counselling notes.</td></tr>
 </table>
-<figure style="width:42%;margin-left:auto;margin-right:auto"><img src="requirements-home.jpg" alt="EduNex teacher home page in the Malaysia design: navy header with crest and songket border, five tabs named Utama, Jadual Waktu, eRPH, Mesej and Sukatan, a welcome card, four number tiles, today's timetable, an announcement, syllabus progress and the school calendar."><figcaption>Teacher home page in the approved Malaysia design (made-up data)</figcaption></figure>
+<section class="carousel" role="region" aria-roledescription="carousel" aria-label="EduNex screens in the approved Malaysia design">
+    <ul class="track" tabindex="0">
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="1 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Teacher home page"><img src="requirements-home.jpg" alt="EduNex teacher home page in the Malaysia design: navy header with crest and songket border, five tabs, a welcome card, four number tiles, today&#x27;s timetable, an announcement, syllabus progress and the school calendar." loading="lazy"></button>
+        <p class="slide-cap">Teacher home page</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="2 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Weekly timetable"><img src="requirements-timetable.jpg" alt="Weekly timetable on a computer: a Monday to Friday grid of lessons with today&#x27;s column in yellow, the current lesson outlined and a recess line across the week." loading="lazy"></button>
+        <p class="slide-cap">Weekly timetable</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="3 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: My eRPH lesson plans"><img src="requirements-erph.jpg" alt="My eRPH screen: a list of lesson plans grouped by day with status labels, and one open plan showing class, date, time, teacher, unit, standards, objective and reflection." loading="lazy"></button>
+        <p class="slide-cap">My eRPH lesson plans</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="4 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Messages (to be discussed, section 10)"><img src="requirements-messages.jpg" alt="Messages screen with a message list on the left and an open message about a staff meeting on the right, with a reply box at the bottom." loading="lazy"></button>
+        <p class="slide-cap">Messages (to be discussed, section 10)</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="5 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Home page in the Dark theme"><img src="requirements-dark.jpg" alt="EduNex home page in the Dark theme, with the same welcome card and number tiles on a dark navy background." loading="lazy"></button>
+        <p class="slide-cap">Home page in the Dark theme</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="6 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Home page on a phone"><img src="requirements-phone-home.jpg" alt="EduNex home page on a phone with the welcome card, number tiles and a bottom tab bar." loading="lazy"></button>
+        <p class="slide-cap">Home page on a phone</p>
+      </li>
+      <li class="slide" role="group" aria-roledescription="slide" aria-label="7 of 7">
+        <button type="button" class="shot" aria-label="Enlarge: Timetable on a phone"><img src="requirements-phone-timetable.jpg" alt="Timetable on a phone showing one day at a time, with day buttons at the top." loading="lazy"></button>
+        <p class="slide-cap">Timetable on a phone</p>
+      </li>
+    </ul>
+    <div class="controls">
+      <button type="button" class="prev" aria-label="Previous screen">‹</button>
+      <span class="count" aria-live="polite">1 / 7</span>
+      <button type="button" class="next" aria-label="Next screen">›</button>
+    </div>
+    <p class="hint">Made-up data. Select a picture to enlarge it.</p>
+  </section>
+  <dialog class="lightbox" aria-label="Enlarged screen">
+    <div class="lb-bar">
+      <span class="lb-cap"></span>
+      <span class="lb-nav">
+        <button type="button" class="lb-prev" aria-label="Previous screen">‹</button>
+        <button type="button" class="lb-next" aria-label="Next screen">›</button>
+        <button type="button" class="lb-close" aria-label="Close">×</button>
+      </span>
+    </div>
+    <div class="lb-body"><img alt=""></div>
+  </dialog>
 
 <h1 id="phases"><span class="num">3</span> Delivery in three phases</h1>
 <p class="lead">Each phase builds on the one before it and gives schools something usable on its own. Phase 1 creates the school, its people and daily teaching work. Phase 2 adds pupil, staff and meeting operations. Phase 3 joins everything into one view and adds the Question Bank.</p>
@@ -1068,5 +1146,81 @@ tr {
   <tr><td>38</td><td>Data retention</td><td>Retention of source files, attempts and backups to be agreed in the technical specification</td><td></td></tr>
 </table>
 
+<script>
+(() => {
+  const root = document.querySelector('.carousel');
+  const track = root.querySelector('.track');
+  const slides = [...track.children];
+  const count = root.querySelector('.count');
+  const prev = root.querySelector('.prev');
+  const next = root.querySelector('.next');
+  const box = document.querySelector('.lightbox');
+  const big = box.querySelector('img');
+  const cap = box.querySelector('.lb-cap');
+  const lbPrev = box.querySelector('.lb-prev');
+  const lbNext = box.querySelector('.lb-next');
+  let index = 0;
+  let lastShot = null;
+
+  const show = (i, smooth = true) => {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    track.scrollTo({ left: slides[index].offsetLeft - track.offsetLeft, behavior: smooth ? 'smooth' : 'auto' });
+    sync();
+  };
+  const sync = () => {
+    count.textContent = `${index + 1} / ${slides.length}`;
+    prev.disabled = index === 0;
+    next.disabled = index === slides.length - 1;
+    lbPrev.disabled = prev.disabled;
+    lbNext.disabled = next.disabled;
+  };
+  const enlarge = () => {
+    const img = slides[index].querySelector('img');
+    big.src = img.src;
+    big.alt = img.alt;
+    cap.textContent = slides[index].querySelector('.slide-cap').textContent;
+    box.querySelector('.lb-body').scrollTop = 0;
+  };
+
+  big.addEventListener('load', () => {
+    // Screenshots are 2x, so this keeps phone shots from filling a wide screen.
+    big.style.maxWidth = `${big.naturalWidth / 1.6}px`;
+    // Wide computer screens stay readable on a phone: the picture pans inside the view.
+    big.style.minWidth = big.naturalWidth > 1000 ? '820px' : '';
+  });
+
+  prev.addEventListener('click', () => show(index - 1));
+  next.addEventListener('click', () => show(index + 1));
+  lbPrev.addEventListener('click', () => { show(index - 1, false); enlarge(); });
+  lbNext.addEventListener('click', () => { show(index + 1, false); enlarge(); });
+  box.querySelector('.lb-close').addEventListener('click', () => box.close());
+  box.addEventListener('close', () => { if (lastShot) lastShot.focus(); });
+  box.addEventListener('click', (e) => { if (e.target === box.querySelector('.lb-body')) box.close(); });
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' && !lbPrev.disabled) lbPrev.click();
+    if (e.key === 'ArrowRight' && !lbNext.disabled) lbNext.click();
+  });
+  track.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+  });
+  let timer;
+  track.addEventListener('scroll', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      index = Math.round(track.scrollLeft / (slides[0].offsetWidth + 12));
+      sync();
+    }, 80);
+  }, { passive: true });
+  slides.forEach((slide, i) => slide.querySelector('.shot').addEventListener('click', (e) => {
+    lastShot = e.currentTarget;
+    index = i;
+    sync();
+    enlarge();
+    box.showModal();
+  }));
+  sync();
+})();
+</script>
 </body>
 </html>
