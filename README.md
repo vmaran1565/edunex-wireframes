@@ -5,3 +5,5 @@ Static design options for the EduNex school planner. Open `index.html` to compar
 The pages use example data only. Their buttons are not connected to anything.
 
 The EduNex v2 requirements are in `requirements.html`, with a PDF copy in `EduNex-Requirements-Document.pdf`.
+
+The Phase 1 user flows are in `user-flows.html`, with each diagram also as an image in `flows/`.
