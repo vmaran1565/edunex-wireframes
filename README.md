@@ -7,3 +7,5 @@ The pages use example data only. Their buttons are not connected to anything.
 The EduNex v2 requirements are in `requirements.html`, with a PDF copy in `EduNex-Requirements-Document.pdf`.
 
 The Phase 1 user flows are in `user-flows.html`, with each diagram also as an image in `flows/`.
+
+Start with `how-it-works.html`: a simple, bilingual (English and Bahasa Melayu) explanation of EduNex for schools.
